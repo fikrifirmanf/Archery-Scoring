@@ -40,6 +40,7 @@
                 <thead>
                 <tr>
                   <th>Kelas</th>
+                  <th>Babak</th>
                   <th>Kategori</th>
                   <th>Jarak (/meter)</th>
                   <th>Jumlah Seri</th>
@@ -52,6 +53,7 @@
                 @foreach ($rules as $r)
                 <tr>
                 <td>{{$r->nama_kelas}}</td>
+                <td>{{$r->nama_ronde}}</td>
                 <td>{{$r->nama_kategori}}</td>
                   <td>{{$r->nama_jarak}}</td>
                   <td>{{$r->jml_seri}}</td>

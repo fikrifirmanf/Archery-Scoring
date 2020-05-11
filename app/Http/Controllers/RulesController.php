@@ -15,7 +15,7 @@ class RulesController extends Controller
     {
         $title = "Rules";
         $title_page = "Pengaturan";
-        $rules = Rules::join('jarak', 'rules.uuid_jarak', '=', 'jarak.uuid_jarak')->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->select('rules.*', 'jarak.nama_jarak', 'kelas.nama_kelas', 'kategori.nama_kategori')->get();
+        $rules = Rules::join('jarak', 'rules.uuid_jarak', '=', 'jarak.uuid_jarak')->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')->select('rules.*', 'jarak.nama_jarak', 'ronde.nama_ronde', 'kelas.nama_kelas', 'kategori.nama_kategori')->get();
 
 
         return $this->makeResponse($request, 'rules/rules', compact('title', 'rules', 'title_page'));
@@ -33,6 +33,8 @@ class RulesController extends Controller
             Rules::insert([
                 'uuid' => Str::uuid(),
                 'jml_seri' => $request->jml_seri,
+                'jml_panah' => $request->jml_panah,
+                'uuid_ronde' => $request->uuid_ronde,
                 'uuid_jarak' => $request->uuid_jarak,
                 'uuid_kelas' => $request->uuid_kelas,
                 'uuid_kategori' => $request->uuid_kategori,
