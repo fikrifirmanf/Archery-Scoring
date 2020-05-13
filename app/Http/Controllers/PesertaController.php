@@ -8,6 +8,7 @@ use App\Peserta;
 use App\Target;
 use App\Team;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
@@ -141,5 +142,15 @@ class PesertaController extends Controller
     }
     public function prosesEdit(Request $request)
     {
+    }
+
+    // API
+
+    public function profile()
+    {
+        // $uuid = Auth::id();
+        $peserta = Peserta::get();
+
+        return response()->json(['peserta' => $peserta], 200);
     }
 }
