@@ -52,7 +52,7 @@
                   
                 @foreach ($peserta as $p)
                 <tr>
-                <td>{{$p->nama_target}}</td>
+                <td>{{$p->nama_papan.$p->no_target}}</td>
                 <td>{{$p->nama_peserta}}</td>
                   <td>{{$p->jk}}</td>
                   <td>{{$p->nama_kelas}}</td>

@@ -2,47 +2,40 @@
 
 namespace App\Http\Controllers;
 
-use App\Kategori;
-use App\Kelas;
-use App\Ronde;
-use App\Rules;
+use App\Skor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 
 
-class RulesController extends Controller
+class SkorController extends Controller
 {
     public function index(Request $request)
     {
-        $title = "Rules";
-        $title_page = "Pengaturan";
-        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->select('rules.*',  'kategori.nama_kategori')->get();
+        $title = "Skor";
+        $title_page = "Skor";
+        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.id')->join('ronde', 'skor.uuid_ronde', '=', 'ronde.uuid')->get();
 
 
-        return $this->makeResponse($request, 'rules/rules', compact('title', 'rules', 'title_page'));
+        return $this->makeResponse($request, 'skor/skor', compact('title', 'skor', 'title_page'));
     }
     public function create()
     {
         $title = 'Archery Scoring';
         $title_page = 'Tambah Rules';
-        $ronde = Ronde::get();
-        $kelas = Kelas::get();
-        $kategori = Kategori::get();
-        return view('rules/add')->with(compact('title', 'title_page', 'ronde', 'kelas', 'kategori'));
+        return view('rules/add')->with(compact('title', 'title_page'));
     }
     public function prosesAdd(Request $request)
     {
 
         try {
-            Rules::insert([
+            sKOR::insert([
                 'uuid' => Str::uuid(),
-                'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'),
                 'jml_seri' => $request->jml_seri,
                 'jml_panah' => $request->jml_panah,
                 'uuid_ronde' => $request->uuid_ronde,
-                'jarak' => $request->jarak,
+                'uuid_jarak' => $request->uuid_jarak,
                 'uuid_kelas' => $request->uuid_kelas,
                 'uuid_kategori' => $request->uuid_kategori,
                 'jml_peserta' => $request->jml_peserta,
@@ -58,25 +51,10 @@ class RulesController extends Controller
             throw $th;
         }
     }
-
-    public function del($uuid)
+    public function skorApi()
     {
-
-        try {
-            Rules::where('uuid', $uuid)->delete();
-            Session::flash('alert-class', 'alert-success');
-            Session::flash('alert-slogan', 'Sukses!');
-            return redirect('rules')->with(
-                Session::flash('message', 'Data rules berhasil dihapus')
-            );
-        } catch (\Throwable $th) {
-            throw $th;
-            Session::flash('alert-class', 'alert-success');
-            Session::flash('alert-slogan', 'Sukses!');
-            return redirect('rules')->with(
-                Session::flash('message', 'Data rules gagal dihapus!')
-            );
-        }
+        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('ronde', 'skor.uuid_ronde', '=', 'ronde.uuid')->select('skor.uuid', 'no_target.nama_target', 'peserta.nama_peserta', 'skor.seri_1', 'skor.seri_2', 'skor.seri_3', 'skor.seri_4', 'skor.seri_5', 'skor.seri_6', 'skor.total', 'ronde.nama_ronde')->get();
+        return response()->json(['skor' => $skor], 200);
     }
 
     // public function update($uuid)

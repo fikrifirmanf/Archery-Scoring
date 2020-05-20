@@ -12,7 +12,7 @@
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Peserta</a></li>
+                        <li class="breadcrumb-item"><a href="/rules">Rules</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -52,29 +52,28 @@
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
+                           
                             <div class="form-group">
-                                <label>No Target</label>
-                                <select class="form-controller select2" name="uuid_target" style="width: 100%;">
-                                  @foreach ($target as $t)
-                                <option value="{{$t->uuid}}">{{$t->nama_target}}</option>
-                                  @endforeach
-                                    
-                                    
-                                </select>
+                                <label>Jumlah Seri</label>
+                                <input type="text" name="jml_seri" class="form-control"
+                                    placeholder="0">
                             </div>
                             <div class="form-group">
-                                <label>Nama</label>
-                                <input type="text" name="nama_peserta" class="form-control"
-                                    placeholder="Nama peserta ...">
+                                <label>Jumlah panah</label>
+                                <input type="text" name="jml_panah" class="form-control"
+                                    placeholder="0">
                             </div>
                             <div class="form-group">
-                                <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jk" style="width: 100%;">
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                    
-                                </select>
+                                <label>Jarak (/m)</label>
+                                <input type="text" name="jarak" class="form-control"
+                                    placeholder="0">
                             </div>
+                            <div class="form-group">
+                                <label>Jumlah peserta</label>
+                                <input type="text" name="jml_peserta" class="form-control"
+                                    placeholder="0">
+                            </div>
+                            
 
                         </div>
                         <!-- /.col -->
@@ -90,11 +89,11 @@
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Team</label>
-                                <select class="form-controller select2" name="uuid_team" style="width: 100%;">
+                                <label>Ronde</label>
+                                <select class="form-controller select2" name="uuid_ronde" style="width: 100%;">
 
-                                  @foreach ($team as $t)
-                                  <option value="{{$t->uuid}}">{{$t->nama_team}}</option>
+                                  @foreach ($ronde as $t)
+                                  <option value="{{$t->uuid}}">{{$t->nama_ronde}}</option>
                                       @endforeach
                                 </select>
                             </div>

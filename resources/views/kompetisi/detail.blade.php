@@ -26,7 +26,7 @@
         <div class="card">
           
             <div class="card-header">
-                <a href="/rules/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Rules</button></a>
+               
               </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -39,27 +39,34 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Rules</th>
-                  <th>Kategori</th>
-                  <th>Jarak (/meter)</th>
-                  <th>Jumlah Seri</th>
-                  <th>Jumlah Panah</th>
-                  <th>Jumlah Peserta</th>
-                  <th>Aksi</th>
+                  <th>Nama Peserta</th>
+                <th>Seri 1</th>
+                <th>Seri 2</th>
+                <th>Seri 3</th>
+                <th>Seri 4</th>
+                <th>Seri 5</th>
+                <th>Seri 6</th>
+                <th>Total</th>
+                  {{-- <th>Aksi</th> --}}
                 </tr>
                 </thead>
-                <tbody>      
-                @foreach ($rules as $r)
-                <tr>
-                <td>{{$r->nama}}</td>
-               <td>{{$r->nama_kategori}}</td>
-                  <td>{{$r->jarak}}</td>
-                  <td>{{$r->jml_seri}}</td>
-                  <td>{{$r->jml_panah}}</td>
-                  <td>{{$r->jml_peserta}}</td>
-                <td><a href="/rules/edit/{{$r->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/rules/del/{{$r->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <tbody>
                   
-                </tr>
+                  
+                @foreach ($skor as $p)
+                <tr>
+                <td>{{$p->nama_peserta}}</td>
+                <td>{{$p->seri_1}}</td>
+                <td>{{$p->seri_2}}</td>
+                <td>{{$p->seri_3}}</td>
+                <td>{{$p->seri_4}}</td>
+                <td>{{$p->seri_5}}</td>
+                <td>{{$p->seri_6}}</td>
+                <td>{{$p->total}}</td>
+                
+                {{-- <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
+                  
+                </tr> --}}
                 @endforeach
               </table>
             </div>

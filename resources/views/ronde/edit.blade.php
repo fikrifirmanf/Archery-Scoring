@@ -19,7 +19,7 @@ foreach ($ronde as $r)
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Ronde</a></li>
+                        <li class="breadcrumb-item"><a href="/ronde">Ronde</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -32,10 +32,7 @@ foreach ($ronde as $r)
             <!--form-controller select2 EXAMPLE -->
             <div class="card card-default">
                 <div class="card-header">
-                    <?php 
-                        print_r ($ntape);
-                        print_r($sip);
-                        ?>
+                   
                     <h3 class="card-title">Form</h3>
                     
                     <div class="card-tools">

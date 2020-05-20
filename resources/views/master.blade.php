@@ -199,12 +199,7 @@
                   <p>Putra</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Nomor Target</p>
-                </a>
-              </li>
+              
               
             </ul>
           </li>
@@ -230,12 +225,7 @@
                   <p>Putra</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="pages/layout/boxed.html" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Nomor Target</p>
-                </a>
-              </li>
+              
               
             </ul>
           </li>
@@ -261,26 +251,12 @@
                   <p>Putra</p>
                 </a>
               </li>
-              <li class="nav-item">
-                <a href="/peserta/compound/men" class="nav-link">
-                  <i class="far fa-circle nav-icon"></i>
-                  <p>Nomor Target</p>
-                </a>
-              </li>
               
             </ul>
           </li>
+         
           <li class="nav-item has-treeview ">
-            <a href="/konten" class="nav-link">
-                <i class="nav-icon fas fa-table"></i>
-              <p>
-                Data Target Skorer
-              </p>
-            </a>
-
-          </li>
-          <li class="nav-item has-treeview ">
-            <a href="/konten" class="nav-link">
+            <a href="/kompetisi" class="nav-link">
                 <i class="nav-icon fas fa-table"></i>
               <p>
                 Hasil Skor

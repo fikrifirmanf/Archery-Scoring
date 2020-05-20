@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Panitia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PanitiaController extends Controller
 {
@@ -25,6 +26,13 @@ class PanitiaController extends Controller
     public function create()
     {
         //
+    }
+
+    public function profile()
+    {
+        $id = Auth::id();
+        $panitia = Panitia::where('id', $id)->get();
+        return response()->json(['panitia' => $panitia], 200);
     }
 
     /**

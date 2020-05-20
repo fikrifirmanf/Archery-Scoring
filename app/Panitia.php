@@ -8,7 +8,33 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Panitia extends Model
 {
     use SoftDeletes;
-    protected $table = 'peserta';
+    protected $table = 'panitia';
     public $incrementing = false;
     protected $dates = ['deleted_at'];
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array
+     */
+    protected $fillable = [
+        'nama_panitia', 'username', 'password',
+    ];
+
+    /**
+     * The attributes that should be hidden for arrays.
+     *
+     * @var array
+     */
+    protected $hidden = [
+        'password',
+    ];
+
+    /**
+     * The attributes that should be cast to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'email_verified_at' => 'datetime',
+    ];
 }

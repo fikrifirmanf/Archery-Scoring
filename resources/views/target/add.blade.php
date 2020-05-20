@@ -54,12 +54,12 @@
                         <div class="col-md-6">
                             
                             <div class="form-group">
-                                <label>Inisial Target</label>
+                                <label>Papan</label>
                                 <input type="text" name="kat_target" class="form-control"
                                     placeholder="A,B,C,...">
                             </div>
                             <div class="form-group">
-                                <label>Jumlah Papan</label>
+                                <label>Jumlah Target</label>
                                 <input type="text" name="jml_papan" class="form-control"
                                     placeholder="5">
                             </div>

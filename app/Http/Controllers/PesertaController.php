@@ -7,6 +7,7 @@ use App\Kelas;
 use App\Peserta;
 use App\Target;
 use App\Team;
+use App\Rules;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -148,9 +149,10 @@ class PesertaController extends Controller
 
     public function profile()
     {
-        // $uuid = Auth::id();
-        $peserta = Peserta::get();
+        $uuid = Auth::id();
+        $peserta = Peserta::where('no_target.uuid_panitia', $uuid)->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->select('peserta.uuid', 'no_target.nama_papan', 'peserta.nama_peserta', 'peserta.jk', 'team.nama_team', 'kelas.nama_kelas', 'kategori.nama_kategori')->addSelect(['jml_seri' => Rules::select('jml_seri')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid'), 'jml_panah' => Rules::select('jml_panah')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid')])->get();
 
-        return response()->json(['peserta' => $peserta], 200);
+        $pes = Peserta::where('no_target.uuid_panitia', $uuid)->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->orderBy('no_target.no_target', 'asc')->get();
+        return response()->json(['peserta' => $pes], 200);
     }
 }

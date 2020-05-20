@@ -26,7 +26,7 @@
         <div class="card">
           
             <div class="card-header">
-                <a href="/rules/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Rules</button></a>
+               
               </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -39,25 +39,19 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Rules</th>
-                  <th>Kategori</th>
-                  <th>Jarak (/meter)</th>
-                  <th>Jumlah Seri</th>
-                  <th>Jumlah Panah</th>
-                  <th>Jumlah Peserta</th>
-                  <th>Aksi</th>
+                  <th>Babak</th>
+                  
+                  <th>Generate Peserta</th>
                 </tr>
                 </thead>
-                <tbody>      
-                @foreach ($rules as $r)
+                <tbody>
+                  
+                  
+                @foreach ($rules as $p)
                 <tr>
-                <td>{{$r->nama}}</td>
-               <td>{{$r->nama_kategori}}</td>
-                  <td>{{$r->jarak}}</td>
-                  <td>{{$r->jml_seri}}</td>
-                  <td>{{$r->jml_panah}}</td>
-                  <td>{{$r->jml_peserta}}</td>
-                <td><a href="/rules/edit/{{$r->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/rules/del/{{$r->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="kompetisi/detail/{{$p->nama}}/{{$p->uuid}}">{{$p->nama}}</a></td>
+                
+                <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach

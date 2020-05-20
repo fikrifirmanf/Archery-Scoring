@@ -71,7 +71,7 @@ class RondeController extends Controller
             );
         } else {
             Ronde::where('uuid', $request->uuid)->update([
-                'uuid' => Str::uuid(),
+
                 'nama_ronde' => $request->nama_ronde,
                 'updated_at' => DB::raw('now()')
             ]);

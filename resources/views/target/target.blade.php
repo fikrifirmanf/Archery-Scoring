@@ -27,12 +27,16 @@
           
             <div class="card-header">
                 <div class="row">
-                  <div class="col">
+                  <div class="col col-md-3">
                     <a href="/target/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Target</button></a>
                   </div>
-                  <div class="col">
+                  <div class="col col-md-3">
                     <a href="/target/delall"><button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus Semua</button></a></div>  
+                    <div class="col col-md-3">
+                      <a href="/target/gen"><button class="btn btn-success"><i class="fas fa-repeat"></i> Generate No Target</button></a></div>
                   </div>
+                    
+                  
                 </div>
               
               
@@ -47,15 +51,17 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Target</th>
-                  <th>Aksi</th>
+                  <th>No Papan</th>
+                  <th>Panitia</th>
+                  
                 </tr>
                 </thead>
                 <tbody>
                 @foreach ($target as $t)
                 <tr>
-                <td>{{$t->nama_target}}</td>             
-                <td><a href="/target/edit/{{$t->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="#"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td>{{$t->nama_papan}}</td> 
+                <td>{{$t->nama_panitia}}</td>            
+                
                   
                 </tr>
                 @endforeach

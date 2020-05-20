@@ -19,4 +19,6 @@ Route::post('register', 'AuthController@register');
 
 Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('peserta', 'PesertaController@profile');
+    Route::get('panitia', 'PanitiaController@profile');
+    Route::get('skor', 'SkorController@skorApi');
 });
