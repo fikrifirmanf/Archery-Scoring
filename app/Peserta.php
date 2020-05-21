@@ -12,4 +12,5 @@ class Peserta extends Model
     protected $table = 'peserta';
     public $incrementing = false;
     protected $dates = ['deleted_at'];
+    protected $fillable = ['uuid', 'no_target', 'nama_peserta', 'jk', 'team', 'kategori', 'kelas'];
 }

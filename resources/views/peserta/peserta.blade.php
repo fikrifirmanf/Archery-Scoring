@@ -39,9 +39,10 @@
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
+                  <th>No.</th>
                   <th>No Target</th>
                   <th>Nama</th>
-                  <th>Jenis-kelamin</th>
+                  <th>JK</th>
                   <th>Kelas</th>
                   <th>Team</th>
                   <th>Aksi</th>
@@ -49,14 +50,15 @@
                 </thead>
                 <tbody>
                   
-                  
+                  @php $i=1 @endphp
                 @foreach ($peserta as $p)
                 <tr>
-                <td>{{$p->nama_papan.$p->no_target}}</td>
+                <td>{{$i++}}</td>
+                <td>{{$p->no_target}}</td>
                 <td>{{$p->nama_peserta}}</td>
                   <td>{{$p->jk}}</td>
-                  <td>{{$p->nama_kelas}}</td>
-                  <td>{{$p->nama_team}}</td>
+                  <td>{{$p->kelas}}</td>
+                  <td>{{$p->team}}</td>
                 <td><a href="/peserta/edit/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="#"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>

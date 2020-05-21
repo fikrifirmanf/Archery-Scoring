@@ -36,7 +36,7 @@
                   {{-- <div class="alert alert-danger">
                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
                   </div> --}}
-              <table id="example1" class="table table-bordered table-striped">
+              <table  class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Nama Rules</th>

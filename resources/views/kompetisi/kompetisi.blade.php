@@ -36,11 +36,11 @@
                   {{-- <div class="alert alert-danger">
                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
                   </div> --}}
-              <table id="example1" class="table table-bordered table-striped">
+              <table  class="table table-bordered table-striped">
                 <thead>
                 <tr>
                   <th>Babak</th>
-                  
+                  <th>Jumlah Peserta</th>
                   <th>Generate Peserta</th>
                 </tr>
                 </thead>
@@ -49,9 +49,9 @@
                   
                 @foreach ($rules as $p)
                 <tr>
-                <td><a href="kompetisi/detail/{{$p->nama}}/{{$p->uuid}}">{{$p->nama}}</a></td>
-                
-                <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="kompetisi/detail/{{$p->nama}}/{{$p->uuid}}">{{$p->nama.' '.$p->nama_kategori}}</a></td>
+                <td>{{$p->jml_peserta}}</td>
+                <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->nama_kategori}}/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach

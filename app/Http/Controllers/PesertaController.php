@@ -2,17 +2,19 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PesertaImport;
 use App\Kategori;
 use App\Kelas;
 use App\Peserta;
 use App\Target;
 use App\Team;
 use App\Rules;
+use App\Skor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
-
+use Maatwebsite\Excel\Facades\Excel;
 
 class PesertaController extends Controller
 {
@@ -29,11 +31,11 @@ class PesertaController extends Controller
 
         if ($jk == 'men') {
             $title = "Data Peserta Putra";
-            $peserta = Peserta::where('peserta.jk', 'Laki-laki')->where('kategori.nama_kategori', 'Nasional')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'L')->where('kategori', 'Nasional')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else if ($jk == 'woman') {
             $title = "Data Peserta Putri";
-            $peserta = Peserta::where('peserta.jk', 'Perempuan')->where('kategori.nama_kategori', 'Nasional')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'P')->where('kategori', 'Nasional')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else {
             return view('home')->with(compact('title'));
@@ -45,11 +47,11 @@ class PesertaController extends Controller
 
         if ($jk == 'men') {
             $title = "Data Peserta Putra";
-            $peserta = Peserta::where('peserta.jk', 'Laki-laki')->where('kategori.nama_kategori', 'Recurve')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'L')->where('kategori', 'Recurve')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else if ($jk == 'woman') {
             $title = "Data Peserta Putri";
-            $peserta = Peserta::where('peserta.jk', 'Perempuan')->where('kategori.nama_kategori', 'Recurve')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'P')->where('kategori', 'Recurve')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else {
             return view('home')->with(compact('title'));
@@ -61,11 +63,11 @@ class PesertaController extends Controller
 
         if ($jk == 'men') {
             $title = "Data Peserta Putra";
-            $peserta = Peserta::where('peserta.jk', 'Laki-laki')->where('kategori.nama_kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'L')->where('kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else if ($jk == 'woman') {
             $title = "Data Peserta Putri";
-            $peserta = Peserta::where('peserta.jk', 'Perempuan')->where('kategori.nama_kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->get();
+            $peserta = Peserta::where('peserta.jk', 'P')->where('kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else {
             return view('home')->with(compact('title'));
@@ -85,19 +87,45 @@ class PesertaController extends Controller
         $team = Team::get();
         $kategori = Kategori::get();
         $kelas = Kelas::get();
-        $peserta = Peserta::get(['uuid_target']);
-        for ($i = 0; $i < $peserta->count(); $i++) {
-            $ntapz[] = $peserta[$i]['uuid_target'];
-        }
-        $goks = $ntapz;
-        $target = Target::whereNotIn('uuid', $goks)->get();
+        // $peserta = Peserta::get(['uuid_target']);
+        // for ($i = 0; $i < $peserta->count(); $i++) {
+        //     $ntapz[] = $peserta[$i]['uuid_target'];
+        // }
+        // $goks = $ntapz;
 
 
-        return view('peserta/add')->with(compact('title', 'title_page', 'team', 'kategori', 'kelas', 'target'));
+
+        return view('peserta/add')->with(compact('title', 'title_page', 'team', 'kategori', 'kelas'));
+    }
+    public function import_excel(Request $request)
+    {
+        // validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        // menangkap file excel
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = rand() . $file->getClientOriginalName();
+
+        // upload ke folder file_siswa di dalam folder public
+        $file->move('file_peserta', $nama_file);
+
+        // import data
+        Excel::import(new PesertaImport, public_path('/file_peserta/' . $nama_file));
+
+        // notifikasi dengan session
+        Session::flash('sukses', 'Data Peserta Berhasil Diimport!');
+
+        // alihkan halaman kembali
+        return redirect('peserta/add');
     }
     public function prosesAdd(Request $request)
     {
-        if (Peserta::where('uuid_target', '=', $request->uuid_target)->exists()) {
+        $cek_duplikat = Peserta::where('nama_peserta', $request->nama_peserta)->where('jk', $request->jk)->where('uuid_team', $request->uuid_team)->first();
+        if ($cek_duplikat) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return redirect()->back()->with(
@@ -106,7 +134,6 @@ class PesertaController extends Controller
         } else {
             Peserta::insert([
                 'uuid' => Str::uuid(),
-                'uuid_target' => $request->uuid_target,
                 'nama_peserta' => $request->nama_peserta,
                 'jk' => $request->jk,
                 'uuid_kelas' => $request->uuid_kelas,
@@ -152,7 +179,7 @@ class PesertaController extends Controller
         $uuid = Auth::id();
         $peserta = Peserta::where('no_target.uuid_panitia', $uuid)->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->select('peserta.uuid', 'no_target.nama_papan', 'peserta.nama_peserta', 'peserta.jk', 'team.nama_team', 'kelas.nama_kelas', 'kategori.nama_kategori')->addSelect(['jml_seri' => Rules::select('jml_seri')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid'), 'jml_panah' => Rules::select('jml_panah')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid')])->get();
 
-        $pes = Peserta::where('no_target.uuid_panitia', $uuid)->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->orderBy('no_target.no_target', 'asc')->get();
+        $pes = Skor::where('skor.uuid_panitia', $uuid)->where('no_target.uuid_panitia', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->orderBy('no_target.no_target', 'asc')->get();
         return response()->json(['peserta' => $pes], 200);
     }
 }

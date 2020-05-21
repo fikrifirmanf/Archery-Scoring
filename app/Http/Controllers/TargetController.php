@@ -102,9 +102,16 @@ class TargetController extends Controller
 
     public function generateNoPeserta()
     {
+        Peserta::whereNotNull('uuid_target')->update([
+            'uuid_target' => null,
+
+        ]);
+
         try {
 
-            $target = Target::get(['uuid']);
+
+
+            $target = Target::orderBy('nama_papan', 'ASC')->orderBy('no_target', 'ASC')->get(['uuid']);
             $peserta = Peserta::get();
 
 
@@ -117,7 +124,7 @@ class TargetController extends Controller
             for ($i = 0; $i < $peserta->count(); $i++) {
 
 
-                Peserta::join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->where('peserta.uuid', $peserta[$i]['uuid'])->orderByRaw('jk desc')->update(
+                Peserta::join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->orderBy('jk', 'DESC')->orderBy('nama_kelas', 'ASC')->where('peserta.uuid', $peserta[$i]['uuid'])->update(
                     [
                         'uuid_target' => $trg[$i]
                     ]
@@ -131,11 +138,7 @@ class TargetController extends Controller
                 Session::flash('message', 'Generate no target berhasil!')
             );
         } catch (\Throwable $th) {
-            Session::flash('alert-class', 'alert-danger');
-            Session::flash('alert-slogan', 'Gagal!');
-            return redirect()->back()->with(
-                Session::flash('message', 'Generate no target gagal!' . $th)
-            );
+            throw $th;
         }
     }
 

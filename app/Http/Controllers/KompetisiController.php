@@ -19,28 +19,44 @@ class KompetisiController extends Controller
 
         $kompetisi = Kompetisi::join('peserta', 'kompetisi.uuid_peserta', '=', 'kompetisi.uuid')->join('ronde', 'kompetisi.uuid_ronde', '=', 'ronde.uuid')->get();
 
-        $rules = Rules::join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')->select('ronde.jk', 'kelas.nama_kelas', 'rules.*')->get();
+        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')->select('kategori.nama_kategori', 'ronde.jk', 'kelas.nama_kelas', 'rules.*')
+            ->addSelect(['jml_peserta' => Peserta::select(DB::raw('COUNT(uuid)'))
+                ->whereColumn('kategori', 'kategori.nama_kategori')
+                ->whereColumn('kelas', 'kelas.nama_kelas')
+                ->whereColumn('jk', 'ronde.jk')])->orderBy('kategori.nama_kategori', 'asc')->get();
 
         return view('kompetisi/kompetisi')->with(compact('title', 'title_page', 'rules'));
     }
-    public function addPeserta($kelas, $jk, $uuid_rules)
+    public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules)
     {
-        $peserta = Peserta::join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->where('jk', $jk)->where('kelas.nama_kelas', $kelas)->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->select('peserta.uuid', 'no_target.uuid_panitia')->get();
+        // switch ($jk) {
+        //     case 'Perempuan':
+        //         $jk = 'P';
+        //         break;
+        //     case 'Laki-Laki':
+        //         $jk = 'L';
+        //         break;
+
+        //     default:
+        //         null;
+        //         break;
+        // }
+        $peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid')->get();
 
         for ($i = 0; $i < $peserta->count(); $i++) {
             $ntap[] = $peserta[$i]['uuid'];
         }
         $uuid_peserta = $ntap;
 
-        for ($i = 0; $i < $peserta->count(); $i++) {
+        // for ($i = 0; $i < $peserta->count(); $i++) {
 
-            $ntape[] = $peserta[$i]['uuid_panitia'];
-        }
-        $uuid_panitia = $ntape;
+        //     $ntape[] = $peserta[$i]['uuid_panitia'];
+        // }
+        // $uuid_panitia = $ntape;
 
         try {
             for ($i = 0; $i < count($uuid_peserta); $i++) {
-                $inp[] = ['uuid' => Str::uuid(), 'uuid_panitia' => $uuid_panitia[$i], 'uuid_peserta' => $uuid_peserta[$i], 'uuid_rules' => $uuid_rules, 'created_at' => DB::raw('now()')];
+                $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i], 'uuid_rules' => $uuid_rules, 'created_at' => DB::raw('now()')];
             }
             $data = $inp;
             $skor_check = Skor::whereIn('uuid_peserta', $uuid_peserta)->where('uuid_rules', $uuid_rules)->get();
@@ -67,11 +83,11 @@ class KompetisiController extends Controller
             );
         }
     }
-    public function skorDetail($nama_babak, $uuid_ronde)
+    public function skorDetail($nama_babak, $uuid_rules)
     {
         $title = 'Skor Detail ' . $nama_babak;
         $title_page = 'Archery Scoring';
-        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_ronde', $uuid_ronde)->orderBy('total', 'DESC')->get();
+        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
         return view('kompetisi/detail')->with(compact('title', 'title_page', 'skor'));
     }
 }

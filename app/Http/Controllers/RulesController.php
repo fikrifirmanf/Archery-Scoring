@@ -18,7 +18,7 @@ class RulesController extends Controller
     {
         $title = "Rules";
         $title_page = "Pengaturan";
-        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->select('rules.*',  'kategori.nama_kategori')->get();
+        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->select('rules.*',  'kategori.nama_kategori')->orderBy('kategori.nama_kategori', 'asc')->orderBy('nama', 'asc')->get();
 
 
         return $this->makeResponse($request, 'rules/rules', compact('title', 'rules', 'title_page'));
@@ -34,28 +34,36 @@ class RulesController extends Controller
     }
     public function prosesAdd(Request $request)
     {
-
-        try {
-            Rules::insert([
-                'uuid' => Str::uuid(),
-                'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'),
-                'jml_seri' => $request->jml_seri,
-                'jml_panah' => $request->jml_panah,
-                'uuid_ronde' => $request->uuid_ronde,
-                'jarak' => $request->jarak,
-                'uuid_kelas' => $request->uuid_kelas,
-                'uuid_kategori' => $request->uuid_kategori,
-                'jml_peserta' => $request->jml_peserta,
-                'created_at' => DB::raw('now()')
-            ]);
-            // alihkan halaman ke halaman ronde
-            Session::flash('alert-class', 'alert-success');
-            Session::flash('alert-slogan', 'Sukses!');
+        $rules_exist = Rules::where('nama', Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'))->where('uuid_kategori', $request->uuid_kategori)->first();
+        if (!$rules_exist) {
+            try {
+                Rules::insert([
+                    'uuid' => Str::uuid(),
+                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'),
+                    'jml_seri' => $request->jml_seri,
+                    'jml_panah' => $request->jml_panah,
+                    'uuid_ronde' => $request->uuid_ronde,
+                    'jarak' => $request->jarak,
+                    'uuid_kelas' => $request->uuid_kelas,
+                    'uuid_kategori' => $request->uuid_kategori,
+                    'jml_peserta' => $request->jml_peserta,
+                    'created_at' => DB::raw('now()')
+                ]);
+                // alihkan halaman ke halaman ronde
+                Session::flash('alert-class', 'alert-success');
+                Session::flash('alert-slogan', 'Sukses!');
+                return redirect('rules/add')->with(
+                    Session::flash('message', 'Rules berhasil dibuat')
+                );
+            } catch (\Throwable $th) {
+                throw $th;
+            }
+        } else {
+            Session::flash('alert-class', 'alert-danger');
+            Session::flash('alert-slogan', 'Gagal!');
             return redirect('rules/add')->with(
-                Session::flash('message', 'Rules berhasil dibuat')
+                Session::flash('message', 'Data rules sudah ada!')
             );
-        } catch (\Throwable $th) {
-            throw $th;
         }
     }
 

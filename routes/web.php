@@ -24,6 +24,7 @@ $router->group(['prefix' => 'peserta'], function () use ($router) {
     $router->get('edit/{uuid}', 'PesertaController@update');
     $router->get('del/{id}', 'PesertaController@del');
     $router->post('edit/proses', 'PesertaController@prosesEdit');
+    $router->post('import_excel', 'PesertaController@import_excel');
 });
 // Ronde
 $router->group(['prefix' => 'ronde'], function () use ($router) {
@@ -58,7 +59,7 @@ $router->group(['prefix' => 'rules'], function () use ($router) {
 // Kompetisi
 $router->group(['prefix' => 'kompetisi'], function () use ($router) {
     $router->get('/', 'KompetisiController@index');
-    $router->get('add/{kelas}/{jk}/{uuid_rules}', 'KompetisiController@addPeserta');
+    $router->get('add/{kelas}/{jk}/{uuid_kat}/{uuid_rules}', 'KompetisiController@addPeserta');
     $router->get('detail/{nama_babak}/{uuid_rules}', 'KompetisiController@skorDetail');
     $router->post('add/proses', 'KompetisiController@prosesAdd');
     $router->get('edit/{uuid}', 'KompetisiController@update');

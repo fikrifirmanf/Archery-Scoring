@@ -36,10 +36,12 @@
                   {{-- <div class="alert alert-danger">
                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
                   </div> --}}
-              <table id="example1" class="table table-bordered table-striped">
+              <table  class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Peserta</th>
+                  
+                <th>No Target</th>
+                <th>Nama Peserta</th>
                 <th>Seri 1</th>
                 <th>Seri 2</th>
                 <th>Seri 3</th>
@@ -47,14 +49,18 @@
                 <th>Seri 5</th>
                 <th>Seri 6</th>
                 <th>Total</th>
+                <th>Peringkat</th>
                   {{-- <th>Aksi</th> --}}
                 </tr>
                 </thead>
                 <tbody>
                   
-                  
+                  @php
+                     $i =1; 
+                  @endphp
                 @foreach ($skor as $p)
                 <tr>
+                <td>{{$p->no_target}}</td>
                 <td>{{$p->nama_peserta}}</td>
                 <td>{{$p->seri_1}}</td>
                 <td>{{$p->seri_2}}</td>
@@ -63,6 +69,7 @@
                 <td>{{$p->seri_5}}</td>
                 <td>{{$p->seri_6}}</td>
                 <td>{{$p->total}}</td>
+                <td>{{$i++}}</td>
                 
                 {{-- <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
                   

@@ -67,7 +67,7 @@ foreach ($peserta as $p) {
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>No Target</label>
                                 <select class="form-controller select2" name="uuid_target" style="width: 100%;">
                                   @foreach ($target as $t)
@@ -76,7 +76,7 @@ foreach ($peserta as $p) {
                                     
                                     
                                 </select>
-                            </div>
+                            </div> --}}
                             <div class="form-group">
                                 <label>Nama</label>
                             <input type="text" value="{{$nama_peserta}}" name="nama_peserta" class="form-control"
