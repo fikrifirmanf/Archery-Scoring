@@ -13,6 +13,7 @@ use App\Skor;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Facades\Excel;
 
@@ -85,8 +86,8 @@ class PesertaController extends Controller
         $title_page = "Tambah Peserta";
         $title = "Archery Scoring";
         $team = Team::get();
-        $kategori = Kategori::get();
-        $kelas = Kelas::get();
+        $kategori = Kategori::orderBy('nama_kategori')->get();
+        $kelas = Kelas::orderBy('nama_kelas')->get();
         // $peserta = Peserta::get(['uuid_target']);
         // for ($i = 0; $i < $peserta->count(); $i++) {
         //     $ntapz[] = $peserta[$i]['uuid_target'];
@@ -124,21 +125,23 @@ class PesertaController extends Controller
     }
     public function prosesAdd(Request $request)
     {
-        $cek_duplikat = Peserta::where('nama_peserta', $request->nama_peserta)->where('jk', $request->jk)->where('uuid_team', $request->uuid_team)->first();
-        if ($cek_duplikat) {
+        $cek_duplikat = Peserta::where('no_target', $request->no_target);
+        if ($cek_duplikat->exists()) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return redirect()->back()->with(
-                Session::flash('message', 'Data peserta sudah ada!')
+                Session::flash('message', 'Data peserta atau no target sudah ada, coba crosscheck!')
             );
         } else {
             Peserta::insert([
                 'uuid' => Str::uuid(),
+                'no_target' => $request->no_target,
                 'nama_peserta' => $request->nama_peserta,
                 'jk' => $request->jk,
-                'uuid_kelas' => $request->uuid_kelas,
-                'uuid_team' => $request->uuid_team,
-                'uuid_kategori' => $request->uuid_kategori,
+                'kelas' => $request->kelas,
+                'team' => $request->team,
+                'kategori' => $request->kategori,
+                'created_at' => DB::raw('now()')
 
             ]);
         }
@@ -177,9 +180,9 @@ class PesertaController extends Controller
     public function profile()
     {
         $uuid = Auth::id();
-        $peserta = Peserta::where('no_target.uuid_panitia', $uuid)->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('team', 'peserta.uuid_team', '=', 'team.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->select('peserta.uuid', 'no_target.nama_papan', 'peserta.nama_peserta', 'peserta.jk', 'team.nama_team', 'kelas.nama_kelas', 'kategori.nama_kategori')->addSelect(['jml_seri' => Rules::select('jml_seri')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid'), 'jml_panah' => Rules::select('jml_panah')->whereColumn('uuid_kategori', 'kategori.uuid')->whereColumn('uuid_kelas', 'kelas.uuid')])->get();
 
-        $pes = Skor::where('skor.uuid_panitia', $uuid)->where('no_target.uuid_panitia', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->orderBy('no_target.no_target', 'asc')->get();
+
+        $pes = Skor::where('skor.uuid_panitia', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')->orderBy('peserta.no_target', 'asc')->get();
         return response()->json(['peserta' => $pes], 200);
     }
 }

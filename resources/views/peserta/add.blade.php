@@ -51,8 +51,8 @@
 		</div>
 		@endif
  
-		<button type="button" class="btn btn-primary mr-5" data-toggle="modal" data-target="#importExcel">
-			IMPORT EXCEL
+		<button type="button" class="btn btn-primary mr-5 mb-3" data-toggle="modal" data-target="#importExcel">
+			<i class="fa fa-upload"></i> IMPORT EXCEL
 		</button>
  
 		<!-- Import Excel -->
@@ -67,14 +67,14 @@
  
 							{{ csrf_field() }}
  
-							<label>Pilih file excel</label>
+							<label>Pilih file data peserta</label>
 							<div class="form-group">
 								<input type="file" name="file" required="required">
 							</div>
  
 						</div>
 						<div class="modal-footer">
-							<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+							<button type="button" class="btn btn-secondary" data-dismiss="modal">Tutup</button>
 							<button type="submit" class="btn btn-primary">Import</button>
 						</div>
 					</div>
@@ -108,15 +108,20 @@
                                 </select>
                             </div> --}}
                             <div class="form-group">
-                                <label>Nama</label>
+                                <label>No Target</label>
+                                <input type="text" name="no_target" class="form-control"
+                                    placeholder="Contoh : 1A">
+                            </div>
+                            <div class="form-group">
+                                <label>Nama Peserta</label>
                                 <input type="text" name="nama_peserta" class="form-control"
-                                    placeholder="Nama peserta ...">
+                                    placeholder="Contoh : Fikri">
                             </div>
                             <div class="form-group">
                                 <label>Jenis Kelamin</label>
                                 <select class="form-control" name="jk" style="width: 100%;">
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
+                                    <option value="L">Laki-laki</option>
+                                    <option value="P">Perempuan</option>
                                     
                                 </select>
                             </div>
@@ -126,28 +131,24 @@
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Kelas</label>
-                                <select class="form-controllerform-controller select2" name="uuid_kelas" style="width: 100%;">
+                                <select class="form-control" name="kelas" style="width: 100%;">
 
                                     @foreach ($kelas as $k)
-                                <option value="{{$k->uuid}}">{{$k->nama_kelas}}</option>
+                                <option value="{{$k->nama_kelas}}">{{$k->nama_kelas}}</option>
                                     @endforeach
                                     
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Team</label>
-                                <select class="form-controller select2" name="uuid_team" style="width: 100%;">
-
-                                  @foreach ($team as $t)
-                                  <option value="{{$t->uuid}}">{{$t->nama_team}}</option>
-                                      @endforeach
-                                </select>
+                                <input type="text" name="team" class="form-control"
+                                    placeholder="Contoh : MAJUMUNDUR">
                             </div>
                             <div class="form-group">
                                 <label>Kategori</label>
-                                <select class="form-controller select2" name="uuid_kategori" style="width: 100%;">
+                                <select class="form-control" name="kategori" style="width: 100%;">
                                   @foreach ($kategori as $k)
-                                  <option value="{{$k->uuid}}">{{$k->nama_kategori}}</option>
+                                  <option value="{{$k->nama_kategori}}">{{$k->nama_kategori}}</option>
                                       @endforeach
                                 </select>
                             </div>

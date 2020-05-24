@@ -26,7 +26,8 @@
         <div class="card">
           
             <div class="card-header">
-               
+              <div class="col col-md-3">
+                <a href="/kompetisi/gen"><button class="btn btn-success"><i class="fas fa-save"></i>  Generate Panitia</button></a></div>
               </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -39,19 +40,17 @@
               <table  class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Babak</th>
-                  <th>Jumlah Peserta</th>
-                  <th>Generate Peserta</th>
-                </tr>
+                  <th>Kategori</th>
+                  <th>Kelas</th>
+                 </tr>
                 </thead>
                 <tbody>
                   
                   
-                @foreach ($rules as $p)
+                @foreach ($rules_group as $p)
                 <tr>
-                <td><a href="kompetisi/detail/{{$p->nama}}/{{$p->uuid}}">{{$p->nama.' '.$p->nama_kategori}}</a></td>
-                <td>{{$p->jml_peserta}}</td>
-                <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->nama_kategori}}/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="kompetisi/detailkategori/{{$p->nama_kategori}}/{{$p->nama_kelas}}">{{$p->nama_kategori}}</a></td>
+                <td>{{$p->nama_kelas}}</td>
                   
                 </tr>
                 @endforeach

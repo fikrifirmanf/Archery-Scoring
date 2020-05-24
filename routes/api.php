@@ -22,3 +22,4 @@ Route::group(['middleware' => 'jwt.auth'], function () {
     Route::get('panitia', 'PanitiaController@profile');
     Route::get('skor', 'SkorController@skorApi');
 });
+Route::put('skor/{sesi}/{seri}/{uuidr}/{uuidp}', 'SkorController@prosesUpdateApi');

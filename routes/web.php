@@ -44,7 +44,6 @@ $router->group(['prefix' => 'target'], function () use ($router) {
     $router->get('del/{id}', 'TargetController@del');
     $router->get('delall', 'TargetController@delAll');
     $router->post('edit/proses', 'TargetController@prosesEdit');
-    $router->get('gen', 'TargetController@generateNoPeserta');
 });
 // Rules
 $router->group(['prefix' => 'rules'], function () use ($router) {
@@ -59,6 +58,7 @@ $router->group(['prefix' => 'rules'], function () use ($router) {
 // Kompetisi
 $router->group(['prefix' => 'kompetisi'], function () use ($router) {
     $router->get('/', 'KompetisiController@index');
+    $router->get('detailkategori/{kat}/{kel}', 'KompetisiController@detailKategori');
     $router->get('add/{kelas}/{jk}/{uuid_kat}/{uuid_rules}', 'KompetisiController@addPeserta');
     $router->get('detail/{nama_babak}/{uuid_rules}', 'KompetisiController@skorDetail');
     $router->post('add/proses', 'KompetisiController@prosesAdd');
@@ -66,4 +66,5 @@ $router->group(['prefix' => 'kompetisi'], function () use ($router) {
     $router->get('del/{uuid}', 'KompetisiController@del');
     $router->get('delall', 'KompetisiController@delAll');
     $router->post('edit/proses', 'KompetisiController@prosesEdit');
+    $router->get('gen', 'KompetisiController@generateNoPeserta');
 });

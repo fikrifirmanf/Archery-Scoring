@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
 use App\Peserta;
-
+use App\Skor;
 
 class TargetController extends Controller
 {
@@ -19,9 +19,14 @@ class TargetController extends Controller
         $title_page = "Pengaturan";
         $target = Target::join('panitia', 'no_target.uuid_panitia', '=', 'panitia.id')->select('nama_papan', 'panitia.nama_panitia')->havingRaw('COUNT(no_target.uuid) > 1')->groupBy('nama_papan', 'panitia.nama_panitia')->get();
 
+        $targete = Target::join('panitia', 'no_target.uuid_panitia', '=', 'panitia.id')->orderBy('nama_papan', 'ASC')->orderBy('no_target', 'ASC')->get(['nama_papan', 'no_target', 'nama_panitia']);
+        $peserta = Peserta::get();
 
 
-        return $this->makeResponse($request, 'target/target', compact('title', 'target', 'title_page'));
+
+
+
+        return $this->makeResponse($request, 'target/target', compact('title', 'trg', 'target', 'title_page'));
     }
     public function create()
     {
@@ -64,81 +69,6 @@ class TargetController extends Controller
             return redirect()->back()->with(
                 Session::flash('message', 'Data target sudah ada! atau' . $th)
             );
-        }
-    }
-
-    // public function update($uuid)
-    // {
-
-    //     $title = 'Archery Scoring';
-    //     $title_page = 'Edit Ronde';
-    //     $ronde = Ronde::where('uuid', $uuid)->get();
-    //     return view('ronde/edit')->with(compact('title', 'ronde', 'title_page', 'ntape'));
-    // }
-
-    // public function prosesEdit(Request $request)
-    // {
-    //     $ronde = Ronde::where('nama_ronde', $request->nama_ronde);
-    //     if ($ronde->exists()) {
-    //         Session::flash('alert-class', 'alert-danger');
-    //         Session::flash('alert-slogan', 'Gagal!');
-    //         return redirect()->back()->with(
-    //             Session::flash('message', 'Data ronde sudah ada!')
-    //         );
-    //     } else {
-    //         Ronde::where('uuid', $request->uuid)->update([
-    //             'uuid' => Str::uuid(),
-    //             'nama_ronde' => $request->nama_ronde,
-    //             'updated_at' => DB::raw('now()')
-    //         ]);
-    //         // alihkan halaman ke halaman ronde
-    //         Session::flash('alert-class', 'alert-success');
-    //         Session::flash('alert-slogan', 'Sukses!');
-    //         return redirect('ronde')->with(
-    //             Session::flash('message', 'Ronde berhasil diubah')
-    //         );
-    //     }
-    // }
-
-    public function generateNoPeserta()
-    {
-        Peserta::whereNotNull('uuid_target')->update([
-            'uuid_target' => null,
-
-        ]);
-
-        try {
-
-
-
-            $target = Target::orderBy('nama_papan', 'ASC')->orderBy('no_target', 'ASC')->get(['uuid']);
-            $peserta = Peserta::get();
-
-
-            for ($i = 0; $i < $target->count(); $i++) {
-                $ntapz[] = $target[$i]['uuid'];
-            }
-            $trg = $ntapz;
-
-            //$huruf = array('A', 'B', 'C', 'D');
-            for ($i = 0; $i < $peserta->count(); $i++) {
-
-
-                Peserta::join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->orderBy('jk', 'DESC')->orderBy('nama_kelas', 'ASC')->where('peserta.uuid', $peserta[$i]['uuid'])->update(
-                    [
-                        'uuid_target' => $trg[$i]
-                    ]
-                );
-            }
-
-            // alihkan halaman ke halaman target
-            Session::flash('alert-class', 'alert-success');
-            Session::flash('alert-slogan', 'Sukses!');
-            return redirect('target')->with(
-                Session::flash('message', 'Generate no target berhasil!')
-            );
-        } catch (\Throwable $th) {
-            throw $th;
         }
     }
 

@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Skor;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
@@ -56,6 +57,36 @@ class SkorController extends Controller
         $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('ronde', 'skor.uuid_ronde', '=', 'ronde.uuid')->select('skor.uuid', 'no_target.nama_target', 'peserta.nama_peserta', 'skor.seri_1', 'skor.seri_2', 'skor.seri_3', 'skor.seri_4', 'skor.seri_5', 'skor.seri_6', 'skor.total', 'ronde.nama_ronde')->get();
         return response()->json(['skor' => $skor], 200);
     }
+
+    public function prosesUpdateApi(Request $request, $sesi, $seri, $uuidr, $uuidp)
+    {
+
+        $id = Auth::id();
+        $skor = Skor::where('uuid_rules', $uuidr)->where('uuid_peserta', $uuidp)->where('sesi', $sesi)->value($seri);
+
+
+        try {
+
+            if ($skor > 0) {
+                return response()->json([
+                    "skor" => "Skor sudah ada!"
+                ], 428);
+            } else {
+                Skor::where('uuid_rules', $uuidr)->where('uuid_peserta', $uuidp)->update([
+                    $seri => $request->seri,
+
+                ]);;
+
+
+                return response()->json([
+                    "skor" => "Sukses!"
+                ], 201);
+            }
+        } catch (\Exception $e) {
+            return response()->json(['message' => $e], 503);
+        }
+    }
+
 
     // public function update($uuid)
     // {

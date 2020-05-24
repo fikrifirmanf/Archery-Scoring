@@ -7,12 +7,13 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{$title}}</h1>
+            <h1>{{$title_page}}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
-              <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">{{$title}}</li>
+              <li class="breadcrumb-item"><a href="/">Home</a></li>
+              <li class="breadcrumb-item"><a href="/kompetisi">Kompetisi</a></li>
+            <li class="breadcrumb-item active">{{$title_page}}</li>
             </ol>
           </div>
         </div>
@@ -26,7 +27,7 @@
         <div class="card">
           
             <div class="card-header">
-                <a href="/rules/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Rules</button></a>
+             
               </div>
             <!-- /.card-header -->
             <div class="card-body">
@@ -39,25 +40,19 @@
               <table  class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  <th>Nama Rules</th>
-                  <th>Kategori</th>
-                  <th>Jarak (/meter)</th>
-                  <th>Jumlah Seri</th>
-                  <th>Jumlah Panah</th>
-                  
-                  <th>Aksi</th>
+                  <th>Babak</th>
+                  <th>Jumlah Peserta</th>
+                  <th>Generate Peserta</th>
                 </tr>
                 </thead>
-                <tbody>      
-                @foreach ($rules as $r)
+                <tbody>
+                  
+                  
+                @foreach ($rules as $p)
                 <tr>
-                <td>{{$r->nama}}</td>
-               <td>{{$r->nama_kategori}}</td>
-                  <td>{{$r->jarak}}</td>
-                  <td>{{$r->jml_seri}}</td>
-                  <td>{{$r->jml_panah}}</td>
-              
-                <td><a href="/rules/edit/{{$r->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/rules/del/{{$r->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="/kompetisi/detail/{{$p->nama.' '.$p->nama_kategori}}/{{$p->uuid}}">{{$p->nama.' '.$p->nama_kategori}}</a></td>
+                <td>{{$p->jml_peserta}}</td>
+                <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->nama_kategori}}/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach

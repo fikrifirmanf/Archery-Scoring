@@ -32,8 +32,7 @@
                   </div>
                   <div class="col col-md-3">
                     <a href="/target/delall"><button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus Semua</button></a></div>  
-                    <div class="col col-md-3">
-                      <a href="/target/gen"><button class="btn btn-success"><i class="fas fa-repeat"></i> Generate No Target</button></a></div>
+                   
                   </div>
                     
                   
@@ -42,12 +41,42 @@
               
             <!-- /.card-header -->
             <div class="card-body">
+              @php
+
+        $players = array('fikri','firman','f','k');
+    $count = count($players);
+    $numberOfRounds = log($count / 2, 2);
+
+    // Order players.
+    for ($i = 0; $i < $numberOfRounds; $i++) {
+        $out = array();
+        $splice = pow(2, $i); 
+
+        while (count($players) > 0) {
+
+            $out = array_merge($out, array_splice($players, 0, $splice));
+            $out = array_merge($out, array_splice($players, -$splice));
+
+        }            
+
+        $players = $out;
+    }
+
+    // Print match list.
+    for ($i = 0; $i < $count; $i++) {
+        
+     
+         $p1[] = $players[$i];
+         $p2[] = $players[++$i];
+
+    }
+    var_dump( $p1);
+    var_dump($p2);
+              @endphp
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
                   @endif
-                  {{-- <div class="alert alert-danger">
-                    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-                  </div> --}}
+                  
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
@@ -65,6 +94,7 @@
                   
                 </tr>
                 @endforeach
+                </tbody>
               </table>
             </div>
             <!-- /.card-body -->
