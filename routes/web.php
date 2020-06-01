@@ -56,7 +56,7 @@ $router->group(['prefix' => 'target', 'middleware' => 'login.auth'], function ()
     $router->get('delall', 'TargetController@delAll');
     $router->post('edit/proses', 'TargetController@prosesEdit');
 });
-// Target
+// Panitia
 $router->group(['prefix' => 'panitia', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'PanitiaController@index');
     $router->get('add', 'PanitiaController@create');
@@ -65,6 +65,16 @@ $router->group(['prefix' => 'panitia', 'middleware' => 'login.auth'], function (
     $router->get('del/{id}', 'PanitiaController@del');
     $router->get('delall', 'PanitiaController@delAll');
     $router->post('edit/proses', 'PanitiaController@prosesEdit');
+});
+// Kelas
+$router->group(['prefix' => 'kelas', 'middleware' => 'login.auth'], function () use ($router) {
+    $router->get('/', 'KelasController@index');
+    $router->get('add', 'KelasController@create');
+    $router->post('add/proses', 'KelasController@prosesAdd');
+    $router->get('edit/{uuid}', 'KelasController@update');
+    $router->get('del/{id}', 'KelasController@del');
+    $router->get('delall', 'KelasController@delAll');
+    $router->post('edit/proses', 'KelasController@updateProses');
 });
 // Rules
 $router->group(['prefix' => 'rules', 'middleware' => 'login.auth'], function () use ($router) {
@@ -76,7 +86,7 @@ $router->group(['prefix' => 'rules', 'middleware' => 'login.auth'], function () 
     $router->get('delall', 'RulesController@delAll');
     $router->post('edit/proses', 'RulesController@prosesEdit');
 });
-// Rules
+// Artikel
 $router->group(['prefix' => 'artikel', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'ArtikelController@index');
     $router->get('add', 'ArtikelController@create');
@@ -84,6 +94,7 @@ $router->group(['prefix' => 'artikel', 'middleware' => 'login.auth'], function (
     $router->get('edit/{uuid}', 'ArtikelController@update');
     $router->get('del/{uuid}', 'ArtikelController@del');
     $router->get('delall', 'ArtikelController@delAll');
+    $router->get('detail/{uuid}', 'ArtikelController@show');
     $router->post('edit/proses', 'ArtikelController@prosesEdit');
 });
 // Kompetisi

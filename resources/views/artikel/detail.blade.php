@@ -1,9 +1,10 @@
 <?php 
 
-foreach ($konten as $k) {
+foreach ($artikel as $k) {
     # code...
-    $title_notif = $k->title_notif;
-    $isi = $k->isi_konten;
+    $judul = $k->judul;
+    $tanggal = $k->tanggal;
+    $isi = $k->isi;
 }
 
 ?>
@@ -21,7 +22,8 @@ foreach ($konten as $k) {
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-              <li class="breadcrumb-item active">{{$title}}</li>
+              <li class="breadcrumb-item"><a href="/artikel">Artikel</a></li>
+              <li class="breadcrumb-item active">{{$title_page}}</li>
             </ol>
           </div>
         </div>
@@ -34,7 +36,8 @@ foreach ($konten as $k) {
       <!-- Default box -->
       <div class="card">
         <div class="card-header">
-        <h3 class="card-title">{{$title_notif}}</h3>
+        <h3 >{{$judul}}</h3>
+        <p style="font-size: 14px"><i class="fas fa-calendar-alt"></i>  {{date('d-m-Y',strtotime($tanggal))}}</p>
 
           
         </div>

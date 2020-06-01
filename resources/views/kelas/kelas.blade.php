@@ -7,12 +7,12 @@
       <div class="container-fluid">
         <div class="row mb-2">
           <div class="col-sm-6">
-            <h1>{{$title_page}}</h1>
+            <h1>{{$title}}</h1>
           </div>
           <div class="col-sm-6">
             <ol class="breadcrumb float-sm-right">
               <li class="breadcrumb-item"><a href="#">Home</a></li>
-            <li class="breadcrumb-item active">{{$title_page}}</li>
+            <li class="breadcrumb-item active">{{$title}}</li>
             </ol>
           </div>
         </div>
@@ -24,36 +24,47 @@
       <div class="row">
         <div class="col-12"> 
         <div class="card">
+          
             <div class="card-header">
-                <a href="artikel/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Artikel</button></a>
-              </div>
+                <div class="row">
+                  <div class="col col-md-3">
+                    <a href="/kelas/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Kelas</button></a>
+                  </div>
+                  {{-- <div class="col col-md-3">
+                    <a href="/panitia/delall"><button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus Semua</button></a></div>   --}}
+                   
+                  </div>
+                    
+                  
+                </div>
+              
+              
             <!-- /.card-header -->
             <div class="card-body">
+             
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
                   @endif
-                  {{-- <div class="alert alert-danger">
-                    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-                  </div> --}}
+                  
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  
-                  <th>Judul</th>
+                  <th>Kelas</>
                   <th>Aksi</th>
-                </tr>
+                  </tr>
                 </thead>
                 <tbody>
-                @foreach ($artikel as $k)
-                    
+                 
+                @foreach ($kelas as $p)
                 <tr>
+                
+                <td>{{$p->nama_kelas}}</td> 
                     
-                <td><a href="artikel/detail/{{$k->uuid}}" target="_blank">{{$k->judul}}</a></td>
-                  
-                <td><a href="artikel/edit/{{$k->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="artikel/del/{{$k->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="/kelas/edit/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/kelas/del/{{$p->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach
+                </tbody>
               </table>
             </div>
             <!-- /.card-body -->

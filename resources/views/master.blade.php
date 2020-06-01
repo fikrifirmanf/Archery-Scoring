@@ -196,6 +196,14 @@
             </a>
           </li>
           <li class="nav-item has-treeview ">
+            <a href="/kelas" class="nav-link ">
+              <i class="nav-icon fas fa-user"></i>
+              <p>
+                Kelas 
+              </p>
+            </a>
+          </li>
+          <li class="nav-item has-treeview ">
             <a href="/panitia" class="nav-link ">
               <i class="nav-icon fas fa-table"></i>
               <p>
@@ -318,7 +326,9 @@
     
   $(function () {
     // Summernote
-    $('.textarea').summernote()
+    $('.textarea').summernote({
+      height: 500,
+    })
   })
   $(function () {
     //Initialize Select2 Elements
