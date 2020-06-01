@@ -5,6 +5,9 @@ namespace App\Http\Controllers;
 use App\Panitia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
+use Illuminate\Support\Str;
+use Illuminate\Support\Facades\DB;
 
 class PanitiaController extends Controller
 {
@@ -15,7 +18,11 @@ class PanitiaController extends Controller
      */
     public function index()
     {
-        //
+        $panitia = Panitia::get();
+        $title_page = "Archery Scoring";
+        $title = "Panitia";
+
+        return view('panitia/panitia')->with(compact('title', 'title_page', 'panitia'));
     }
 
     /**
@@ -25,7 +32,43 @@ class PanitiaController extends Controller
      */
     public function create()
     {
-        //
+        $title = "Archery Scoring";
+        $title_page = "Tambah Panitia";
+        return view('panitia/add')->with(compact('title_page', 'title'));
+    }
+
+    public function prosesAdd(Request $request)
+    {
+        if (Panitia::where('username', '=', $request->username)->exists()) {
+            Session::flash('alert-class', 'alert-danger');
+            Session::flash('alert-slogan', 'Gagal!');
+            return redirect()->back()->with(
+                Session::flash('message', 'Username sudah ada, silahkan crosscheck data terlebih dahulu!')
+            );
+        }
+        // insert data ke table pegawai
+        else {
+            $this->validate($request, [
+                'nama_panitia' => 'required|min:3',
+                'username' => 'required|min:4',
+                'password' => 'required',
+                'confirmation' => 'required|same:password',
+            ]);
+            Panitia::insert([
+                'id' => (string) Str::uuid(),
+                'nama_panitia' => $request->nama_panitia,
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'created_at' => DB::raw('now()')
+            ]);
+
+            // alihkan halaman ke halaman pegawai
+            Session::flash('alert-class', 'alert-success');
+            Session::flash('alert-slogan', 'Sukses!');
+            return redirect('panitia/add')->with(
+                Session::flash('message', 'Data panitia berhasil diinput')
+            );
+        }
     }
 
     public function profile()
@@ -86,8 +129,20 @@ class PanitiaController extends Controller
      * @param  \App\Panitia  $panitia
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Panitia $panitia)
+    public function del($id)
     {
-        //
+        $panitia = Panitia::find($id);
+        Panitia::find($id)->update([
+
+            'username' => Str::uuid(),
+            'password' => Str::uuid()
+
+        ]);
+        $panitia->delete();
+        Session::flash('alert-class', 'alert-success');
+        Session::flash('alert-slogan', 'Sukses!');
+        return redirect('panitia')->with(
+            Session::flash('message', 'Data panitia berhasil dihapus')
+        );
     }
 }

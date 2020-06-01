@@ -24,41 +24,52 @@
       <div class="row">
         <div class="col-12"> 
         <div class="card">
+          
             <div class="card-header">
-                <a href="konten/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Konten</button></a>
-              </div>
+                <div class="row">
+                  <div class="col col-md-3">
+                    <a href="/panitia/add"><button class="btn btn-primary"><i class="fas fa-plus"></i> Tambah Panitia</button></a>
+                  </div>
+                  {{-- <div class="col col-md-3">
+                    <a href="/panitia/delall"><button class="btn btn-danger"><i class="fas fa-trash"></i> Hapus Semua</button></a></div>   --}}
+                   
+                  </div>
+                    
+                  
+                </div>
+              
+              
             <!-- /.card-header -->
             <div class="card-body">
+             
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
                   @endif
-                  {{-- <div class="alert alert-danger">
-                    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
-                  </div> --}}
+                  
               <table id="example1" class="table table-bordered table-striped">
                 <thead>
                 <tr>
-                  
-                  <th>Title Notif</th>
-                  <th>Body Notif</th>
-                  <th>Durasi (/jam)</th>
+                  <th>No. </th>
+                  <th>Nama Panitia</th>
+                  <th>Username</th>
                   <th>Aksi</th>
+                  
                 </tr>
                 </thead>
                 <tbody>
-                @foreach ($konten as $k)
-                    
-               
+                  @php
+                      $i=1;
+                  @endphp
+                @foreach ($panitia as $p)
                 <tr>
-                    
-                <td><a href="konten/detail/{{$k->uuid}}" target="_blank">{{$k->title_notif}}</a></td>
-                  <td>{{$k->body_notif}}
-                  </td>
-                  <td>{{$k->durasi}}</td>
-                <td><a href="konten/edit/{{$k->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="#"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td>{{$i++}}</td>
+                <td>{{$p->nama_panitia}}</td> 
+                <td>{{$p->username}}</td>            
+                <td><a href="/panitia/edit/{{$p->id}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/panitia/del/{{$p->id}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach
+                </tbody>
               </table>
             </div>
             <!-- /.card-body -->

@@ -13,9 +13,20 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-$router->get('/', 'HomeController@index');
+$router->get('/login', 'HomeController@login');
+$router->post('/login/auth', 'HomeController@loginPost');
+$router->get('/register', 'HomeController@register');
+$router->post('/registerPost', 'HomeController@registerPost');
+$router->get('/logout', 'HomeController@logout');
+
+
+// Home
+$router->group(['middleware' => 'login.auth'], function () use ($router) {
+    $router->get('/', 'HomeController@index');
+    $router->get('/home', 'HomeController@index');
+});
 // Peserta
-$router->group(['prefix' => 'peserta'], function () use ($router) {
+$router->group(['prefix' => 'peserta', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('nasional/{jk}', 'PesertaController@nasional');
     $router->get('recurve/{jk}', 'PesertaController@recurve');
     $router->get('compound/{jk}', 'PesertaController@compound');
@@ -27,7 +38,7 @@ $router->group(['prefix' => 'peserta'], function () use ($router) {
     $router->post('import_excel', 'PesertaController@import_excel');
 });
 // Ronde
-$router->group(['prefix' => 'ronde'], function () use ($router) {
+$router->group(['prefix' => 'ronde', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'RondeController@index');
     $router->get('add', 'RondeController@create');
     $router->post('add/proses', 'RondeController@prosesAdd');
@@ -36,7 +47,7 @@ $router->group(['prefix' => 'ronde'], function () use ($router) {
     $router->post('edit/proses', 'RondeController@prosesEdit');
 });
 // Target
-$router->group(['prefix' => 'target'], function () use ($router) {
+$router->group(['prefix' => 'target', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'TargetController@index');
     $router->get('add', 'TargetController@create');
     $router->post('add/proses', 'TargetController@prosesAdd');
@@ -45,8 +56,18 @@ $router->group(['prefix' => 'target'], function () use ($router) {
     $router->get('delall', 'TargetController@delAll');
     $router->post('edit/proses', 'TargetController@prosesEdit');
 });
+// Target
+$router->group(['prefix' => 'panitia', 'middleware' => 'login.auth'], function () use ($router) {
+    $router->get('/', 'PanitiaController@index');
+    $router->get('add', 'PanitiaController@create');
+    $router->post('add/proses', 'PanitiaController@prosesAdd');
+    $router->get('edit/{uuid}', 'PanitiaController@update');
+    $router->get('del/{id}', 'PanitiaController@del');
+    $router->get('delall', 'PanitiaController@delAll');
+    $router->post('edit/proses', 'PanitiaController@prosesEdit');
+});
 // Rules
-$router->group(['prefix' => 'rules'], function () use ($router) {
+$router->group(['prefix' => 'rules', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'RulesController@index');
     $router->get('add', 'RulesController@create');
     $router->post('add/proses', 'RulesController@prosesAdd');
@@ -55,8 +76,18 @@ $router->group(['prefix' => 'rules'], function () use ($router) {
     $router->get('delall', 'RulesController@delAll');
     $router->post('edit/proses', 'RulesController@prosesEdit');
 });
+// Rules
+$router->group(['prefix' => 'artikel', 'middleware' => 'login.auth'], function () use ($router) {
+    $router->get('/', 'ArtikelController@index');
+    $router->get('add', 'ArtikelController@create');
+    $router->post('add/proses', 'ArtikelController@prosesAdd');
+    $router->get('edit/{uuid}', 'ArtikelController@update');
+    $router->get('del/{uuid}', 'ArtikelController@del');
+    $router->get('delall', 'ArtikelController@delAll');
+    $router->post('edit/proses', 'ArtikelController@prosesEdit');
+});
 // Kompetisi
-$router->group(['prefix' => 'kompetisi'], function () use ($router) {
+$router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'KompetisiController@index');
     $router->get('detailkategori/{kat}/{kel}', 'KompetisiController@detailKategori');
     $router->get('add/{kelas}/{jk}/{uuid_kat}/{uuid_rules}', 'KompetisiController@addPeserta');

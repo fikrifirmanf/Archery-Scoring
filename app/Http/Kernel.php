@@ -53,6 +53,7 @@ class Kernel extends HttpKernel
      */
     protected $routeMiddleware = [
         'auth' => \App\Http\Middleware\Authenticate::class,
+        'login.auth' => \App\Http\Middleware\LoginAuth::class,
         'jwt.auth' => 'Tymon\JWTAuth\MiddlewareGetUserFromToken',
         'auth.basic' => \Illuminate\Auth\Middleware\AuthenticateWithBasicAuth::class,
         'bindings' => \Illuminate\Routing\Middleware\SubstituteBindings::class,

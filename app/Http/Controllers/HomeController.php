@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Konten;
+use App\Admin;
 use App\Peserta;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Session;
 
 class HomeController extends Controller
 {
@@ -20,5 +22,36 @@ class HomeController extends Controller
 
 
         return view('home')->with(compact('title', 'title_page', 'jml_peserta', 'peserta_nasional', 'peserta_recurve', 'peserta_compound'));
+    }
+
+    public function login()
+    {
+        return view('login');
+    }
+    public function loginPost(Request $request)
+    {
+
+        $username = $request->username;
+        $password = $request->password;
+
+        $data = Admin::where('username', $username)->first();
+        if ($data) { //apakah username tersebut ada atau tidak
+            if (Hash::check($password, $data->password)) {
+                Session::put('name', $data->name);
+                Session::put('username', $data->username);
+                Session::put('login', TRUE);
+                return redirect('home');
+            } else {
+                return redirect('login')->with('alert', 'Password atau Username, Salah !');
+            }
+        } else {
+            return redirect('login')->with('alert', 'Username, Tidak ada!');
+        }
+    }
+
+    public function logout()
+    {
+        Session::flush();
+        return redirect('login')->with('alert', 'Kamu sudah logout');
     }
 }
