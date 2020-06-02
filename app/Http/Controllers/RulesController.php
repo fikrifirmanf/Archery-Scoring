@@ -74,7 +74,10 @@ class RulesController extends Controller
         $title = 'Archery Scoring';
         $title_page = 'Edit Rules';
         $rules = Rules::where('uuid', $uuid)->get();
-        return view('rules/edit')->with(compact('title', 'rules', 'title_page'));
+        $kelas = Kelas::get();
+        $kategori = Kategori::get();
+        $ronde = Ronde::get();
+        return view('rules/edit')->with(compact('title', 'rules', 'kelas', 'ronde', 'kategori', 'title_page'));
     }
 
     public function prosesEdit(Request $request)
@@ -95,7 +98,7 @@ class RulesController extends Controller
             // alihkan halaman ke halaman ronde
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
-            return redirect('rules/edit')->with(
+            return redirect('rules')->with(
                 Session::flash('message', 'Rules berhasil diubah')
             );
         } catch (\Throwable $th) {

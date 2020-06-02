@@ -1,14 +1,16 @@
 <?php 
 
-foreach ($peserta as $p) {
-  $uuid = $p->uuid;
-  $uuid_target = $p->uuid_target;
-  $nama_peserta = $p->nama_peserta;
-  $jk = $p->jk;
-  $uuid_kelas = $p->uuid_kelas;
-  $uuid_team = $p->uuid_team;
-  $uuid_kategori = $p->uuid_kategori; 
-
+foreach($rules as $r){
+    $uuid = $r->uuid;
+    $nama = $r->nama;
+    $jml_seri = $r->jml_seri;
+    $jml_panah = $r->jml_panah;
+    $uuid_ronde = $r->uuid_ronde;
+    $jarak = $r->jarak;
+    $uuid_kelas = $r->uuid_kelas;
+    $uuid_kategori = $r->uuid_kategori;
+    $jml_peserta = $r->jml_peserta;
+    $input_data = $r->input;
 }
 
 ?>
@@ -27,7 +29,7 @@ foreach ($peserta as $p) {
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Peserta</a></li>
+                        <li class="breadcrumb-item"><a href="/rules">Rules</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -63,64 +65,87 @@ foreach ($peserta as $p) {
                 </ul>
             </div>
         @endif
-                  <form action="add/proses" method="post">
+                  <form action="proses" method="post">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
+                        <input type="text" name="uuid" hidden value="{{$uuid}}">
                             <div class="form-group">
-                                <label>No Target</label>
-                                <select class="form-controller select2" name="uuid_target" style="width: 100%;">
-                                  @foreach ($target as $t)
-                                <option value="{{$t->uuid}}">{{$t->nama_target}}</option>
-                                  @endforeach
-                                    
-                                    
-                                </select>
+                                <label>Jumlah Seri</label>
+                            <input type="text" name="jml_seri" value="{{$jml_seri}}" class="form-control"
+                                    placeholder="0">
                             </div>
                             <div class="form-group">
-                                <label>Nama</label>
-                            <input type="text" value="{{$nama_peserta}}" name="nama_peserta" class="form-control"
-                                    placeholder="Nama peserta ...">
+                                <label>Jumlah panah</label>
+                            <input type="text" name="jml_panah" value="{{$jml_panah}}" class="form-control"
+                                    placeholder="0">
                             </div>
                             <div class="form-group">
-                                <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jk" style="width: 100%;">
-                                <option value="{{$jk}}" selected>{{$jk}}</option>
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                    
-                                </select>
+                                <label>Jarak (/m)</label>
+                            <input type="text" name="jarak" value="{{$jarak}}" class="form-control"
+                                    placeholder="0">
                             </div>
+                            <div class="form-group">
+                                <label>Jumlah peserta</label>
+                            <input type="text" name="jml_peserta" value="{{$jml_peserta}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                            
 
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">
                             <div class="form-group">
                                 <label>Kelas</label>
-                                <select class="form-controllerform-controller select2" name="uuid_kelas" style="width: 100%;">
-
+                                <select class="form-control" name="uuid_kelas" style="width: 100%;">
+                                        
                                     @foreach ($kelas as $k)
-                                <option value="{{$k->uuid}}">{{$k->nama_kelas}}</option>
+                                        @if ($k->uuid == $uuid_kelas)
+                                            <option value="{{$k->uuid}}" selected>{{$k->nama_kelas}}</option>
+                                        @else
+                                            <option value="{{$k->uuid}}">{{$k->nama_kelas}}</option>   
+                                        @endif
                                     @endforeach
                                     
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label>Team</label>
-                                <select class="form-controller select2" name="uuid_team" style="width: 100%;">
+                                <label>Ronde</label>
+                                <select class="form-control select2bs4" name="uuid_ronde" style="width: 100%;">
 
-                                  @foreach ($team as $t)
-                                  <option value="{{$t->uuid}}">{{$t->nama_team}}</option>
-                                      @endforeach
+                                    @foreach ($ronde as $t)
+                                        @if ($r->uuid == $uuid_ronde)
+                                            <option value="{{$t->uuid}}" selected>{{$t->nama_ronde}}</option>
+                                        @else
+                                            <option value="{{$t->uuid}}">{{$t->nama_ronde}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
                             </div>
                             <div class="form-group">
                                 <label>Kategori</label>
-                                <select class="form-controller select2" name="uuid_kategori" style="width: 100%;">
-                                  @foreach ($kategori as $k)
-                                  <option value="{{$k->uuid}}">{{$k->nama_kategori}}</option>
-                                      @endforeach
+                                <select class="form-control" name="uuid_kategori" style="width: 100%;">
+                                    @foreach ($kategori as $k)
+                                        @if ($k->uuid == $uuid_kategori)
+                                            <option value="{{$k->uuid}}" selected>{{$k->nama_kategori}}</option>
+                                        @else
+                                        <option value="{{$k->uuid}}">{{$k->nama_kategori}}</option>
+                                        @endif
+                                    @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Metode Input Peserta</label>
+                                <select class="form-control" name="input_data" style="width: 100%;">
+                                    @if ($input_data == 'Manual')
+                                    <option value="Otomatis">Otomatis</option>
+                                    <option value="Manual" selected>Manual</option>
+                                    @else
+                                    <option value="Otomatis">Otomatis</option>
+                                    <option value="Manual">Manual</option>
+                                    @endif
+                                </select>
+                                <p><i>(* khusus untuk babak 8 besar - final diharuskan memakai manual</i></p>
                             </div>
                             <div class="form-group">
                                 <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button

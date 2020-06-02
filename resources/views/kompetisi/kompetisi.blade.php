@@ -27,7 +27,9 @@
           
             <div class="card-header">
               <div class="col col-md-3">
-                <a href="/kompetisi/gen"><button class="btn btn-success"><i class="fas fa-save"></i>  Generate Panitia</button></a></div>
+                <a href="/kompetisi/gen"><button class="btn btn-success"><i class="fas fa-save"></i>  Generate Panitia</button></a><br>
+                <p style="font-size: 14px"><i>(* khusus babak kualifikasi</i></p>
+              </div>
               </div>
             <!-- /.card-header -->
             <div class="card-body">
