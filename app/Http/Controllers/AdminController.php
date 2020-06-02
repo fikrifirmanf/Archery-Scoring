@@ -38,7 +38,7 @@ class AdminController extends Controller
 
             Session::flush();
             return redirect('login')->with(
-                'alert',
+                'alert-success',
                 'Profil berhasil diubah. Silahkan login kembali'
             );
         } else {
@@ -60,7 +60,7 @@ class AdminController extends Controller
 
             Session::flush();
             return redirect('login')->with(
-                'alert',
+                'alert-success',
                 'Profil berhasil diubah. Silahkan login kembali'
             );
         }
