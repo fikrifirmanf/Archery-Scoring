@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Jun 02, 2020 at 11:34 AM
+-- Generation Time: Jun 02, 2020 at 06:13 PM
 -- Server version: 10.1.34-MariaDB
 -- PHP Version: 7.2.7
 
@@ -32,6 +32,7 @@ CREATE TABLE `artikel` (
   `uuid` varchar(150) NOT NULL,
   `tanggal` date DEFAULT NULL,
   `judul` varchar(50) DEFAULT NULL,
+  `kategori_artikel` enum('Umum','Petunjuk') DEFAULT NULL,
   `isi` longtext,
   `created_at` timestamp NULL DEFAULT NULL,
   `updated_at` timestamp NULL DEFAULT NULL,
@@ -42,8 +43,11 @@ CREATE TABLE `artikel` (
 -- Dumping data for table `artikel`
 --
 
-INSERT INTO `artikel` (`uuid`, `tanggal`, `judul`, `isi`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('91d0cbda-89db-4dd4-a9e3-5407cc5ac2bd', '2020-06-01', 'Test', '<b>test</b>', '2020-06-01 05:02:36', '2020-05-31 22:29:16', '2020-05-31 22:29:16');
+INSERT INTO `artikel` (`uuid`, `tanggal`, `judul`, `kategori_artikel`, `isi`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('04ac78e8-eb1e-4da2-8318-8c457036f1dd', '2020-06-02', 'Petunjuk untuk panitia/wasit', 'Petunjuk', '<ol><li>Berdoa pokonya</li></ol>', '2020-06-02 11:56:38', NULL, NULL),
+('91d0cbda-89db-4dd4-a9e3-5407cc5ac2bd', '2020-06-01', 'Test', NULL, '<b>test</b>', '2020-06-01 05:02:36', '2020-05-31 22:29:16', '2020-05-31 22:29:16'),
+('bba55f5e-9250-4f9d-8bc0-0b0570e9b1fd', '2020-06-02', 'Kompetisi', 'Umum', '<p>Kompetisi</p>', '2020-06-02 11:56:52', '2020-06-02 11:58:35', NULL),
+('f41a5124-260f-443a-87de-a1ba2e0a0fcb', '2020-06-02', 'Petunjuk untuk admin', 'Petunjuk', '<ol><li>Berdoa dulu ya</li></ol>', '2020-06-02 11:56:19', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -206,10 +210,7 @@ INSERT INTO `panitia` (`id`, `nama_panitia`, `username`, `password`, `created_at
 ('b2110532-6be7-4287-a0af-bc217964d123', 'Ere', 'ere', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
 ('b2110532-6be7-4287-a0af-bc217964d421', 'Jose', 'jose', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
 ('b2110532-6be7-4287-a0af-bc217964d610', 'Fikri Firman Fadilah', 'fikrifirmanf', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
-('b2110532-6be7-4287-a0af-bc217964d611', 'Paijo', 'paijo', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
-('b2110532-6be7-4287-a0af-bc217964d612', 'Ruslam', 'ruslam', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
-('b2110532-6be7-4287-a0af-bc217964d613', 'Ruslama', 'ruslama', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL),
-('b2110532-6be7-4287-a0af-bc217964d614', 'Ruslaman', 'ruslaman', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL);
+('b2110532-6be7-4287-a0af-bc217964d611', 'Paijo', 'paijo', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', '2020-05-12 08:47:23', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -300,6 +301,7 @@ CREATE TABLE `rules` (
   `uuid_ronde` varchar(50) DEFAULT NULL,
   `jml_peserta` int(11) DEFAULT NULL,
   `jarak` int(11) DEFAULT NULL,
+  `sesi` int(11) DEFAULT '1',
   `uuid_kelas` varchar(50) DEFAULT NULL,
   `uuid_kategori` varchar(50) DEFAULT NULL,
   `input` enum('Otomatis','Manual') DEFAULT NULL,
@@ -312,20 +314,30 @@ CREATE TABLE `rules` (
 -- Dumping data for table `rules`
 --
 
-INSERT INTO `rules` (`uuid`, `nama`, `jml_seri`, `jml_panah`, `uuid_ronde`, `jml_peserta`, `jarak`, `uuid_kelas`, `uuid_kategori`, `input`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('0ad7b88d-4c0d-4190-b335-59742e25d9d4', 'Kualifikasi Putri U-20', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:53', NULL, NULL),
-('0c35a278-8343-4b8d-851e-43dc54693b34', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 07:44:45', NULL, NULL),
-('1615c4ba-6ef6-43ca-be54-49060c1d2fe9', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:44:14', NULL, NULL),
-('17ef7ef9-d367-4256-bcbf-4d2a137cab31', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 08:07:52', NULL, NULL),
-('3b236980-4c1c-402e-9251-1ae410cd16ef', 'Kualifikasi Putri U-20', 4, 4, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 07:10:33', NULL, NULL),
-('6e13d9ec-1416-46bf-95a4-c5aeff3d96e5', 'Perdelapan Eliminasi Putri U-20', 6, 6, '30cb2410-37d4-4844-a464-97f83f58a8f8', 8, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', 'Manual', '2020-06-01 14:51:25', NULL, NULL),
-('7d347c9e-f4f7-4f81-9e38-6a914a6f9a7a', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:53:56', NULL, NULL),
-('a5fd81d5-a757-410a-bfe4-33a761c8be43', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 60, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:50:37', NULL, NULL),
-('a6862079-b710-483b-8836-d456cfc67c9d', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 07:34:42', NULL, NULL),
-('be62fd1a-b512-46b5-803f-94911c80de31', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 6, 'f3464888-8727-4e18-94ed-30d2953bfae0', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:27', NULL, NULL),
-('d828dcd3-91fd-495c-b061-4f1065f39071', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 08:08:57', NULL, NULL),
-('d9972c40-5ec8-4ed0-9026-750640d462b4', 'Kualifikasi Putri U-20', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:51:31', NULL, NULL),
-('eed9f45f-2c64-4bcf-9852-0d9b46baf80c', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 6, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:03', NULL, NULL);
+INSERT INTO `rules` (`uuid`, `nama`, `jml_seri`, `jml_panah`, `uuid_ronde`, `jml_peserta`, `jarak`, `sesi`, `uuid_kelas`, `uuid_kategori`, `input`, `created_at`, `updated_at`, `deleted_at`) VALUES
+('0ad7b88d-4c0d-4190-b335-59742e25d9d4', 'Kualifikasi Putri U-20', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:53', NULL, NULL),
+('0c35a278-8343-4b8d-851e-43dc54693b34', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 07:44:45', NULL, NULL),
+('1615c4ba-6ef6-43ca-be54-49060c1d2fe9', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:44:14', '2020-06-02 07:59:02', '2020-06-02 07:59:02'),
+('17ef7ef9-d367-4256-bcbf-4d2a137cab31', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 08:07:52', NULL, NULL),
+('1f670685-afb9-46b0-8742-b2f82ef0b6bc', 'Kualifikasi Putra U-20 Sesi 1', 4, 4, '816440c8-9bf6-4272-9b71-23720b191801', 4, 4, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', 'Otomatis', '2020-06-02 15:10:36', NULL, NULL),
+('3b236980-4c1c-402e-9251-1ae410cd16ef', 'Kualifikasi Putri U-20', 4, 4, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 07:10:33', '2020-06-02 08:28:26', '2020-06-02 08:28:26'),
+('4a0e335c-3c25-4049-ac4a-4c14e739a1ce', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', 'Otomatis', '2020-06-02 15:03:32', '2020-06-02 08:05:51', '2020-06-02 08:05:51'),
+('5c89e973-98a4-47d5-a6df-eae21c6fe847', 'Kualifikasi Putra U-20', 4, 42, '816440c8-9bf6-4272-9b71-23720b191801', 23, 4, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', 'Otomatis', '2020-06-02 15:06:16', '2020-06-02 08:10:21', '2020-06-02 08:10:21'),
+('6e13d9ec-1416-46bf-95a4-c5aeff3d96e5', 'Perdelapan Eliminasi Putra U-21', 4, 4, '04a8eff3-98e9-46aa-a68d-b166df207b26', 16, 51, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', 'Manual', '2020-06-01 14:51:25', '2020-06-02 11:38:13', NULL),
+('7d347c9e-f4f7-4f81-9e38-6a914a6f9a7a', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:53:56', NULL, NULL),
+('9aa20c6f-71e1-4259-b8f0-df6c20614ead', 'Perdelapan  Eliminasi Putri U-20', 6, 6, '30cb2410-37d4-4844-a464-97f83f58a8f8', 16, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', 'Manual', '2020-06-02 11:39:39', NULL, NULL),
+('9c6fe7c7-644f-455c-bfdf-a3f3baa36d22', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', 'Otomatis', '2020-06-02 14:59:30', '2020-06-02 08:03:12', '2020-06-02 08:03:12'),
+('a5fd81d5-a757-410a-bfe4-33a761c8be43', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 60, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:50:37', '2020-06-02 08:12:21', '2020-06-02 08:12:21'),
+('a6862079-b710-483b-8836-d456cfc67c9d', 'Kualifikasi Putri U-21', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 07:34:42', NULL, NULL),
+('ae25d19d-a955-4a23-84fa-95568c381c2a', 'Perdelapan Eliminasi Putra U-21', 6, 6, '04a8eff3-98e9-46aa-a68d-b166df207b26', 16, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', 'Manual', '2020-06-02 15:14:38', NULL, NULL),
+('be62fd1a-b512-46b5-803f-94911c80de31', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 6, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:27', NULL, NULL),
+('c5cf0086-ab38-4a3c-a781-db6205f69421', 'Kualifikasi Putri U-20 Sesi 1', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', 'Otomatis', '2020-06-02 15:28:49', NULL, NULL),
+('caef9ae9-592e-4de2-961e-e1df61b404d0', 'Kualifikasi Putra U-20 Sesi 2', 4, 4, '816440c8-9bf6-4272-9b71-23720b191801', 4, 4, 2, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', 'Otomatis', '2020-06-02 15:10:36', NULL, NULL),
+('cb9134a4-0fba-40b0-9213-a27964e2d803', 'Perdelapan Eliminasi Putra U-21', 6, 6, '04a8eff3-98e9-46aa-a68d-b166df207b26', 24, 50, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '63121c33-029a-46e7-8e44-f3e2db750965', 'Manual', '2020-06-02 15:12:51', '2020-06-02 08:13:18', '2020-06-02 08:13:18'),
+('d828dcd3-91fd-495c-b061-4f1065f39071', 'Kualifikasi Putra U-20', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', NULL, '2020-05-20 08:08:57', NULL, NULL),
+('d9972c40-5ec8-4ed0-9026-750640d462b4', 'Kualifikasi Putri U-20', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 1, 'f3464888-8727-4e18-94ed-30d2953bfae0', '63121c33-029a-46e7-8e44-f3e2db750965', NULL, '2020-05-20 07:51:31', NULL, NULL),
+('e7535b53-8c41-4574-bd18-a0e6496e318e', 'Kualifikasi Putri U-20 Sesi 2', 6, 6, 'ec3ac315-d2bb-411e-af45-fe432d1e4310', 24, 50, 2, 'f3464888-8727-4e18-94ed-30d2953bfae0', '67b67e46-4d03-454d-95ae-e8ff0a0770a1', 'Otomatis', '2020-06-02 15:28:49', NULL, NULL),
+('eed9f45f-2c64-4bcf-9852-0d9b46baf80c', 'Kualifikasi Putra U-21', 6, 6, '816440c8-9bf6-4272-9b71-23720b191801', 24, 6, 1, 'ebd74f1f-28bf-4c48-acdb-c3bf3a6f4f38', '25fe57c9-5045-45d7-95fc-3e0e90c6ec6c', NULL, '2020-05-20 12:11:03', NULL, NULL);
 
 -- --------------------------------------------------------
 
@@ -356,24 +368,38 @@ CREATE TABLE `skor` (
 --
 
 INSERT INTO `skor` (`uuid`, `uuid_peserta`, `seri_1`, `seri_2`, `seri_3`, `seri_4`, `seri_5`, `seri_6`, `total`, `sesi`, `uuid_rules`, `uuid_panitia`, `created_at`, `updated_at`, `deleted_at`) VALUES
-('0191fe84-8259-4691-ab54-5c3d5a37ca93', 'e55bc347-0729-4188-8f7b-def3bf94f676', 2, 2, 2, 0, 0, 0, 6, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('0ca96555-48d4-4987-8ce1-af54fae1be30', '7b370d14-35c5-4293-acc1-29285756cae9', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('185e5a07-0338-4028-9958-f248553bc5ce', 'ebafa052-623e-4d58-9742-a004444a4800', 40, 40, 40, 8, 40, 40, 208, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-05-21 05:04:43', '2020-05-22 04:57:49', NULL),
-('19233339-f174-4458-ac64-24a39cfd354f', 'dc504a5f-7eb6-4f29-b7bc-90f20a05974a', 7, 8, 9, 0, 0, 0, 24, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('1e415fe6-b43f-413d-8457-4a317e3d46e9', 'd008d513-f679-4e07-8e6d-9ee916b1ebeb', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('203cc69a-c1a9-496f-8116-33608baee73a', '99f9fc03-550e-469b-8bfa-6aea33efca16', 0, 0, 0, 0, 0, 0, 0, 1, 'd828dcd3-91fd-495c-b061-4f1065f39071', NULL, '2020-06-01 07:34:03', NULL, NULL),
-('21c541dc-2278-4652-85af-bb9109aa876c', '6630ff76-6b87-4289-87c7-368419647d3a', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('36fcbd54-4e5e-4c42-82db-7a866d737842', '44d2e250-c7cf-47ae-8994-5517be7ba789', 34, 39, 32, 0, 0, 0, 105, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-05-21 05:04:43', '2020-05-23 02:33:34', NULL),
-('3c342249-0702-4c08-8c17-24510c4c61ad', '2b9bc00e-533f-4da1-a85a-55632d7e679f', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('4031ce91-d67c-4fda-b746-0d9091210133', '858d7887-055f-48e0-aaf5-2c5f86e78f2e', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('40bab256-867e-44b2-82e3-6c90d95f6ff6', '6c598e94-978a-4305-8527-869c5e64fc56', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('49b20323-8a38-44e8-9f1c-07b4ebc7e81f', 'd63026a7-57ed-4a5d-810a-0e5a6875e06e', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('8b944fb2-e2c5-42f3-8dc3-0a3716cee29e', '6a230c9b-bdc1-4ef7-bfad-3bb9f3dd8cb4', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('94cc92f6-a7fe-41e8-9375-b5f84c38f989', 'a962ef5e-e7be-4e9c-a178-666558463044', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('95a5a93d-fe87-45f9-b591-328f186fc59d', '0df7134c-c5ad-4fe3-8909-bbb957be56b5', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('ba42971c-2b09-4428-8aa5-ec1e6c69c31a', '87e1932f-c86c-4656-834c-747e7d7af474', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL),
-('bf5cedb0-ba16-40c5-bf65-e85c656a9d5d', '23ed2bf3-f884-4dae-b444-d96fac0eb110', 0, 0, 0, 0, 0, 0, 0, 1, 'd828dcd3-91fd-495c-b061-4f1065f39071', NULL, '2020-06-01 07:34:03', NULL, NULL),
-('c7beb762-35ba-4bf4-b738-7c319f6370fd', '24e3356b-8f52-43c4-9dd6-966259fae712', 0, 0, 0, 0, 0, 0, 0, 1, '3b236980-4c1c-402e-9251-1ae410cd16ef', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-05-21 05:04:43', '2020-05-21 00:43:30', NULL);
+('162fea7e-ff0e-437a-b493-075bbdae1510', '0df7134c-c5ad-4fe3-8909-bbb957be56b5', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('17459c06-fe32-4cd1-8457-1ec4b611a210', '44d2e250-c7cf-47ae-8994-5517be7ba789', 0, 0, 0, 0, 0, 40, 40, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:48:42', '2020-06-02 09:07:29', NULL),
+('20352bce-7fde-42ea-b2e8-485ab8c6438f', 'e55bc347-0729-4188-8f7b-def3bf94f676', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('2919fb03-f9f8-42c8-a6cc-cfb1236624ca', '6c598e94-978a-4305-8527-869c5e64fc56', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('2e36c429-e8d6-4c2b-b5d4-57a5b99139b0', '24e3356b-8f52-43c4-9dd6-966259fae712', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('3271a19c-bf54-4092-8ddf-9bff47dad919', '6630ff76-6b87-4289-87c7-368419647d3a', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('370f2fd0-d12e-410f-aa4e-00b79f73a1e0', 'dc504a5f-7eb6-4f29-b7bc-90f20a05974a', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('4b40dda2-cc90-4a08-be5e-5a1d0fbc42bf', '6c598e94-978a-4305-8527-869c5e64fc56', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('53565f5b-04ac-4dfb-9fc4-3bb7dd65bfd8', '44d2e250-c7cf-47ae-8994-5517be7ba789', 0, 0, 0, 0, 0, 40, 40, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:49:17', '2020-06-02 09:02:06', NULL),
+('583cf866-b0dc-4b5c-bf06-3045f0c3d238', '0df7134c-c5ad-4fe3-8909-bbb957be56b5', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('5c7ede9b-95d8-4d74-aeb7-f6783aba4589', '7b370d14-35c5-4293-acc1-29285756cae9', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('63deeabf-fcce-43d8-948a-2f9ed0813761', '24e3356b-8f52-43c4-9dd6-966259fae712', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('6601fe80-4550-4f5e-aa6b-3be65686ab15', 'd008d513-f679-4e07-8e6d-9ee916b1ebeb', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('717e1602-d909-4c1f-b0f0-e3407065978b', 'e55bc347-0729-4188-8f7b-def3bf94f676', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('76559e73-03d1-46f0-bf0a-abf6acc0add2', '6630ff76-6b87-4289-87c7-368419647d3a', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('8b54b2fa-972d-4088-ab6e-d5efc44d6e09', '858d7887-055f-48e0-aaf5-2c5f86e78f2e', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('9a86a3f5-537c-49a1-aad9-82a0848e58d2', 'a962ef5e-e7be-4e9c-a178-666558463044', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('9ad42edd-4273-435c-b2aa-0b5b1a83578b', '2b9bc00e-533f-4da1-a85a-55632d7e679f', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('af0ea0e1-d678-48ca-ac42-1185b18558a2', 'ebafa052-623e-4d58-9742-a004444a4800', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('af6341db-5085-4e3e-8fb9-027a3589372a', 'd008d513-f679-4e07-8e6d-9ee916b1ebeb', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('b919de3e-f3e2-4a3c-977f-15179d00bc5b', 'a962ef5e-e7be-4e9c-a178-666558463044', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('c96ead1a-0151-4092-8d51-fb63bf7da913', '858d7887-055f-48e0-aaf5-2c5f86e78f2e', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d611', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('ce13532e-41c5-4756-944a-1fb5385222a0', '87e1932f-c86c-4656-834c-747e7d7af474', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('d0e84e59-4548-4e39-94b8-07dadf2a93ba', '2b9bc00e-533f-4da1-a85a-55632d7e679f', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('de894f8c-a8e3-4fe4-84a7-0459e2500786', '87e1932f-c86c-4656-834c-747e7d7af474', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('e510761a-bd14-4478-99d2-e975c7e1578b', 'd63026a7-57ed-4a5d-810a-0e5a6875e06e', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('e6a254d1-c621-4369-9f08-52d0cecce787', '6a230c9b-bdc1-4ef7-bfad-3bb9f3dd8cb4', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('e827cf6a-7740-4326-949e-ba6bf73d6d1b', 'ebafa052-623e-4d58-9742-a004444a4800', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d421', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('f6cb7848-a5e1-4592-9c0f-b0df9b0b49a0', '7b370d14-35c5-4293-acc1-29285756cae9', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d123', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL),
+('fd4a9c1c-cdd5-47bd-95b2-7f46fbf8d614', 'd63026a7-57ed-4a5d-810a-0e5a6875e06e', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('fe1e0ea8-0f5f-4afb-b15e-7d300680eab3', 'dc504a5f-7eb6-4f29-b7bc-90f20a05974a', 0, 0, 0, 0, 0, 0, 0, 1, 'c5cf0086-ab38-4a3c-a781-db6205f69421', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:48:42', '2020-06-02 08:49:40', NULL),
+('fe8aa0a6-d9b0-400d-bc80-67092627ceb4', '6a230c9b-bdc1-4ef7-bfad-3bb9f3dd8cb4', 0, 0, 0, 0, 0, 0, 0, 2, 'e7535b53-8c41-4574-bd18-a0e6496e318e', 'b2110532-6be7-4287-a0af-bc217964d610', '2020-06-02 15:49:17', '2020-06-02 08:49:40', NULL);
 
 --
 -- Triggers `skor`
@@ -421,7 +447,7 @@ INSERT INTO `team` (`uuid`, `nama_team`, `daerah`, `created_at`, `updated_at`, `
 --
 
 CREATE TABLE `users` (
-  `id` bigint(20) UNSIGNED NOT NULL,
+  `id` varchar(150) COLLATE utf8mb4_unicode_ci NOT NULL,
   `name` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `username` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8mb4_unicode_ci NOT NULL,
@@ -435,7 +461,7 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`id`, `name`, `username`, `password`, `remember_token`, `created_at`, `updated_at`) VALUES
-(1, 'Admin', 'admin', '$2y$10$ZMXSDv2lrnVNSSOEWxttiOnmI9AKlbHx6CiYaDyUmWnfQLUC2/Tti', NULL, '2020-05-24 12:00:33', NULL);
+('943f705c-dee0-4bc5-9315-1e2c6668889a', 'Admin', 'admin', '$2y$10$I15wqz2tFE4LudZfP4qD8Oal35WXUkaPo1SQe5rjiSUbptl/Gmfkm', NULL, '2020-06-02 14:10:11', '2020-06-02 07:10:11');
 
 --
 -- Indexes for dumped tables
@@ -550,12 +576,6 @@ ALTER TABLE `failed_jobs`
 --
 ALTER TABLE `migrations`
   MODIFY `id` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
-
---
--- AUTO_INCREMENT for table `users`
---
-ALTER TABLE `users`
-  MODIFY `id` bigint(20) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
