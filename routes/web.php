@@ -33,7 +33,7 @@ $router->group(['prefix' => 'peserta', 'middleware' => 'login.auth'], function (
     $router->get('add', 'PesertaController@create');
     $router->post('add/proses', 'PesertaController@prosesAdd');
     $router->get('edit/{uuid}', 'PesertaController@update');
-    $router->get('del/{id}', 'PesertaController@del');
+    $router->get('del/{uuid}', 'PesertaController@del');
     $router->post('edit/proses', 'PesertaController@prosesEdit');
     $router->post('import_excel', 'PesertaController@import_excel');
 });

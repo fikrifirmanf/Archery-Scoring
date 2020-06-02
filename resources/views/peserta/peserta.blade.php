@@ -59,7 +59,7 @@
                   <td>{{$p->jk}}</td>
                   <td>{{$p->kelas}}</td>
                   <td>{{$p->team}}</td>
-                <td><a href="/peserta/edit/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="#"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
+                <td><a href="/peserta/edit/{{$p->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/peserta/del/{{$p->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
                 @endforeach

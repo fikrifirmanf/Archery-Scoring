@@ -61,14 +61,13 @@ class PesertaController extends Controller
     public function compound(Request $request, $jk)
     {
         $title_page = "Peserta Compound";
-
         if ($jk == 'men') {
             $title = "Data Peserta Putra";
-            $peserta = Peserta::where('peserta.jk', 'L')->where('kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->orderBy('no_target')->get();
+            $peserta = Peserta::where('peserta.jk', 'L')->where('kategori', 'Compound')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else if ($jk == 'woman') {
             $title = "Data Peserta Putri";
-            $peserta = Peserta::where('peserta.jk', 'P')->where('kategori', 'Compound')->join('kelas', 'peserta.uuid_kelas', '=', 'kelas.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('kategori', 'peserta.uuid_kategori', '=', 'kategori.uuid')->orderBy('no_target')->get();
+            $peserta = Peserta::where('peserta.jk', 'P')->where('kategori', 'Compound')->orderBy('no_target')->get();
             return $this->makeResponse($request, 'peserta/peserta', compact('title', 'peserta', 'title_page'));
         } else {
             return view('home')->with(compact('title'));
@@ -85,6 +84,7 @@ class PesertaController extends Controller
     {
         $title_page = "Tambah Peserta";
         $title = "Archery Scoring";
+        $no_target = Peserta::orderBy('no_target', 'desc')->limit(1)->value('no_target');
         $team = Team::get();
         $kategori = Kategori::orderBy('nama_kategori')->get();
         $kelas = Kelas::orderBy('nama_kelas')->get();
@@ -96,7 +96,7 @@ class PesertaController extends Controller
 
 
 
-        return view('peserta/add')->with(compact('title', 'title_page', 'team', 'kategori', 'kelas'));
+        return view('peserta/add')->with(compact('title', 'title_page', 'team', 'kategori', 'no_target', 'kelas'));
     }
     public function import_excel(Request $request)
     {
@@ -157,22 +157,40 @@ class PesertaController extends Controller
     {
         $title_page = "Edit Peserta";
         $title = "Archery Scoring";
-        $team = Team::get();
-        $kategori = Kategori::get();
         $kelas = Kelas::get();
-        $peserta = Peserta::where('peserta.uuid', '1e9b-b9ac-46a8-8404-ed152dd33e12')->get();
-        // $peserta = Peserta::get(['uuid_target']);
-        // for ($i = 0; $i < $peserta->count(); $i++) {
-        //     $ntapz[] = $peserta[$i]['uuid_target'];
-        // }
-        // $goks = $ntapz;
-        // $target = Target::whereNotIn('uuid', $goks)->get();
-        $target = Target::get();
+        $kategori = Kategori::get();
+        $peserta = Peserta::where('peserta.uuid', $uuid)->get();
 
-        return view('peserta/edit')->with(compact('title_page', 'title', 'team', 'kategori', 'kelas', 'target', 'peserta'));
+        return view('peserta/edit')->with(compact('title_page', 'title', 'kategori', 'kelas', 'peserta'));
     }
     public function prosesEdit(Request $request)
     {
+        Peserta::where('uuid', $request->uuid)->update([
+            'nama_peserta' => $request->nama_peserta,
+            'jk' => $request->jk,
+            'kelas' => $request->kelas,
+            'team' => $request->team,
+            'kategori' => $request->kategori,
+            'updated_at' => DB::raw('now()')
+
+        ]);
+        // alihkan halaman ke halaman pegawai
+        Session::flash('alert-class', 'alert-success');
+        Session::flash('alert-slogan', 'Sukses!');
+        return redirect()->back()->with(
+            Session::flash('message', 'Peserta berhasil diubah')
+        );
+    }
+    public function del($uuid)
+    {
+        $peserta = Peserta::where('uuid', $uuid);
+
+        $peserta->delete();
+        Session::flash('alert-class', 'alert-success');
+        Session::flash('alert-slogan', 'Sukses!');
+        return redirect()->back()->with(
+            Session::flash('message', 'Data peserta berhasil dihapus')
+        );
     }
 
     // API

@@ -108,7 +108,7 @@
                                 </select>
                             </div> --}}
                             <div class="form-group">
-                                <label>No Target</label>
+                            <label>No Target (peserta terakhir {{$no_target}})</label>
                                 <input type="text" name="no_target" class="form-control"
                                     placeholder="Contoh : 1A">
                             </div>

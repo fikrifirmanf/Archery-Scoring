@@ -1,18 +1,16 @@
 <?php 
-
 foreach ($peserta as $p) {
   $uuid = $p->uuid;
   $uuid_target = $p->uuid_target;
   $nama_peserta = $p->nama_peserta;
   $jk = $p->jk;
-  $uuid_kelas = $p->uuid_kelas;
-  $uuid_team = $p->uuid_team;
-  $uuid_kategori = $p->uuid_kategori; 
+  $kelasnya = $p->kelas;
+  $kategorinya = $p->kategori;
+  $team = $p->team;
 
 }
 
 ?>
-
 @extends('master')
 @section('konten')
 <!-- Content Wrapper. Contains page content -->
@@ -27,7 +25,7 @@ foreach ($peserta as $p) {
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Peserta</a></li>
+                        <li class="breadcrumb-item"><a href="#">Peserta</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -63,74 +61,88 @@ foreach ($peserta as $p) {
                 </ul>
             </div>
         @endif
-                  <form action="add/proses" method="post">
-                    {{ csrf_field() }}
-                    <div class="row">
-                        <div class="col-md-6">
-                            {{-- <div class="form-group">
-                                <label>No Target</label>
-                                <select class="form-controller select2" name="uuid_target" style="width: 100%;">
-                                  @foreach ($target as $t)
-                                <option value="{{$t->uuid}}">{{$t->nama_target}}</option>
-                                  @endforeach
-                                    
-                                    
-                                </select>
-                            </div> --}}
-                            <div class="form-group">
-                                <label>Nama</label>
-                            <input type="text" value="{{$nama_peserta}}" name="nama_peserta" class="form-control"
-                                    placeholder="Nama peserta ...">
-                            </div>
-                            <div class="form-group">
-                                <label>Jenis Kelamin</label>
-                                <select class="form-control" name="jk" style="width: 100%;">
-                                <option value="{{$jk}}" selected>{{$jk}}</option>
-                                    <option value="Laki-laki">Laki-laki</option>
-                                    <option value="perempuan">Perempuan</option>
-                                    
-                                </select>
-                            </div>
+        <form action="proses" method="post">
+            {{ csrf_field() }}
+            <div class="row">
+                <div class="col-md-6">
+                    {{-- <div class="form-group">
+                        <label>No Target</label>
+                        <select class="form-controller select2" name="uuid_target" style="width: 100%;">
+                          @foreach ($target as $t)
+                        <option value="{{$t->uuid}}">{{$t->nama_target}}</option>
+                          @endforeach
+                            
+                            
+                        </select>
+                    </div> --}}
+                <input type="text" name="uuid" value="{{$uuid}}" hidden id="">
+                    <div class="form-group">
+                        <label>No Target</label>
+                    <input type="text" name="no_target" value="{{$uuid_target}}" readonly class="form-control"
+                            placeholder="Contoh : 1A">
+                    </div>
+                    <div class="form-group">
+                        <label>Nama Peserta</label>
+                    <input type="text" name="nama_peserta" value="{{$nama_peserta}}" class="form-control"
+                            placeholder="Contoh : Fikri">
+                    </div>
+                    <div class="form-group">
+                        <label>Jenis Kelamin</label>
+                        <select class="form-control" name="jk" style="width: 100%;">
+                            @if ($jk == 'P')
+                            <option value="L">Laki-laki</option>
+                            <option value="P" selected>Perempuan</option>
+                            @else
+                            <option value="L" selected>Laki-laki</option>
+                            <option value="P">Perempuan</option>   
+                            @endif
+                            
+                        </select>
+                    </div>
 
-                        </div>
-                        <!-- /.col -->
-                        <div class="col-md-6">
-                            <div class="form-group">
-                                <label>Kelas</label>
-                                <select class="form-controllerform-controller select2" name="uuid_kelas" style="width: 100%;">
+                </div>
+                <!-- /.col -->
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label>Kelas</label>
+                        <select class="form-control" name="kelas" style="width: 100%;">
 
-                                    @foreach ($kelas as $k)
-                                <option value="{{$k->uuid}}">{{$k->nama_kelas}}</option>
-                                    @endforeach
-                                    
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Team</label>
-                                <select class="form-controller select2" name="uuid_team" style="width: 100%;">
-
-                                  @foreach ($team as $t)
-                                  <option value="{{$t->uuid}}">{{$t->nama_team}}</option>
-                                      @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label>Kategori</label>
-                                <select class="form-controller select2" name="uuid_kategori" style="width: 100%;">
-                                  @foreach ($kategori as $k)
-                                  <option value="{{$k->uuid}}">{{$k->nama_kategori}}</option>
-                                      @endforeach
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
-                                    type="submit" class="btn btn-success float-right">Simpan</button>
-                            </div>
-                        </div>
-                        <!-- /.card -->
-                        <!-- /.row -->
-                    </div><!-- /.container-fluid -->
-                  </form>
+                            @foreach ($kelas as $k)
+                            @if ($k->nama_kelas == $kelasnya)
+                            <option value="{{$k->nama_kelas}}" selected> {{$k->nama_kelas}}</option>
+                            @else
+                            <option value="{{$k->nama_kelas}}"> {{$k->nama_kelas}}</option>
+                            @endif
+                        @endforeach
+                    
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label>Team</label>
+                    <input type="text" name="team" value="{{$team}}" class="form-control"
+                            placeholder="Contoh : MAJUMUNDUR">
+                    </div>
+                    <div class="form-group">
+                        <label>Kategori</label>
+                        <select class="form-control" name="kategori" style="width: 100%;">
+                            @foreach ($kategori as $k)
+                            @if ($k->nama_kategori == $kategorinya)
+                            <option value="{{$k->nama_kategori}}" selected> {{$k->nama_kategori}}</option>
+                            @else
+                            <option value="{{$k->nama_kategori}}"> {{$k->nama_kategori}}</option>
+                            @endif
+                        @endforeach
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
+                            type="submit" class="btn btn-success float-right">Simpan</button>
+                    </div>
+                </div>
+                <!-- /.card -->
+                <!-- /.row -->
+            </div><!-- /.container-fluid -->
+          </form>
                 </div>
             </div>
     </section>
