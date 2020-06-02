@@ -208,7 +208,7 @@
           </li>
           <li class="nav-item has-treeview ">
             <a href="/kelas" class="nav-link ">
-              <i class="nav-icon fas fa-user"></i>
+              <i class="nav-icon fas fa-list-ol"></i>
               <p>
                 Kelas 
               </p>
