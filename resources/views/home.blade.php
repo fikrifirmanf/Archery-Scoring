@@ -91,10 +91,48 @@
           <!-- ./col -->
         </div>
         <!-- /.row -->
-        
+        @foreach ($artikel as $a)
+      <a href="/artikel/detail/{{$a->uuid}}" target="_blank" data-isi="dasdasd" id="petunjuk"><div style="height: 50px" class="alert alert-info alert-dismissible">
+          <button type="button" class="close"  data-dismiss="alert" aria-hidden="true">&times;</button>
+        <p><i class="icon fas fa-info"></i> Info! {{$a->judul}}</p>
+      </div></a>
+       
+        @endforeach
+       
       </div><!-- /.container-fluid -->
     </section>
     <!-- /.content -->
   </div>
   <!-- /.content-wrapper -->
+  <script>
+    //on delete button click this function call
+    $(document).on("click", "#petunjuk", function () {  
+      var isi = $(this).attr('data-isi');   //data-id of delete button
+      $(".modal-body #isinya").val(isi);
+      console.log(isi); //set to model field
+    })
+    </script> 
+  <div class="modal fade" id="modal-lg">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+        <h4 class="modal-title"></h4>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          <p id="isinya"></p>
+        </div>
+        <div class="modal-footer justify-content-between">
+          <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+          <button type="button" class="btn btn-primary">Save changes</button>
+        </div>
+      </div>
+      <!-- /.modal-content -->
+    </div>
+    <!-- /.modal-dialog -->
+  </div>
+  <!-- /.modal -->  
+  
   @endsection

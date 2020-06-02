@@ -3,6 +3,7 @@ foreach($artikel as $k){
     $judul = $k->judul;
     $isi = $k->isi;
     $uuid = $k->uuid;
+    $kat = $k->kategori_artikel;
 }
 ?>
 @extends('master')
@@ -48,6 +49,18 @@ foreach($artikel as $k){
                         <div class="form-group">
                           <label>Judul</label>
                         <input type="text" name="judul" value="{{$judul}}" class="form-control" placeholder="Judul notifikasi ...">
+                        </div>
+                        <div class="form-group">
+                          <label>Kategori</label>
+                         <select class="form-control" name="kategori_artikel">
+                            @if ($kat == 'Umum')
+                            <option value="Petunjuk">Petunjuk</option>
+                            <option value="Umum" selected>Umum</option>
+                            @else
+                            <option value="Petunjuk">Petunjuk</option>
+                            <option value="Umum">Umum</option>   
+                            @endif
+                         </select>
                         </div>
                       </div>
                     <div class="col">

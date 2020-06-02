@@ -40,6 +40,7 @@
                 <tr>
                   
                   <th>Judul</th>
+                  <th>Kategori</th>
                   <th>Aksi</th>
                 </tr>
                 </thead>
@@ -49,7 +50,7 @@
                 <tr>
                     
                 <td><a href="artikel/detail/{{$k->uuid}}" target="_blank">{{$k->judul}}</a></td>
-                  
+                <td>{{$k->kategori_artikel}}</td>
                 <td><a href="artikel/edit/{{$k->uuid}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="artikel/del/{{$k->uuid}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>

@@ -41,6 +41,7 @@ class ArtikelController extends Controller
             Artikel::insert([
                 'uuid' => Str::uuid(),
                 'judul' => $request->judul,
+                'kategori_artikel' => $request->kategori_artikel,
                 'isi' => $request->isi,
                 'tanggal' => date('Y-m-d'),
                 'created_at' => DB::raw('now()')
@@ -56,16 +57,6 @@ class ArtikelController extends Controller
         );
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
-    {
-        //
-    }
 
     /**
      * Display the specified resource.
@@ -95,6 +86,7 @@ class ArtikelController extends Controller
             Artikel::where('uuid', $request->uuid)->update([
                 'uuid' => Str::uuid(),
                 'judul' => $request->judul,
+                'kategori_artikel' => $request->kategori_artikel,
                 'isi' => $request->isi,
                 'tanggal' => date('Y-m-d'),
                 'updated_at' => DB::raw('now()')

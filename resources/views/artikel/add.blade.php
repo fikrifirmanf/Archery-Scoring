@@ -55,6 +55,13 @@
                           <label>Judul Notifikasi</label>
                           <input type="text" name="judul" class="form-control" placeholder="Judul artikel ...">
                         </div>
+                        <div class="form-group">
+                          <label>Judul Notifikasi</label>
+                         <select class="form-control" name="kategori_artikel">
+                            <option value="Petunjuk">Petunjuk</option>
+                            <option value="Umum">Umum</option>
+                         </select>
+                        </div>
                       </div>
                     <div class="col">
                         <!-- text input -->

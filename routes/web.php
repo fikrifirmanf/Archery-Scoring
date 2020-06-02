@@ -95,7 +95,7 @@ $router->group(['prefix' => 'artikel', 'middleware' => 'login.auth'], function (
     $router->get('del/{uuid}', 'ArtikelController@del');
     $router->get('delall', 'ArtikelController@delAll');
     $router->get('detail/{uuid}', 'ArtikelController@show');
-    $router->post('edit/proses', 'ArtikelController@prosesEdit');
+    $router->post('edit/proses', 'ArtikelController@updateProses');
 });
 // Kompetisi
 $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function () use ($router) {
