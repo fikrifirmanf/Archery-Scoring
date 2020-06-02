@@ -1,10 +1,3 @@
-<?php 
-foreach($artikel as $k){
-    $judul = $k->judul;
-    $isi = $k->isi;
-    $uuid = $k->uuid;
-}
-?>
 @extends('master')
 @section('konten')
 <!-- Content Wrapper. Contains page content -->
@@ -39,28 +32,47 @@ foreach($artikel as $k){
               
               <!-- /.card-header -->
               <div class="card-body">
-                
-                <form role="form" method="post" action="proses">
+                @if(Session::has('message'))
+                <div class="alert {{ Session::get('alert-class', 'alert-info') }}"><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
+                  @endif
+                  @if ($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach ($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+                  {{-- <div class="alert alert-danger">
+                    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+                  </div> --}}
+                <form role="form" method="post" action="add/proses">
                     {{ csrf_field() }}
-                <input type="text" name="uuid" value="{{$uuid}}" hidden id="">
                     <div class="col">
                         <!-- text input -->
                         <div class="form-group">
-                          <label>Judul</label>
-                        <input type="text" name="judul" value="{{$judul}}" class="form-control" placeholder="Judul notifikasi ...">
+                          <label>Judul Notifikasi</label>
+                          <input type="text" name="judul" class="form-control" placeholder="Judul artikel ...">
+                        </div>
+                        <div class="form-group">
+                          <label>Judul Notifikasi</label>
+                         <select class="form-control" name="kategori_artikel">
+                            <option value="Petunjuk">Petunjuk</option>
+                            <option value="Umum">Umum</option>
+                         </select>
                         </div>
                       </div>
                     <div class="col">
                         <!-- text input -->
                         
-                      </div>
                       <div class="col">
                           <div class="form-group">
                             <label>Editor Konten</label>
                           <!-- /.card-header -->
                           
                               <textarea class="textarea" name="isi" placeholder="Place some text here"
-                                        style="width: 100%; height: 500px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;">{{$isi}}</textarea>
+                                        style="width: 100%; height: 200px; font-size: 14px; line-height: 18px; border: 1px solid #dddddd; padding: 10px;"></textarea>
                         
                     </div>
                       </div>

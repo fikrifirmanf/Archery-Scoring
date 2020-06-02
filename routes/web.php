@@ -111,3 +111,8 @@ $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function
     $router->post('edit/proses', 'KompetisiController@prosesEdit');
     $router->get('gen', 'KompetisiController@generateNoPeserta');
 });
+// Admin
+$router->group(['prefix' => 'admin', 'middleware' => 'login.auth'], function () use ($router) {
+    $router->get('/{uuid}', 'AdminController@index');
+    $router->post('edit/proses', 'AdminController@prosesEdit');
+});

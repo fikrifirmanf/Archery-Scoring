@@ -56,6 +56,7 @@
         <i class="fas fa-angle-down right"></i>
         </a>
         <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+        <a href="/admin/{{Session::get('uuid')}}"> <span class="dropdown-item dropdown-header">Ubah Profil</span></a>
          <a href="/logout"> <span class="dropdown-item dropdown-header">Logout</span></a>
           
         </div>

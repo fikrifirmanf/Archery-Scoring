@@ -40,6 +40,7 @@ class HomeController extends Controller
         if ($data) { //apakah username tersebut ada atau tidak
             if (Hash::check($password, $data->password)) {
                 Session::put('name', $data->name);
+                Session::put('uuid', $data->id);
                 Session::put('username', $data->username);
                 Session::put('login', TRUE);
                 return redirect('home');
