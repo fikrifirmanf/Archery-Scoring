@@ -74,7 +74,7 @@
                                     placeholder="0">
                             </div>
                             
-
+                            <input type="text" name="sesi" value="1" hidden>
                         </div>
                         <!-- /.col -->
                         <div class="col-md-6">

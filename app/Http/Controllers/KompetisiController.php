@@ -52,7 +52,7 @@ class KompetisiController extends Controller
         $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
         return view('kompetisi/detail')->with(compact('title', 'title_page', 'skor'));
     }
-    public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules)
+    public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules, $sesi)
     {
 
         $peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid')->get();
@@ -62,15 +62,9 @@ class KompetisiController extends Controller
         }
         $uuid_peserta = $ntap;
 
-        // for ($i = 0; $i < $peserta->count(); $i++) {
-
-        //     $ntape[] = $peserta[$i]['uuid_panitia'];
-        // }
-        // $uuid_panitia = $ntape;
-
         try {
             for ($i = 0; $i < count($uuid_peserta); $i++) {
-                $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i], 'uuid_rules' => $uuid_rules, 'created_at' => DB::raw('now()')];
+                $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i], 'uuid_rules' => $uuid_rules, 'sesi' => $sesi, 'created_at' => DB::raw('now()')];
             }
             $data = $inp;
             $skor_check = Skor::whereIn('uuid_peserta', $uuid_peserta)->where('uuid_rules', $uuid_rules)->get();
@@ -86,7 +80,7 @@ class KompetisiController extends Controller
             // alihkan halaman ke halaman target
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
-            return redirect('kompetisi')->with(
+            return redirect()->back()->with(
                 Session::flash('message', 'Nomor target berhasil dibuat')
             );
         } catch (\Throwable $th) {
@@ -108,18 +102,16 @@ class KompetisiController extends Controller
 
     public function generateNoPeserta()
     {
-        Skor::whereNotNull('uuid_panitia')->update([
-            'uuid_panitia' => null,
 
-        ]);
 
         try {
 
             $targete = Target::join('panitia', 'no_target.uuid_panitia', '=', 'panitia.id')->orderBy('nama_papan', 'ASC')->orderBy('no_target', 'ASC')->get(['nama_papan', 'no_target', 'nama_panitia', 'uuid_panitia']);
+            // $peserta = Peserta::where('jk', 'P')->where('kelas', 'U-20')->where('kategori', 'Nasional')->orderBy('no_target')->get('no_target');
             $peserta = Peserta::orderBy('no_target')->get('no_target');
 
             for ($i = 0; $i < $peserta->count(); $i++) {
-                Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('peserta.no_target', $targete[$i]['nama_papan'] . $targete[$i]['no_target'])->update(
+                Skor::whereNull('skor.uuid_panitia')->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('peserta.no_target', $targete[$i]['nama_papan'] . $targete[$i]['no_target'])->update(
                     ['uuid_panitia' => $targete[$i]['uuid_panitia']]
                 );
             }
@@ -129,6 +121,13 @@ class KompetisiController extends Controller
             return redirect('kompetisi')->with(
                 Session::flash('message', 'Generate no target berhasil!')
             );
+            if (Skor::whereNotNUll('uuid_panitia')) {
+                Session::flash('alert-class', 'alert-success');
+                Session::flash('alert-slogan', 'Sukses!');
+                return redirect('kompetisi')->with(
+                    Session::flash('message', 'Generate gagal!')
+                );
+            }
         } catch (\Throwable $th) {
             throw $th;
         }

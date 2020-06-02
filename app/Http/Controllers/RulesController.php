@@ -35,11 +35,12 @@ class RulesController extends Controller
     public function prosesAdd(Request $request)
     {
         $rules_exist = Rules::where('nama', Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'))->where('uuid_kategori', $request->uuid_kategori)->first();
-        if (!$rules_exist) {
+
+        if (strpos(Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde'), 'Kualifikasi') !== false) {
             try {
                 Rules::insert([
                     'uuid' => Str::uuid(),
-                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'),
+                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi ' . $request->sesi,
                     'jml_seri' => $request->jml_seri,
                     'jml_panah' => $request->jml_panah,
                     'uuid_ronde' => $request->uuid_ronde,
@@ -47,6 +48,21 @@ class RulesController extends Controller
                     'uuid_kelas' => $request->uuid_kelas,
                     'uuid_kategori' => $request->uuid_kategori,
                     'jml_peserta' => $request->jml_peserta,
+                    'sesi' => $request->sesi,
+                    'input' => $request->input_data,
+                    'created_at' => DB::raw('now()')
+                ]);
+                Rules::insert([
+                    'uuid' => Str::uuid(),
+                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi 2',
+                    'jml_seri' => $request->jml_seri,
+                    'jml_panah' => $request->jml_panah,
+                    'uuid_ronde' => $request->uuid_ronde,
+                    'jarak' => $request->jarak,
+                    'uuid_kelas' => $request->uuid_kelas,
+                    'uuid_kategori' => $request->uuid_kategori,
+                    'jml_peserta' => $request->jml_peserta,
+                    'sesi' => 2,
                     'input' => $request->input_data,
                     'created_at' => DB::raw('now()')
                 ]);
@@ -60,11 +76,37 @@ class RulesController extends Controller
                 throw $th;
             }
         } else {
-            Session::flash('alert-class', 'alert-danger');
-            Session::flash('alert-slogan', 'Gagal!');
-            return redirect('rules/add')->with(
-                Session::flash('message', 'Data rules sudah ada!')
-            );
+            if (!$rules_exist) {
+                try {
+                    Rules::insert([
+                        'uuid' => Str::uuid(),
+                        'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'),
+                        'jml_seri' => $request->jml_seri,
+                        'jml_panah' => $request->jml_panah,
+                        'uuid_ronde' => $request->uuid_ronde,
+                        'jarak' => $request->jarak,
+                        'uuid_kelas' => $request->uuid_kelas,
+                        'uuid_kategori' => $request->uuid_kategori,
+                        'jml_peserta' => $request->jml_peserta,
+                        'sesi' => $request->sesi,
+                        'input' => $request->input_data,
+                        'created_at' => DB::raw('now()')
+                    ]);
+                    Session::flash('alert-class', 'alert-success');
+                    Session::flash('alert-slogan', 'Sukses!');
+                    return redirect('rules/add')->with(
+                        Session::flash('message', 'Rules berhasil dibuat')
+                    );
+                } catch (\Throwable $th) {
+                    throw $th;
+                }
+            } else {
+                Session::flash('alert-class', 'alert-danger');
+                Session::flash('alert-slogan', 'Gagal!');
+                return redirect('rules/add')->with(
+                    Session::flash('message', 'Data rules sudah ada!')
+                );
+            }
         }
     }
 
