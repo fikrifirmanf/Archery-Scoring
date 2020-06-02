@@ -31,7 +31,7 @@ class SkorController extends Controller
     {
 
         try {
-            sKOR::insert([
+            Skor::insert([
                 'uuid' => Str::uuid(),
                 'jml_seri' => $request->jml_seri,
                 'jml_panah' => $request->jml_panah,

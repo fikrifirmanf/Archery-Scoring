@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Kompetisi;
+use App\Panitia;
 use App\Peserta;
 use App\Rules;
 use App\Skor;
@@ -38,7 +39,7 @@ class KompetisiController extends Controller
             ->where('nama_kategori', $kat)
             ->where('nama_kelas', $kel)
             ->select('kategori.nama_kategori', 'ronde.jk', 'kelas.nama_kelas', 'rules.*')
-            ->addSelect(['jml_peserta' => Peserta::select(DB::raw('COUNT(uuid)'))
+            ->addSelect(['jml_pesertanya' => Peserta::select(DB::raw('COUNT(uuid)'))
                 ->whereColumn('kategori', 'kategori.nama_kategori')
                 ->whereColumn('kelas', 'kelas.nama_kelas')
                 ->whereColumn('jk', 'ronde.jk')])->orderBy('kategori.nama_kategori', 'asc')->get();
@@ -95,6 +96,14 @@ class KompetisiController extends Controller
                 Session::flash('message', 'Data target sudah ada! atau' . $th)
             );
         }
+    }
+    public function addPesertaManual($kelas, $jk, $uuid_kat, $uuid_rules)
+    {
+        $title = "Archery Scoring";
+        $title_page = "Generate Peserta Manual";
+        $panitia = Panitia::get();
+        $peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid', 'peserta.nama_peserta', 'no_target')->orderBy('no_target')->get();
+        return view('kompetisi/add')->with(compact('title', 'title_page', 'peserta', 'panitia', 'uuid_rules'));
     }
 
     public function generateNoPeserta()

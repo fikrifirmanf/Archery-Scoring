@@ -90,7 +90,7 @@
                             </div>
                             <div class="form-group">
                                 <label>Ronde</label>
-                                <select class="form-controller select2" name="uuid_ronde" style="width: 100%;">
+                                <select class="form-control select2bs4" name="uuid_ronde" style="width: 100%;">
 
                                   @foreach ($ronde as $t)
                                   <option value="{{$t->uuid}}">{{$t->nama_ronde}}</option>
@@ -104,6 +104,15 @@
                                   <option value="{{$k->uuid}}">{{$k->nama_kategori}}</option>
                                       @endforeach
                                 </select>
+                            </div>
+                            <div class="form-group">
+                                <label>Metode Input Peserta</label>
+                                <select class="form-control" name="input_data" style="width: 100%;">
+                                
+                                  <option value="Otomatis">Otomatis</option>
+                                      <option value="Manual">Manual</option>
+                                </select>
+                                <p><i>(* khusus untuk babak 8 besar - final diharuskan memakai manual</i></p>
                             </div>
                             <div class="form-group">
                                 <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
