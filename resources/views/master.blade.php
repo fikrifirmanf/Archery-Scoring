@@ -50,7 +50,30 @@
     <!-- Right navbar links -->
     <ul class="navbar-nav ml-auto">
       <!-- Messages Dropdown Menu -->
-      
+      <div class="top-menu">
+        <ul class="nav navbar-nav pull-right">
+          <!-- start manage user dropdown -->
+ <li class="dropdown dropdown-user">
+                <a href="javascript:;" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                    <img alt="" class="img-circle " src="{{asset('assets/img/admin.png')}}" />
+                    <span class="username username-hide-on-mobile"> {{Session::get('name')}} </span>
+                    <i class="fa fa-angle-down"></i>
+                </a>
+                <ul class="dropdown-menu dropdown-menu-default">
+                    <li>
+                        <a href="/logout">
+                            <i class="icon-logout"></i> Log Out </a>
+                    </li>
+                </ul>
+            </li>
+            <!-- end manage user dropdown -->
+            <!-- <li class="dropdown dropdown-quick-sidebar-toggler">
+                 <a id="headerSettingButton" class="mdl-button mdl-js-button mdl-button--icon pull-right" data-upgraded=",MaterialButton">
+                 <i class="fa fa-circle"></i>
+              </a>
+            </li> -->
+        </ul>
+    </div>
     </ul>
   </nav>
   <!-- /.navbar -->
