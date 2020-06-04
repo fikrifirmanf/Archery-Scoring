@@ -200,7 +200,7 @@ class PesertaController extends Controller
         $uuid = Auth::id();
 
 
-        $pes = Skor::where('skor.uuid_panitia', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')->orderBy('peserta.no_target', 'asc')->get();
+        $pes = Skor::where('skor.uuid_panitia', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')->orderBy('peserta.no_target', 'asc')->orderBy('skor.sesi', 'asc')->get();
         return response()->json(['peserta' => $pes], 200);
     }
 }

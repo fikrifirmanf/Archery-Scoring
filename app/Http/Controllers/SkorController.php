@@ -54,7 +54,7 @@ class SkorController extends Controller
     }
     public function skorApi()
     {
-        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('ronde', 'skor.uuid_ronde', '=', 'ronde.uuid')->select('skor.uuid', 'no_target.nama_target', 'peserta.nama_peserta', 'skor.seri_1', 'skor.seri_2', 'skor.seri_3', 'skor.seri_4', 'skor.seri_5', 'skor.seri_6', 'skor.total', 'ronde.nama_ronde')->orderBy('sesi')->get();
+        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->join('no_target', 'peserta.uuid_target', '=', 'no_target.uuid')->join('ronde', 'skor.uuid_ronde', '=', 'ronde.uuid')->select('skor.uuid', 'no_target.nama_target', 'peserta.nama_peserta', 'skor.seri_1', 'skor.seri_2', 'skor.seri_3', 'skor.seri_4', 'skor.seri_5', 'skor.seri_6', 'skor.total', 'ronde.nama_ronde')->get();
         return response()->json(['skor' => $skor], 200);
     }
 
