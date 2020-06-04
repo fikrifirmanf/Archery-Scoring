@@ -102,7 +102,7 @@ $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function
     $router->get('/', 'KompetisiController@index');
     $router->get('detailkategori/{kat}/{kel}', 'KompetisiController@detailKategori');
     $router->get('add/{kelas}/{jk}/{uuid_kat}/{uuid_rules}/{sesi}', 'KompetisiController@addPeserta');
-    $router->get('add/manual/{kelas}/{jk}/{uuid_kat}/{uuid_rules}', 'KompetisiController@addPesertaManual');
+    $router->get('add/manual/{kelas}/{jk}/{uuid_kat}/{uuid_rules}/1', 'KompetisiController@addPesertaManual');
     $router->get('detail/{nama_babak}/{uuid_rules}', 'KompetisiController@skorDetail');
     $router->post('add/proses', 'KompetisiController@prosesAdd');
     $router->get('edit/{uuid}', 'KompetisiController@update');

@@ -1,7 +1,7 @@
 <?php 
 
 foreach($panitia as $p){
-    $uuid = $p->uuid;
+    $uuid = $p->id;
     $nama_panitia = $p->nama_panitia;
     $username = $p->username;
 }
@@ -58,7 +58,7 @@ foreach($panitia as $p){
                 </ul>
             </div>
         @endif
-                  <form action="add/proses" method="post">
+                  <form action="proses" method="post">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">

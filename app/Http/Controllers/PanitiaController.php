@@ -146,7 +146,7 @@ class PanitiaController extends Controller
 
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
-            return redirect('panitia/edit/' . $request->uuid)->with(
+            return redirect()->back()->with(
                 Session::flash('message', 'Panitia berhasil diubah')
             );
         } else {
@@ -168,7 +168,7 @@ class PanitiaController extends Controller
 
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
-            return redirect('panitia/edit/' . $request->uuid)->with(
+            return redirect()->back()->with(
                 Session::flash('message', 'Panitia berhasil diubah')
             );
         }
