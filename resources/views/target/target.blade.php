@@ -71,7 +71,7 @@
 
     }
     // var_dump( $p1);
-    var_dump($p2);
+    // var_dump($p2);
               @endphp
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
