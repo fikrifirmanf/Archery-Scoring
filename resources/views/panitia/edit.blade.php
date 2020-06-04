@@ -1,10 +1,13 @@
-<?php
-foreach ($ronde as $r)
-{
-    $uuid = $r->uuid;
-    $nama_ronde = $r->nama_ronde;
+<?php 
+
+foreach($panitia as $p){
+    $uuid = $p->uuid;
+    $nama_panitia = $p->nama_panitia;
+    $username = $p->username;
 }
-?>    
+
+?>
+
 @extends('master')
 @section('konten')
 <!-- Content Wrapper. Contains page content -->
@@ -19,7 +22,7 @@ foreach ($ronde as $r)
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Ronde</a></li>
+                        <li class="breadcrumb-item"><a href="/panitia">Panitia</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -32,10 +35,6 @@ foreach ($ronde as $r)
             <!--form-controller select2 EXAMPLE -->
             <div class="card card-default">
                 <div class="card-header">
-                    <?php 
-                        print_r ($ntape);
-                        print_r($sip);
-                        ?>
                     <h3 class="card-title">Form</h3>
                     
                     <div class="card-tools">
@@ -59,15 +58,30 @@ foreach ($ronde as $r)
                 </ul>
             </div>
         @endif
-                  <form action="/ronde/edit/proses" method="post">
+                  <form action="add/proses" method="post">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
                         <input type="text" name="uuid" value="{{$uuid}}" hidden>
                             <div class="form-group">
-                                <label>Nama Ronde</label>
-                            <input type="text" value="{{$nama_ronde}}" name="nama_ronde" class="form-control"
-                                    >
+                                <label>Nama Panitia</label>
+                                <input type="text" name="nama_panitia" value="{{$nama_panitia}}" required class="form-control"
+                                    placeholder="Contoh : Dakir">
+                            </div>
+                            <div class="form-group">
+                                <label>Username</label>
+                                <input type="text" name="username" value="{{$username}}" required class="form-control"
+                                    placeholder="Contoh : dakirun">
+                            </div>
+                            <div class="form-group">
+                                <label>Password</label>
+                                <input type="password" name="password"  class="form-control"
+                                    placeholder="********">
+                            </div>
+                            <div class="form-group">
+                                <label>Konfirmasi Password</label>
+                                <input type="password" name="confirmation"  class="form-control"
+                                    placeholder="********">
                             </div>
                             
                             <div class="form-group">
@@ -85,4 +99,5 @@ foreach ($ronde as $r)
 </div>
 <!-- Main content -->
 <!-- /.content-wrapper -->
+
 @endsection

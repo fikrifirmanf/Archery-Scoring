@@ -118,9 +118,60 @@ class PanitiaController extends Controller
      * @param  \App\Panitia  $panitia
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Panitia $panitia)
+    public function update($uuid)
     {
-        //
+
+        $title = 'Archery Scoring';
+        $title_page = 'Ubah Profil';
+        $panitia = Panitia::where('id', $uuid)->get();
+
+        return view('panitia/edit')->with(compact('panitia', 'title', 'title_page'));
+    }
+    public function prosesEdit(Request $request)
+    {
+
+        if ($request->password == "") {
+            $this->validate($request, [
+                'nama_panitia' => 'required|min:3',
+                'username' => 'required|min:4',
+
+            ]);
+            Panitia::where('id', $request->uuid)->update([
+
+                'nama_panitia' => $request->nama_panitia,
+                'username' => $request->username,
+                'updated_at' => DB::raw('now()')
+            ]);
+
+
+            Session::flash('alert-class', 'alert-success');
+            Session::flash('alert-slogan', 'Sukses!');
+            return redirect('panitia/edit/' . $request->uuid)->with(
+                Session::flash('message', 'Panitia berhasil diubah')
+            );
+        } else {
+            $this->validate($request, [
+                'nama_panitia' => 'required|min:3',
+                'username' => 'required|min:4',
+                'confirmation' => 'same:password',
+            ]);
+            Panitia::where('id', $request->uuid)->update([
+
+                'nama_panitia' => $request->nama_panitia,
+                'username' => $request->username,
+                'password' => bcrypt($request->password),
+                'updated_at' => DB::raw('now()')
+            ]);
+
+            // alihkan halaman ke halaman pegawai
+
+
+            Session::flash('alert-class', 'alert-success');
+            Session::flash('alert-slogan', 'Sukses!');
+            return redirect('panitia/edit/' . $request->uuid)->with(
+                Session::flash('message', 'Panitia berhasil diubah')
+            );
+        }
     }
 
     /**

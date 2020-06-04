@@ -58,11 +58,11 @@
                                 <input type="text" name="kat_target" class="form-control"
                                     placeholder="A,B,C,...">
                             </div>
-                            <div class="form-group">
+                            {{-- <div class="form-group">
                                 <label>Jumlah Target</label>
                                 <input type="text" name="jml_papan" class="form-control"
                                     placeholder="5">
-                            </div>
+                            </div> --}}
                             
                             <div class="form-group">
                                 <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
