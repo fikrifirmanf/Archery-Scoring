@@ -21,11 +21,6 @@ class TargetController extends Controller
 
         $targete = Target::join('panitia', 'no_target.uuid_panitia', '=', 'panitia.id')->orderBy('nama_papan', 'ASC')->orderBy('no_target', 'ASC')->get(['nama_papan', 'no_target', 'nama_panitia']);
         $peserta = Peserta::get();
-
-
-
-
-
         return $this->makeResponse($request, 'target/target', compact('title', 'trg', 'target', 'title_page'));
     }
     public function create()

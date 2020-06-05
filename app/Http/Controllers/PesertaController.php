@@ -126,6 +126,7 @@ class PesertaController extends Controller
     public function prosesAdd(Request $request)
     {
         $cek_duplikat = Peserta::where('no_target', $request->no_target);
+        $kat = str_split($request->no_target);
         if ($cek_duplikat->exists()) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
@@ -143,6 +144,12 @@ class PesertaController extends Controller
                 'kategori' => $request->kategori,
                 'created_at' => DB::raw('now()')
 
+            ]);
+            Target::insert([
+                'uuid' => Str::uuid(),
+                'nama_papan' => $kat[0],
+                'no_target' => $kat[1],
+                'created_at' => DB::raw('now()')
             ]);
         }
 

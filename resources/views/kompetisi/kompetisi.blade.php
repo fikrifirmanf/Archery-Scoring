@@ -24,7 +24,10 @@
       <div class="row">
         <div class="col-12"> 
         <div class="card">
-          
+          <?php
+            var_dump($ntap);
+            //var_dump($uuide);
+            ?>
             <div class="card-header">
               <div class="col col-md-3">
                 <a href="/kompetisi/gen"><button class="btn btn-success"><i class="fas fa-save"></i>  Generate Panitia</button></a><br>
