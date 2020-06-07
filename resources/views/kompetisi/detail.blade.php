@@ -36,45 +36,77 @@
                   {{-- <div class="alert alert-danger">
                     <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
                   </div> --}}
-              <table  class="table table-bordered table-striped">
+              <table  class="table table-bordered">
                 <thead>
+                  @if (strpos($title, 'Kualifikasi') != false)
                 <tr>
-                  
-                <th>No Target</th>
-                <th>Nama Peserta</th>
-                <th>Seri 1</th>
-                <th>Seri 2</th>
-                <th>Seri 3</th>
-                <th>Seri 4</th>
-                <th>Seri 5</th>
-                <th>Seri 6</th>
-                <th>Total</th>
-                <th>Peringkat</th>
-                  {{-- <th>Aksi</th> --}}
+                  <th style="text-align: center">No Target</th>
+                  <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Seri 1</th>
+                  <th style="text-align: center">Seri 2</th>
+                  <th style="text-align: center">Seri 3</th>
+                  <th style="text-align: center">Seri 4</th>
+                  <th style="text-align: center">Seri 5</th>
+                  <th style="text-align: center">Seri 6</th>
+                  <th style="text-align: center">Total</th>
+                  <th style="text-align: center">Peringkat</th>
                 </tr>
+                @else
+                <tr>
+                  <th style="text-align: center">No Target</th>
+                  <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Seri 1</th>
+                  <th style="text-align: center">Seri 2</th>
+                  <th style="text-align: center">Seri 3</th>
+                  <th style="text-align: center">Seri 4</th>
+                  <th style="text-align: center">Seri 5</th>
+                  <th style="text-align: center">Seri 6</th>
+                  <th style="text-align: center">Total</th>
+                </tr>
+                @endif
                 </thead>
                 <tbody>
                   
                   @php
                      $i =1; 
                   @endphp
-                @foreach ($skor as $p)
+                @foreach ($skor as $key => $p)
+                @if (strpos($title, 'Kualifikasi') != false)
                 <tr>
-                <td>{{$p->no_target}}</td>
-                <td>{{$p->nama_peserta}}</td>
-                <td>{{$p->seri_1}}</td>
-                <td>{{$p->seri_2}}</td>
-                <td>{{$p->seri_3}}</td>
-                <td>{{$p->seri_4}}</td>
-                <td>{{$p->seri_5}}</td>
-                <td>{{$p->seri_6}}</td>
-                <td>{{$p->total}}</td>
-                <td>{{$i++}}</td>
-                
-                {{-- <td><a href="/kompetisi/add/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-warning mr-2"><i class="fas fa-plus"></i></button></a><a href="/kompetisi/del/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_ronde}}"><button class="btn btn-danger mr-2"><i class="fas fa-trash"></i></button></a></td>
+                  <td style="text-align: center">{{$p->no_target}}</td>
+                  <td>{{$p->nama_peserta}}</td>
+                  <td style="text-align: center">{{$p->seri_1}}</td>
+                  <td style="text-align: center">{{$p->seri_2}}</td>
+                  <td style="text-align: center">{{$p->seri_3}}</td>
+                  <td style="text-align: center">{{$p->seri_4}}</td>
+                  <td style="text-align: center">{{$p->seri_5}}</td>
+                  <td style="text-align: center">{{$p->seri_6}}</td>
+                  <td style="text-align: center">{{$p->total}}</td>
+                  <td style="text-align: center">{{$i++}}</td>
+      
+                </tr>
+                @else
+                <tr>
+                  <td style="text-align: center">{{$p->no_target}}</td>
+                  <td>{{$p->nama_peserta}}</td>
+                  <td style="text-align: center">{{$p->seri_1}}</td>
+                  <td style="text-align: center">{{$p->seri_2}}</td>
+                  <td style="text-align: center">{{$p->seri_3}}</td>
+                  <td style="text-align: center">{{$p->seri_4}}</td>
+                  <td style="text-align: center">{{$p->seri_5}}</td>
+                  <td style="text-align: center">{{$p->seri_6}}</td>
+                  <td style="text-align: center">{{$p->total}}</td>
+                </tr>
+                  @if ($key % 2 != 0)
                   
-                </tr> --}}
+                  <tr>
+                    <td colspan="9" style="text-align: center"><b>{{$i++}}</b></td>
+        
+                  </tr>
+                  @endif
+                @endif
                 @endforeach
+              </tbody>
               </table>
             </div>
             <!-- /.card-body -->

@@ -51,7 +51,12 @@
                 <tbody>      
                 @foreach ($rules as $r)
                 <tr>
-                <td>{{$r->nama}}</td>
+                @if ($r->jk == 'L')
+                  <td>{{$r->nama}} <button class="btn bg-gradient-primary btn-xs">Putra</button></td>
+                @else
+                  <td>{{$r->nama}} <button class="btn bg-gradient-success btn-xs">Putri</button></td>
+                @endif
+                
                <td>{{$r->nama_kategori}}</td>
                   <td>{{$r->jarak}}</td>
                   <td>{{$r->jml_seri}}</td>

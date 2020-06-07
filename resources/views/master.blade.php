@@ -238,14 +238,14 @@
               </p>
             </a>
           </li>
-          <li class="nav-item has-treeview ">
+          {{-- <li class="nav-item has-treeview ">
             <a href="/target" class="nav-link ">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Target 
               </p>
             </a>
-          </li>
+          </li> --}}
           
         </ul>
       </nav>

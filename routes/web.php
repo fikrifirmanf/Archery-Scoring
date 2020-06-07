@@ -106,10 +106,11 @@ $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function
     $router->get('detail/{nama_babak}/{uuid_rules}', 'KompetisiController@skorDetail');
     $router->post('add/proses', 'KompetisiController@prosesAdd');
     $router->get('edit/{uuid}', 'KompetisiController@update');
-    $router->get('del/{uuid}', 'KompetisiController@del');
+    $router->get('del/{uuid_rules}', 'KompetisiController@del');
     $router->get('delall', 'KompetisiController@delAll');
     $router->post('edit/proses', 'KompetisiController@prosesEdit');
     $router->get('gen', 'KompetisiController@generateNoPeserta');
+    $router->get('cetak/{nama_babak}/{uuid_rules}', 'KompetisiController@cetakPdf');
 });
 // Admin
 $router->group(['prefix' => 'admin', 'middleware' => 'login.auth'], function () use ($router) {
