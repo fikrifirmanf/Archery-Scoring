@@ -1,8 +1,8 @@
 <?php
-foreach ($ronde as $r)
+foreach ($target as $t)
 {
-    $uuid = $r->uuid;
-    $nama_ronde = $r->nama_ronde;
+    $uuid = $t->uuid;
+    $no_target = $t->no_target;
 }
 ?>    
 @extends('master')
@@ -19,7 +19,7 @@ foreach ($ronde as $r)
                 <div class="col-sm-6">
                     <ol class="breadcrumb float-sm-right">
                         <li class="breadcrumb-item"><a href="/">Home</a></li>
-                        <li class="breadcrumb-item"><a href="/peserta">Ronde</a></li>
+                        <li class="breadcrumb-item"><a href="/target">Target</a></li>
                         <li class="breadcrumb-item active">{{$title_page}}</li>
                     </ol>
                 </div>
@@ -32,10 +32,6 @@ foreach ($ronde as $r)
             <!--form-controller select2 EXAMPLE -->
             <div class="card card-default">
                 <div class="card-header">
-                    <?php 
-                        print_r ($ntape);
-                        print_r($sip);
-                        ?>
                     <h3 class="card-title">Form</h3>
                     
                     <div class="card-tools">
@@ -59,14 +55,14 @@ foreach ($ronde as $r)
                 </ul>
             </div>
         @endif
-                  <form action="/ronde/edit/proses" method="post">
+                  <form action="/target/edit/proses" method="post">
                     {{ csrf_field() }}
                     <div class="row">
                         <div class="col-md-6">
                         <input type="text" name="uuid" value="{{$uuid}}" hidden>
                             <div class="form-group">
-                                <label>Nama Ronde</label>
-                            <input type="text" value="{{$nama_ronde}}" name="nama_ronde" class="form-control"
+                                <label>No target</label>
+                            <input type="text" value="{{$no_target}}" name="no_target" class="form-control"
                                     >
                             </div>
                             

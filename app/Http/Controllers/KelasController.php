@@ -76,7 +76,6 @@ class KelasController extends Controller
     {
         try {
             Kelas::where('uuid', $request->uuid)->update([
-                'uuid' => Str::uuid(),
                 'nama_kelas' => $request->nama_kelas,
                 'updated_at' => DB::raw('now()')
 
@@ -84,7 +83,7 @@ class KelasController extends Controller
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
             return redirect('kelas')->with(
-                Session::flash('message', 'Konten berhasil di update')
+                Session::flash('message', 'Data kelas berhasil di update')
             );
         } catch (\Throwable $th) {
             //throw $th;

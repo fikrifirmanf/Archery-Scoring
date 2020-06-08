@@ -26,36 +26,50 @@
         <div class="card">
           
             <div class="card-header">
-                <div class="row">                 
-                  </div>
-                </div>
-                     
+              
+              </div>
             <!-- /.card-header -->
             <div class="card-body">
-              
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
                   @endif
-                  
-              <table  class="table table-bordered table-striped">
+                  {{-- <div class="alert alert-danger">
+                    <strong>Danger!</strong> This alert box could indicate a dangerous or potentially negative action.
+                  </div> --}}
+              <table id="example"  class="table table-bordered">
                 <thead>
-                <tr>
-                  <th>No Target</th>
-                  <th>Aksi</th>                 
-                </tr>
-                </thead>
-                <tbody>
-                @foreach ($target as $t)
-                <tr>
-                <td>{{$t->no_target}}</td> 
-                <td style="text-align: center"><a href="/target/edit/{{$t->uuid}}"><button class="btn btn-warning"><i class="fas fa-edit"></i></button></a></td>            
                 
+                <tr>
+                  <th style="text-align: center">No Target</th>
+                  <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Team</th>
+                  <th style="text-align: center">Total</th>
+                
+                </tr>              
+                </thead>
+                <tbody>                
+                  @php
+                  if (isset($totalall)) {
+                    arsort($totalall);
+                  }
+                   
+                  @endphp
+                @if (isset($totalall))
+                @foreach ($totalall as $p)              
+                <tr>
+                  <td style="text-align: center">{{$p['no_target']}}</td>
+                  <td>{{$p['nama_peserta']}}</td>
+                  <td>{{$p['team']}}</td>
+                  <td style="text-align: center">{{$p['total_all']}}</td>
                   
                 </tr>
                 @endforeach
-                </tbody>
+                @endif
+                
+              </tbody>
               </table>
             </div>
+            
             <!-- /.card-body -->
           </div>
           <!-- /.card -->
@@ -65,7 +79,7 @@
       <!-- /.row -->
     </section>
     <!-- /.content -->
-  </div>
+  </div>  
   <!-- /.content-wrapper -->
   <script>
     window.setTimeout(function() {
@@ -73,5 +87,10 @@
         $(this).remove(); 
     });
 }, 4000);
+$(document).ready(function() {
+    $('#example').DataTable( {
+        "order": [[ 3, "desc" ]]
+    } );
+} );
 </script>
 @endsection

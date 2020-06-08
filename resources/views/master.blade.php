@@ -34,6 +34,11 @@
   <link rel="stylesheet" href={{asset("plugins/bootstrap4-duallistbox/bootstrap-duallistbox.min.css")}}>
   <!-- Google Font: Source Sans Pro -->
   <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
+  <!-- jQuery -->
+<script src={{asset("plugins/jquery/jquery.min.js")}}></script>
+<!-- jQuery UI 1.11.4 -->
+<script src={{asset("plugins/jquery-ui/jquery-ui.min.js")}}></script>
+<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
 </head>
 <body class="hold-transition sidebar-mini layout-fixed">
 <div class="wrapper">
@@ -238,14 +243,14 @@
               </p>
             </a>
           </li>
-          {{-- <li class="nav-item has-treeview ">
+          <li class="nav-item has-treeview ">
             <a href="/target" class="nav-link ">
               <i class="nav-icon fas fa-table"></i>
               <p>
                 Target 
               </p>
             </a>
-          </li> --}}
+          </li>
           
         </ul>
       </nav>
@@ -271,11 +276,7 @@
 </div>
 <!-- ./wrapper -->
 
-<!-- jQuery -->
-<script src={{asset("plugins/jquery/jquery.min.js")}}></script>
-<!-- jQuery UI 1.11.4 -->
-<script src={{asset("plugins/jquery-ui/jquery-ui.min.js")}}></script>
-<!-- Resolve conflict in jQuery UI tooltip with Bootstrap tooltip -->
+
 <script>
   $.widget.bridge('uibutton', $.ui.button)
 </script>

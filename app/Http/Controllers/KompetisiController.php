@@ -6,6 +6,7 @@ use App\Panitia;
 use App\Peserta;
 use App\Rules;
 use App\Skor;
+use App\Target;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -18,7 +19,6 @@ class KompetisiController extends Controller
     {
         $title = 'Archery Scoring';
         $title_page = 'Hasil Skor Kompetisi';
-
         $rules_group = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
             ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
             ->groupBy('kategori.nama_kategori')
@@ -47,52 +47,96 @@ class KompetisiController extends Controller
     }
     public function skorDetail($nama_babak, $uuid_rules)
     {
-        $title = 'Skor Detail ' . $nama_babak;
+        $title = 'Skor ' . $nama_babak;
         $title_page = 'Archery Scoring';
         $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
         return view('kompetisi/detail')->with(compact('title', 'title_page', 'skor'));
     }
-    public function skorDetailTotal($nama_babak, $uuid_rules)
+    public function skorDetailTotal($nama_babak, $kelas, $jk, $uuid_kat)
     {
-        $title = 'Skor Detail Total ' . $nama_babak;
+        $title = 'Skor Total ' . $nama_babak;
         $title_page = 'Archery Scoring';
-        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
-        return view('kompetisi/detail')->with(compact('title', 'title_page', 'skor'));
+
+
+        $uuidRules = Rules::where('uuid_kategori', $uuid_kat)
+            ->where('kelas.nama_kelas', $kelas)
+            ->where('ronde.jk', $jk)
+            ->where('nama', 'LIKE', '%kualifikasi%')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
+            ->get(['rules.uuid']);
+        if (!isset($uuidRules)) {
+            Session::flash('alert-class', 'alert-danger');
+            Session::flash('alert-slogan', 'Gagal!');
+            return back()->with(
+                Session::flash('message', 'Silahkan daftar data peserta kualifikasi terlebih dahulu')
+            );
+        }
+
+        $skor = Skor::whereIn('uuid_rules', $uuidRules)
+            ->where('skor.sesi', 1)
+            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+            ->select('no_target', 'team', 'nama_peserta', 'total')
+            ->orderBy('nama_peserta')
+            ->get();
+        $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+            ->where('skor.sesi', 2)
+            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+            ->select('no_target', 'team', 'nama_peserta', 'total')
+            ->orderBy('nama_peserta')
+            ->get();
+        // if (isset($skor) && isset($skor2)) {
+        //     Session::flash('alert-class', 'alert-danger');
+        //     Session::flash('alert-slogan', 'Gagal!');
+        //     return back()->with(
+        //         Session::flash('message', 'Silahkan daftar data peserta kualifikasi terlebih dahulu')
+        //     );
+        // }
+        for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
+            $item['no_target'] = $skor[$i]['no_target'];
+            $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+            $item['team'] = $skor[$i]['team'];
+            $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
+
+            $totalall[] = $item;
+        }
+        return view('kompetisi/total')->with(compact('title', 'title_page', 'totalall'));
     }
     public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules, $sesi)
     {
 
-        $peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid')->get();
+        $uuid_peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->orderBy('no_target', 'ASC')->get(['no_target', 'uuid']);
 
-        if ($peserta->count() <= 0) {
+        if ($uuid_peserta->count() <= 0) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return back()->with(
                 Session::flash('message', 'Data peserta tidak ada')
             );
         }
-
-        $katList = array('A', 'B', 'C', 'D');
+        $target = Target::value('no_target');
+        $katList = explode(',', $target);
         $panitia = Panitia::get(['id']);
 
-        for ($i = 0; $i < $peserta->count(); $i++) {
-            $ntap[] = $peserta[$i]['uuid'];
-        }
-        $uuid_peserta = $ntap;
-
         for ($i = 0; $i < count($uuid_peserta); $i++) {
-            $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i], 'uuid_rules' => $uuid_rules, 'sesi' => $sesi, 'created_at' => DB::raw('now()')];
+            $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i]['uuid'], 'uuid_rules' => $uuid_rules, 'sesi' => $sesi, 'created_at' => DB::raw('now()')];
         }
         $data = $inp;
         $skor_check = Skor::where('uuid_rules', $uuid_rules)->value('uuid_rules');
 
-        if ($peserta->count() / (count($katList)) > count($panitia)) {
+        if ($uuid_peserta->count() / (count($katList)) > count($panitia)) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return redirect()->back()->with(
                 Session::flash('message', 'Jumlah wasit/panitia/papan kurang, silahkan crosscheck terlebih dahulu')
             );
-        } else if ($peserta->count() / (count($katList)) != count($panitia)) {
+        } else if ($uuid_peserta->count() / (count($katList)) != count($panitia)) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return redirect()->back()->with(
@@ -115,7 +159,7 @@ class KompetisiController extends Controller
             }
             $pnt = $ntapz;
 
-            for ($i = 0; $i < $peserta->count() / (count($katList)); $i++) {
+            for ($i = 0; $i < $uuid_peserta->count() / (count($katList)); $i++) {
                 for ($j = 0; $j < count($katList); $j++) {
                     $ntape[] = $pnt[$i];
                 }
@@ -153,13 +197,14 @@ class KompetisiController extends Controller
     {
         $jmlPsrt = Rules::where('uuid', $request->uuid_rules)->value('jml_peserta');
         $jmlPsrtKompetisi = Skor::where('uuid_rules', $request->uuid_rules)->get();
-        if ($jmlPsrtKompetisi->count() == $jmlPsrt) {
-            Session::flash('alert-class', 'alert-danger');
-            Session::flash('alert-slogan', 'Gagal!');
-            return back()->with(
-                Session::flash('message', 'Peserta sudah lengkap')
-            );
-        } else if ($request->uuid_peserta1 == $request->uuid_peserta2) {
+        // if ($jmlPsrtKompetisi->count() == $jmlPsrt) {
+        //     Session::flash('alert-class', 'alert-danger');
+        //     Session::flash('alert-slogan', 'Gagal!');
+        //     return back()->with(
+        //         Session::flash('message', 'Peserta sudah lengkap')
+        //     );
+        // } else 
+        if ($request->uuid_peserta1 == $request->uuid_peserta2) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
             return back()->with(
@@ -211,7 +256,46 @@ class KompetisiController extends Controller
     {
         $title = $nama_babak;
         $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
-        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'skor'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'skor', 'nama_babak'))->setPaper('a4', 'landscape');
+        return $pdf->stream('laporan-skor');
+    }
+    public function cetakTotalPdf($nama_babak, $kelas, $jk, $uuid_kat)
+    {
+        $title = $nama_babak;
+        $uuidRules = Rules::where('uuid_kategori', $uuid_kat)
+            ->where('kelas.nama_kelas', $kelas)
+            ->where('ronde.jk', $jk)
+            ->where('nama', 'LIKE', '%kualifikasi%')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
+            ->get(['rules.uuid']);
+        $skor = Skor::whereIn('uuid_rules', $uuidRules)
+            ->where('skor.sesi', 1)
+            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+            ->select('no_target', 'team', 'nama_peserta', 'total')
+            ->orderBy('nama_peserta')
+            ->get();
+        $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+            ->where('skor.sesi', 2)
+            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+            ->select('no_target', 'team', 'nama_peserta', 'total')
+            ->orderBy('nama_peserta')
+            ->get();
+        for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
+            $item['no_target'] = $skor[$i]['no_target'];
+            $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+            $item['team'] = $skor[$i]['team'];
+            $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
+            $totalall[] = $item;
+        }
+
+        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'totalall', 'nama_babak'))->setPaper('a4', 'landscape');
         return $pdf->stream('laporan-skor');
     }
 }

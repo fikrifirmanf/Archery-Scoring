@@ -104,6 +104,7 @@ $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function
     $router->get('add/{kelas}/{jk}/{uuid_kat}/{uuid_rules}/{sesi}', 'KompetisiController@addPeserta');
     $router->get('add/manual/{kelas}/{jk}/{uuid_kat}/{uuid_rules}/1', 'KompetisiController@addPesertaManual');
     $router->get('detail/{nama_babak}/{uuid_rules}', 'KompetisiController@skorDetail');
+    $router->get('detailt/{nama_babak}/{kelas}/{jk}/{uuid_kat}', 'KompetisiController@skorDetailTotal');
     $router->post('add/proses', 'KompetisiController@prosesAdd');
     $router->get('edit/{uuid}', 'KompetisiController@update');
     $router->get('del/{uuid_rules}', 'KompetisiController@del');
@@ -111,6 +112,7 @@ $router->group(['prefix' => 'kompetisi', 'middleware' => 'login.auth'], function
     $router->post('edit/proses', 'KompetisiController@prosesEdit');
     $router->get('gen', 'KompetisiController@generateNoPeserta');
     $router->get('cetak/{nama_babak}/{uuid_rules}', 'KompetisiController@cetakPdf');
+    $router->get('cetaktotal/{nama_babak}/{kelas}/{jk}/{uuid_kat}', 'KompetisiController@cetakTotalPdf');
 });
 // Admin
 $router->group(['prefix' => 'admin', 'middleware' => 'login.auth'], function () use ($router) {

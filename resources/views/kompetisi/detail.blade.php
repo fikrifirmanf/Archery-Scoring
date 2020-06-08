@@ -42,6 +42,7 @@
                 <tr>
                   <th style="text-align: center">No Target</th>
                   <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Team</th>
                   <th style="text-align: center">Seri 1</th>
                   <th style="text-align: center">Seri 2</th>
                   <th style="text-align: center">Seri 3</th>
@@ -55,6 +56,7 @@
                 <tr>
                   <th style="text-align: center">No Target</th>
                   <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Team</th>
                   <th style="text-align: center">Seri 1</th>
                   <th style="text-align: center">Seri 2</th>
                   <th style="text-align: center">Seri 3</th>
@@ -75,6 +77,7 @@
                 <tr>
                   <td style="text-align: center">{{$p->no_target}}</td>
                   <td>{{$p->nama_peserta}}</td>
+                  <td>{{$p->team}}</td>
                   <td style="text-align: center">{{$p->seri_1}}</td>
                   <td style="text-align: center">{{$p->seri_2}}</td>
                   <td style="text-align: center">{{$p->seri_3}}</td>
@@ -89,6 +92,7 @@
                 <tr>
                   <td style="text-align: center">{{$p->no_target}}</td>
                   <td>{{$p->nama_peserta}}</td>
+                  <td>{{$p->team}}</td>
                   <td style="text-align: center">{{$p->seri_1}}</td>
                   <td style="text-align: center">{{$p->seri_2}}</td>
                   <td style="text-align: center">{{$p->seri_3}}</td>

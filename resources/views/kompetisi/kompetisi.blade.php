@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col-12"> 
         <div class="card">
-       
+      
             <!-- /.card-header -->
             <div class="card-body">
                 @if(Session::has('message'))
