@@ -114,8 +114,8 @@ class KompetisiController extends Controller
         $uuid_peserta = Peserta::where('kategori', $uuid_kat)
             ->where('kelas', $kelas)
             ->where('jk', $jk)
-            ->get(['no_target', 'uuid'])
-            ->orderBy('no_target', 'ASC');
+            ->orderBy('no_target', 'ASC')
+            ->get(['no_target', 'uuid']);
 
         if ($uuid_peserta->count() <= 0) {
             Session::flash('alert-class', 'alert-danger');
