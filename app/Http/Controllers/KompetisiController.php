@@ -110,7 +110,7 @@ class KompetisiController extends Controller
     }
     public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules, $sesi)
     {
-
+        date_default_timezone_set("Asia/Jakarta");
         $uuid_peserta = Peserta::where('kategori', $uuid_kat)
             ->where('kelas', $kelas)
             ->where('jk', $jk)
@@ -126,7 +126,8 @@ class KompetisiController extends Controller
         }
         $target = Target::value('no_target');
         $katList = explode(',', $target);
-        $panitia = Panitia::orderBy('nama_panitia')->get(['id']);
+        $panitia = Panitia::orderBy('nama_panitia', 'ASC')
+            ->get(['id']);
 
         for ($i = 0; $i < count($uuid_peserta); $i++) {
             $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i]['uuid'], 'uuid_rules' => $uuid_rules, 'sesi' => $sesi, 'created_at' => DB::raw('now()')];
@@ -168,7 +169,10 @@ class KompetisiController extends Controller
                     $ntape[] = $pnt[$i];
                 }
             }
-            $getSkorUuid = Skor::where('sesi', $sesi)->get(['uuid']);
+            $getSkorUuid = Skor::where('sesi', $sesi)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->orderBy('peserta.no_target', 'ASC')
+                ->get(['skor.uuid']);
             for ($l = 0; $l < count($ntape); $l++) {
                 Skor::where('uuid', $getSkorUuid[$l]['uuid'])->where('sesi', $sesi)->update(['uuid_panitia' => $ntape[$l]]);
             }
