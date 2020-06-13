@@ -111,7 +111,11 @@ class KompetisiController extends Controller
     public function addPeserta($kelas, $jk, $uuid_kat, $uuid_rules, $sesi)
     {
 
-        $uuid_peserta = Peserta::where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->orderBy('no_target', 'ASC')->get(['no_target', 'uuid']);
+        $uuid_peserta = Peserta::where('kategori', $uuid_kat)
+            ->where('kelas', $kelas)
+            ->where('jk', $jk)
+            ->get(['no_target', 'uuid'])
+            ->orderBy('no_target', 'ASC');
 
         if ($uuid_peserta->count() <= 0) {
             Session::flash('alert-class', 'alert-danger');
@@ -122,7 +126,7 @@ class KompetisiController extends Controller
         }
         $target = Target::value('no_target');
         $katList = explode(',', $target);
-        $panitia = Panitia::get(['id']);
+        $panitia = Panitia::orderBy('nama_panitia')->get(['id']);
 
         for ($i = 0; $i < count($uuid_peserta); $i++) {
             $inp[] = ['uuid' => Str::uuid(), 'uuid_peserta' => $uuid_peserta[$i]['uuid'], 'uuid_rules' => $uuid_rules, 'sesi' => $sesi, 'created_at' => DB::raw('now()')];
