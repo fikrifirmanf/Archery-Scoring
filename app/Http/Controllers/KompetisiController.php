@@ -33,6 +33,7 @@ class KompetisiController extends Controller
     {
         $title = 'Archery Scoring';
         $title_page = ' Detail Kompetisi ' . $kat . ' ' . $kel;
+        $cek_sesinas = Rules::where('sesi', 4)->get();
         $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
             ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
             ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
@@ -42,8 +43,8 @@ class KompetisiController extends Controller
             ->addSelect(['jml_pesertanya' => Peserta::select(DB::raw('COUNT(uuid)'))
                 ->whereColumn('kategori', 'kategori.nama_kategori')
                 ->whereColumn('kelas', 'kelas.nama_kelas')
-                ->whereColumn('jk', 'ronde.jk')])->orderBy('kategori.nama_kategori', 'asc')->get();
-        return view('kompetisi/detailkategori')->with(compact('title', 'title_page', 'rules'));
+                ->whereColumn('jk', 'ronde.jk')])->orderBy('rules.created_at', 'asc')->get();
+        return view('kompetisi/detailkategori')->with(compact('title', 'title_page', 'rules', 'cek_sesinas'));
     }
     public function skorDetail($nama_babak, $uuid_rules)
     {
@@ -73,38 +74,90 @@ class KompetisiController extends Controller
             );
         }
 
-        $skor = Skor::whereIn('uuid_rules', $uuidRules)
-            ->where('skor.sesi', 1)
-            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
-            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
-            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
-            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-            ->select('no_target', 'team', 'nama_peserta', 'total')
-            ->orderBy('nama_peserta')
-            ->get();
-        $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
-            ->where('skor.sesi', 2)
-            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
-            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
-            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
-            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-            ->select('no_target', 'team', 'nama_peserta', 'total')
-            ->orderBy('nama_peserta')
-            ->get();
-        // if (isset($skor) && isset($skor2)) {
-        //     Session::flash('alert-class', 'alert-danger');
-        //     Session::flash('alert-slogan', 'Gagal!');
-        //     return back()->with(
-        //         Session::flash('message', 'Silahkan daftar data peserta kualifikasi terlebih dahulu')
-        //     );
-        // }
-        for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
-            $item['no_target'] = $skor[$i]['no_target'];
-            $item['nama_peserta'] = $skor[$i]['nama_peserta'];
-            $item['team'] = $skor[$i]['team'];
-            $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
+        $cek_sesinas = Rules::where('sesi', 4)->get();
 
-            $totalall[] = $item;
+
+        if ($cek_sesinas->isNotEmpty()) {
+
+            $skor = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 1)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 2)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor3 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 3)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+
+            for ($i = 0; $i < ($skor->count() + $skor2->count() + $skor3->count()) / 3; $i++) {
+                $item['no_target'] = $skor[$i]['no_target'];
+                $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+                $item['team'] = $skor[$i]['team'];
+                $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'] + $skor3[$i]['total'];
+
+                $totalall[] = $item;
+            }
+        } else {
+            $skor = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 1)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 2)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
+                $item['no_target'] = $skor[$i]['no_target'];
+                $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+                $item['team'] = $skor[$i]['team'];
+                $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
+
+                $totalall[] = $item;
+            }
+            // if (isset($skor) && isset($skor2)) {
+            //     Session::flash('alert-class', 'alert-danger');
+            //     Session::flash('alert-slogan', 'Gagal!');
+            //     return back()->with(
+            //         Session::flash('message', 'Silahkan daftar data peserta kualifikasi terlebih dahulu')
+            //     );
+            // }
+
+
+        }
+        if (empty($totalall)) {
+            Session::flash('alert-class', 'alert-info');
+            Session::flash('alert-slogan', 'Info!');
+            return back()->with(
+                Session::flash('message', 'Skor/peserta belum di input!')
+            );
         }
         return view('kompetisi/total')->with(compact('title', 'title_page', 'totalall'));
     }
@@ -277,30 +330,90 @@ class KompetisiController extends Controller
             ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
             ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
             ->get(['rules.uuid']);
-        $skor = Skor::whereIn('uuid_rules', $uuidRules)
-            ->where('skor.sesi', 1)
-            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
-            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
-            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
-            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-            ->select('no_target', 'team', 'nama_peserta', 'total')
-            ->orderBy('nama_peserta')
-            ->get();
-        $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
-            ->where('skor.sesi', 2)
-            ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
-            ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
-            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
-            ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-            ->select('no_target', 'team', 'nama_peserta', 'total')
-            ->orderBy('nama_peserta')
-            ->get();
-        for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
-            $item['no_target'] = $skor[$i]['no_target'];
-            $item['nama_peserta'] = $skor[$i]['nama_peserta'];
-            $item['team'] = $skor[$i]['team'];
-            $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
-            $totalall[] = $item;
+        $cek_sesinas = Rules::where('sesi', 4)->get();
+
+
+        if ($cek_sesinas->isNotEmpty()) {
+
+            $skor = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 1)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 2)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor3 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 3)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+
+            for ($i = 0; $i < ($skor->count() + $skor2->count() + $skor3->count()) / 3; $i++) {
+                $item['no_target'] = $skor[$i]['no_target'];
+                $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+                $item['team'] = $skor[$i]['team'];
+                $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'] + $skor3[$i]['total'];
+
+                $totalall[] = $item;
+            }
+        } else {
+            $skor = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 1)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
+                ->where('skor.sesi', 2)
+                ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
+                ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
+                ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+                ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
+                ->select('no_target', 'team', 'nama_peserta', 'total')
+                ->orderBy('nama_peserta')
+                ->get();
+            for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
+                $item['no_target'] = $skor[$i]['no_target'];
+                $item['nama_peserta'] = $skor[$i]['nama_peserta'];
+                $item['team'] = $skor[$i]['team'];
+                $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
+
+                $totalall[] = $item;
+            }
+            // if (isset($skor) && isset($skor2)) {
+            //     Session::flash('alert-class', 'alert-danger');
+            //     Session::flash('alert-slogan', 'Gagal!');
+            //     return back()->with(
+            //         Session::flash('message', 'Silahkan daftar data peserta kualifikasi terlebih dahulu')
+            //     );
+            // }
+
+
+        }
+        if (empty($totalall)) {
+            Session::flash('alert-class', 'alert-info');
+            Session::flash('alert-slogan', 'Info!');
+            return back()->with(
+                Session::flash('message', 'Skor/peserta belum di input!')
+            );
         }
 
         $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'totalall', 'nama_babak'))->setPaper('a4', 'landscape');

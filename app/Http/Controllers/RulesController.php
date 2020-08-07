@@ -18,7 +18,7 @@ class RulesController extends Controller
     {
         $title = "Rules";
         $title_page = "Pengaturan";
-        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')->select('rules.*',  'kategori.nama_kategori', 'ronde.jk')->orderBy('kategori.nama_kategori', 'asc')->orderBy('nama', 'asc')->get();
+        $rules = Rules::join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')->select('rules.*',  'kategori.nama_kategori', 'ronde.jk')->orderBy('rules.created_at', 'asc')->get();
 
 
         return $this->makeResponse($request, 'rules/rules', compact('title', 'rules', 'title_page'));
@@ -36,56 +36,102 @@ class RulesController extends Controller
     {
         $rules_exist = Rules::where('nama', Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas'))->where('uuid_kategori', $request->uuid_kategori)->first();
 
+        // Get Kategori Nasional
+
+        $kat_nas = Kategori::where('uuid', $request->uuid_kategori)->value('nama_kategori');
+
         if (strpos(Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde'), 'Kualifikasi') !== false) {
             try {
-                Rules::insert([
-                    'uuid' => Str::uuid(),
-                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi ' . $request->sesi,
-                    'jml_seri' => $request->jml_seri,
-                    'jml_panah' => $request->jml_panah,
-                    'uuid_ronde' => $request->uuid_ronde,
-                    'jarak' => $request->jarak,
-                    'uuid_kelas' => $request->uuid_kelas,
-                    'uuid_kategori' => $request->uuid_kategori,
-                    'jml_peserta' => $request->jml_peserta,
-                    'sesi' => $request->sesi,
-                    'input' => $request->input_data,
-                    'created_at' => DB::raw('now()')
-                ]);
-                Rules::insert([
-                    'uuid' => Str::uuid(),
-                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi 2',
-                    'jml_seri' => $request->jml_seri,
-                    'jml_panah' => $request->jml_panah,
-                    'uuid_ronde' => $request->uuid_ronde,
-                    'jarak' => $request->jarak,
-                    'uuid_kelas' => $request->uuid_kelas,
-                    'uuid_kategori' => $request->uuid_kategori,
-                    'jml_peserta' => $request->jml_peserta,
-                    'sesi' => 2,
-                    'input' => $request->input_data,
-                    'created_at' => DB::raw('now()')
-                ]);
-                Rules::insert([
-                    'uuid' => Str::uuid(),
-                    'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Total',
-                    'jml_seri' => $request->jml_seri,
-                    'jml_panah' => $request->jml_panah,
-                    'uuid_ronde' => $request->uuid_ronde,
-                    'jarak' => $request->jarak,
-                    'uuid_kelas' => $request->uuid_kelas,
-                    'uuid_kategori' => $request->uuid_kategori,
-                    'jml_peserta' => $request->jml_peserta,
-                    'sesi' => 3,
-                    'input' => $request->input_data,
-                    'created_at' => DB::raw('now()')
-                ]);
+                if ($kat_nas == 'Nasional') {
+                    $sesi_nas = explode(',', $request->jarak);
 
-                Session::flash('alert-class', 'alert-success');
-                Session::flash('alert-slogan', 'Sukses!');
-                return redirect('rules/add')->with(
-                    Session::flash('message', 'Rules berhasil dibuat')
-                );
+                    for ($i = 0; $i < count($sesi_nas); $i++) {
+                        # code...
+                        Rules::insert([
+                            'uuid' => Str::uuid(),
+                            'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Jarak ' . $sesi_nas[$i],
+                            'jml_seri' => $request->jml_seri,
+                            'jml_panah' => $request->jml_panah,
+                            'uuid_ronde' => $request->uuid_ronde,
+                            'jarak' => $sesi_nas[$i],
+                            'uuid_kelas' => $request->uuid_kelas,
+                            'uuid_kategori' => $request->uuid_kategori,
+                            'jml_peserta' => $request->jml_peserta,
+                            'sesi' =>  $i + 1,
+                            'input' => $request->input_data,
+                            'created_at' => DB::raw('now()')
+                        ]);
+                    }
+                    Rules::insert([
+                        'uuid' => Str::uuid(),
+                        'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Total',
+                        'jml_seri' => $request->jml_seri,
+                        'jml_panah' => $request->jml_panah,
+                        'uuid_ronde' => $request->uuid_ronde,
+                        'jarak' => 304050,
+                        'uuid_kelas' => $request->uuid_kelas,
+                        'uuid_kategori' => $request->uuid_kategori,
+                        'jml_peserta' => $request->jml_peserta,
+                        'sesi' => count($sesi_nas) + 1,
+                        'input' => $request->input_data,
+                        'created_at' => DB::raw('now()')
+                    ]);
+
+                    Session::flash('alert-class', 'alert-success');
+                    Session::flash('alert-slogan', 'Sukses!');
+                    return redirect('rules/add')->with(
+                        Session::flash('message', 'Rules berhasil dibuat')
+                    );
+                } else {
+                    Rules::insert([
+                        'uuid' => Str::uuid(),
+                        'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi ' . $request->sesi,
+                        'jml_seri' => $request->jml_seri,
+                        'jml_panah' => $request->jml_panah,
+                        'uuid_ronde' => $request->uuid_ronde,
+                        'jarak' => $request->jarak,
+                        'uuid_kelas' => $request->uuid_kelas,
+                        'uuid_kategori' => $request->uuid_kategori,
+                        'jml_peserta' => $request->jml_peserta,
+                        'sesi' => $request->sesi,
+                        'input' => $request->input_data,
+                        'created_at' => DB::raw('now()')
+                    ]);
+                    Rules::insert([
+                        'uuid' => Str::uuid(),
+                        'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Sesi 2',
+                        'jml_seri' => $request->jml_seri,
+                        'jml_panah' => $request->jml_panah,
+                        'uuid_ronde' => $request->uuid_ronde,
+                        'jarak' => $request->jarak,
+                        'uuid_kelas' => $request->uuid_kelas,
+                        'uuid_kategori' => $request->uuid_kategori,
+                        'jml_peserta' => $request->jml_peserta,
+                        'sesi' => 2,
+                        'input' => $request->input_data,
+                        'created_at' => DB::raw('now()')
+                    ]);
+                    Rules::insert([
+                        'uuid' => Str::uuid(),
+                        'nama' => Ronde::where('uuid', $request->uuid_ronde)->value('nama_ronde') . ' ' . Kelas::where('uuid', $request->uuid_kelas)->value('nama_kelas') . ' Total',
+                        'jml_seri' => $request->jml_seri,
+                        'jml_panah' => $request->jml_panah,
+                        'uuid_ronde' => $request->uuid_ronde,
+                        'jarak' => $request->jarak,
+                        'uuid_kelas' => $request->uuid_kelas,
+                        'uuid_kategori' => $request->uuid_kategori,
+                        'jml_peserta' => $request->jml_peserta,
+                        'sesi' => 4,
+                        'input' => $request->input_data,
+                        'created_at' => DB::raw('now()')
+                    ]);
+
+                    Session::flash('alert-class', 'alert-success');
+                    Session::flash('alert-slogan', 'Sukses!');
+                    return redirect('rules/add')->with(
+                        Session::flash('message', 'Rules berhasil dibuat')
+                    );
+                }
             } catch (\Throwable $th) {
                 throw $th;
             }

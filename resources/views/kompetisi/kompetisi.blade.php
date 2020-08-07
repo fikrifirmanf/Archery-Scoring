@@ -27,6 +27,7 @@
       
             <!-- /.card-header -->
             <div class="card-body">
+             
                 @if(Session::has('message'))
                 <div class="alert {{ Session::get('alert-class', 'alert-info') }} alert-dismissible fade show"><button type="button" class="close" data-dismiss="alert">&times;</button><strong>{{Session::get('alert-slogan')}} </strong>{{ Session::get('message') }}</div>
                   @endif

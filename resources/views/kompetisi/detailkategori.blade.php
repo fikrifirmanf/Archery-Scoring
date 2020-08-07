@@ -51,7 +51,7 @@
                   
                 @foreach ($rules as $p)
                 <tr>
-                @if ($p->sesi == 3)
+                @if ($p->sesi == 4)
                 @if ($p->jk == 'L')
                 <td><a href="/kompetisi/detailt/{{$p->nama}}/{{$p->nama_kelas}}/{{$p->jk}}/{{$p->uuid_kategori}}">{{$p->nama.' '.$p->nama_kategori}}</a> <button class="btn bg-gradient-primary btn-xs">Putra</button></td>
                 @else
