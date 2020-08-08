@@ -158,7 +158,7 @@ class PanitiaController extends Controller
         $kategori = Kategori::get();
         $panitia = Panitia::where('id', $uuid)->get();
 
-        return view('panitia/edit')->with(compact('panitia', 'title', 'title_page'));
+        return view('panitia/edit')->with(compact('panitia', 'title', 'title_page', 'kategori'));
     }
     public function prosesEdit(Request $request)
     {

@@ -17,7 +17,7 @@ class Panitia extends Model
      * @var array
      */
     protected $fillable = [
-        'nama_panitia', 'username', 'password',
+        'id', 'nama_panitia', 'username', 'password', 'jk_peserta', 'kategori'
     ];
 
     /**

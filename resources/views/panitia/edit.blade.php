@@ -83,7 +83,27 @@ foreach($panitia as $p){
                                 <input type="password" name="confirmation"  class="form-control"
                                     placeholder="********">
                             </div>
-                            
+                            <div class="form-group">
+                                <label>Kategori</label>
+                                <select class="form-control" name="kategori" style="width: 100%;">
+
+                                    @foreach ($kategori as $k)
+                                <option value="{{$k->nama_kategori}}">{{$k->nama_kategori}}</option>
+                                    @endforeach
+                                    
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label>JK Peserta</label>
+                                <select class="form-control" name="jk_peserta" style="width: 100%;">
+
+                                    
+                                <option value="L">L</option>
+                                <option value="P">P</option>
+                                   
+                                    
+                                </select>
+                            </div>
                             <div class="form-group">
                                 <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
                                     type="submit" class="btn btn-success float-right">Simpan</button>

@@ -65,6 +65,7 @@ $router->group(['prefix' => 'panitia', 'middleware' => 'login.auth'], function (
     $router->get('del/{id}', 'PanitiaController@del');
     $router->get('delall', 'PanitiaController@delAll');
     $router->post('edit/proses', 'PanitiaController@prosesEdit');
+    $router->post('import_excel', 'PanitiaController@import_excel');
 });
 // Kelas
 $router->group(['prefix' => 'kelas', 'middleware' => 'login.auth'], function () use ($router) {
