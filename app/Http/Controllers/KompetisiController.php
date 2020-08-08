@@ -179,7 +179,7 @@ class KompetisiController extends Controller
         }
         $target = Target::value('no_target');
         $katList = explode(',', $target);
-        $panitia = Panitia::orderBy('nama_panitia', 'ASC')
+        $panitia = Panitia::where('kategori', $uuid_kat)->where('jk_peserta', $jk)->orderBy('created_at', 'ASC')
             ->get(['id']);
 
         for ($i = 0; $i < count($uuid_peserta); $i++) {
