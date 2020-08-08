@@ -21,7 +21,7 @@ class PanitiaController extends Controller
      */
     public function index()
     {
-        $panitia = Panitia::get();
+        $panitia = Panitia::orderBy('created_at', 'ASC')->get();
         $title_page = "Archery Scoring";
         $title = "Panitia";
 
