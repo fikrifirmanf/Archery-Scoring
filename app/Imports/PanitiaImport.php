@@ -2,7 +2,8 @@
 
 namespace App\Imports;
 
-use App\Peserta;
+
+use App\Panitia;
 use Maatwebsite\Excel\Concerns\ToModel;
 use Illuminate\Support\Str;
 use Maatwebsite\Excel\Concerns\WithHeadingRow;
@@ -12,7 +13,7 @@ HeadingRowFormatter::
     default('none');
 
 
-class PesertaImport implements ToModel, WithHeadingRow
+class PanitiaImport implements ToModel, WithHeadingRow
 {
 
     /**
@@ -23,14 +24,13 @@ class PesertaImport implements ToModel, WithHeadingRow
 
     public function model(array $row)
     {
-        return new Peserta([
-            'uuid' => Str::uuid(),
-            'no_target' => $row['No Target'],
-            'nama_peserta' => $row['Nama Peserta'],
-            'jk' => $row['Jk'],
+        return new Panitia([
+            'id' => Str::uuid(),
+            'nama_panitia' => $row['Nama Panitia'],
+            'username' => $row['Username'],
+            'password' => bcrypt($row['Password']),
+            'jk_peserta' => $row['JK Peserta'],
             'kategori' => $row['Kategori'],
-            'team' => $row['Team'],
-            'kelas' => $row['Kelas'],
 
         ]);
     }

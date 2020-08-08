@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+use App\Imports\PanitiaImport;
+use App\Kategori;
 use App\Panitia;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Str;
+use Maatwebsite\Excel\Facades\Excel;
 use Illuminate\Support\Facades\DB;
 
 class PanitiaController extends Controller
@@ -34,7 +37,8 @@ class PanitiaController extends Controller
     {
         $title = "Archery Scoring";
         $title_page = "Tambah Panitia";
-        return view('panitia/add')->with(compact('title_page', 'title'));
+        $kategori = Kategori::get();
+        return view('panitia/add')->with(compact('title_page', 'title', 'kategori'));
     }
 
     public function prosesAdd(Request $request)
@@ -59,6 +63,8 @@ class PanitiaController extends Controller
                 'nama_panitia' => $request->nama_panitia,
                 'username' => $request->username,
                 'password' => bcrypt($request->password),
+                'jk_peserta' => $request->jk_peserta,
+                'kategori' => $request->kategori,
                 'created_at' => DB::raw('now()')
             ]);
 
@@ -69,6 +75,32 @@ class PanitiaController extends Controller
                 Session::flash('message', 'Data panitia berhasil diinput')
             );
         }
+    }
+
+    public function import_excel(Request $request)
+    {
+        // validasi
+        $this->validate($request, [
+            'file' => 'required|mimes:csv,xls,xlsx'
+        ]);
+
+        // menangkap file excel
+        $file = $request->file('file');
+
+        // membuat nama file unik
+        $nama_file = rand() . $file->getClientOriginalName();
+
+        // upload ke folder file_peserta di dalam folder public
+        $file->move(public_path('/file_panitia'), $nama_file);
+
+        // import data
+        Excel::import(new PanitiaImport, public_path('/file_panitia/' . $nama_file));
+
+        // notifikasi dengan session
+        Session::flash('sukses', 'Data Panitia Berhasil Diimport!');
+
+        // alihkan halaman kembali
+        return redirect('panitia/add');
     }
 
     public function profile()
@@ -123,6 +155,7 @@ class PanitiaController extends Controller
 
         $title = 'Archery Scoring';
         $title_page = 'Ubah Profil';
+        $kategori = Kategori::get();
         $panitia = Panitia::where('id', $uuid)->get();
 
         return view('panitia/edit')->with(compact('panitia', 'title', 'title_page'));
@@ -140,6 +173,8 @@ class PanitiaController extends Controller
 
                 'nama_panitia' => $request->nama_panitia,
                 'username' => $request->username,
+                'jk_peserta' => $request->jk_peserta,
+                'kategori' => $request->kategori,
                 'updated_at' => DB::raw('now()')
             ]);
 
@@ -160,6 +195,8 @@ class PanitiaController extends Controller
                 'nama_panitia' => $request->nama_panitia,
                 'username' => $request->username,
                 'password' => bcrypt($request->password),
+                'jk_peserta' => $request->jk_peserta,
+                'kategori' => $request->kategori,
                 'updated_at' => DB::raw('now()')
             ]);
 
