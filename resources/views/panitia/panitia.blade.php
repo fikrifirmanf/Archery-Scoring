@@ -52,6 +52,8 @@
                   <th>No. </th>
                   <th>Nama Panitia</th>
                   <th>Username</th>
+                  <th>Kategori</th>
+                  <th>Kategori JK</th>
                   <th>Aksi</th>
                   
                 </tr>
@@ -64,7 +66,9 @@
                 <tr>
                 <td>{{$i++}}</td>
                 <td>{{$p->nama_panitia}}</td> 
-                <td>{{$p->username}}</td>            
+                <td>{{$p->username}}</td>
+                <td>{{$p->kategori}}</td>
+                <td>{{$p->jk_peserta}}</td>            
                 <td><a href="/panitia/edit/{{$p->id}}"><button class="btn btn-warning mr-2"><i class="fas fa-edit"></i></button></a><a href="/panitia/del/{{$p->id}}"><button class="btn btn-danger"><i class="fas fa-trash"></i></button></a></td>
                   
                 </tr>
