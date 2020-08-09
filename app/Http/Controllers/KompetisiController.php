@@ -243,6 +243,7 @@ class KompetisiController extends Controller
         $title_page = "Generate Peserta Manual";
         $jmlPsrt = Rules::where('uuid', $uuid_rules)->value('jml_peserta');
         $jmlPsrtKompetisi = Skor::where('uuid_rules', $uuid_rules)->get(['uuid_peserta']);
+        $jmlPanitiaKompetisi = Skor::where('uuid_rules', $uuid_rules)->get(['uuid_panitia']);
         if ($jmlPsrtKompetisi->count() >= $jmlPsrt) {
             Session::flash('alert-class', 'alert-danger');
             Session::flash('alert-slogan', 'Gagal!');
@@ -250,7 +251,7 @@ class KompetisiController extends Controller
                 Session::flash('message', 'Peserta sudah lengkap')
             );
         }
-        $panitia = Panitia::where('kategori', $uuid_kat)->where('jk_peserta', $jk)->orderBy('created_at', 'ASC')
+        $panitia = Panitia::whereNotIn('id', $jmlPanitiaKompetisi)->where('kategori', $uuid_kat)->where('jk_peserta', $jk)->orderBy('created_at', 'ASC')
             ->get();
         $peserta = Peserta::whereNotIn('uuid', $jmlPsrtKompetisi)->where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid', 'peserta.nama_peserta', 'no_target')->orderBy('no_target')->get();
         return view('kompetisi/add')->with(compact('title', 'title_page', 'peserta', 'panitia', 'uuid_rules'));
