@@ -91,7 +91,7 @@
                                 <select class="form-control select2bs4" name="uuid_panitia" style="width: 100%;">
 
                                     @foreach ($panitia as $p)
-                                <option value="{{$p->uuid}}">{{$p->nama_panitia}}</option>
+                                <option value="{{$p->id}}">{{$p->nama_panitia}}</option>
                                     @endforeach
                                     
                                 </select>

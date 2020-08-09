@@ -250,7 +250,8 @@ class KompetisiController extends Controller
                 Session::flash('message', 'Peserta sudah lengkap')
             );
         }
-        $panitia = Panitia::get();
+        $panitia = Panitia::where('kategori', $uuid_kat)->where('jk_peserta', $jk)->orderBy('created_at', 'ASC')
+            ->get();
         $peserta = Peserta::whereNotIn('uuid', $jmlPsrtKompetisi)->where('kategori', $uuid_kat)->where('kelas', $kelas)->where('jk', $jk)->select('peserta.uuid', 'peserta.nama_peserta', 'no_target')->orderBy('no_target')->get();
         return view('kompetisi/add')->with(compact('title', 'title_page', 'peserta', 'panitia', 'uuid_rules'));
     }
