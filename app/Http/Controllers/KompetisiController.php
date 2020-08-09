@@ -226,12 +226,12 @@ class KompetisiController extends Controller
                     $ntape[] = $pnt[$i];
                 }
             }
-            $getSkorUuid = Skor::where('sesi', $sesi)
+            $getSkorUuid = Skor::where('sesi', $sesi)->where('uuid_rules', $uuid_rules)
                 ->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')
                 ->orderBy('peserta.no_target', 'ASC')
                 ->get(['skor.uuid']);
             for ($l = 0; $l < count($ntape); $l++) {
-                Skor::where('uuid', $getSkorUuid[$l]['uuid'])->where('sesi', $sesi)->update(['uuid_panitia' => $ntape[$l]]);
+                Skor::where('uuid', $getSkorUuid[$l]['uuid'])->where('uuid_rules', $uuid_rules)->where('sesi', $sesi)->update(['uuid_panitia' => $ntape[$l]]);
             }
 
             Session::flash('alert-class', 'alert-success');
