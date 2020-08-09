@@ -336,7 +336,12 @@ class KompetisiController extends Controller
             ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
             ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')
             ->get(['rules.uuid']);
-        $cek_sesinas = Rules::where('sesi', 4)->get();
+        $cek_sesinas = Rules::where('uuid_kategori', $uuid_kat)
+            ->where('kelas.nama_kelas', $kelas)
+            ->where('ronde.jk', $jk)->where('sesi', 3)
+            ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
+            ->join('kelas', 'rules.uuid_kelas', '=', 'kelas.uuid')->get();
+
 
 
         if ($cek_sesinas->isNotEmpty()) {
