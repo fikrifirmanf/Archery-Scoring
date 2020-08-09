@@ -145,12 +145,6 @@ class PesertaController extends Controller
                 'created_at' => DB::raw('now()')
 
             ]);
-            Target::insert([
-                'uuid' => Str::uuid(),
-                'nama_papan' => $kat[0],
-                'no_target' => $kat[1],
-                'created_at' => DB::raw('now()')
-            ]);
         }
 
         // alihkan halaman ke halaman pegawai
