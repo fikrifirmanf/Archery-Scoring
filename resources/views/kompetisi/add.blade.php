@@ -69,7 +69,7 @@
                         <div class="col-md-5">
                         <input type="text" name="uuid_rules" hidden value="{{$uuid_rules}}">
                             <div class="form-group">
-                                <label>Peserta</label>
+                                <label>Peserta 1</label>
                                 <select class="form-control select2bs4" name="uuid_peserta1" style="width: 100%;">
 
                                     @foreach ($peserta as $p)
@@ -104,7 +104,7 @@
                     </div>
                     <div class="col-md-5">
                         <div class="form-group">
-                            <label>Peserta</label>
+                            <label>Peserta 2</label>
                             <select class="form-control select2bs4" name="uuid_peserta2" style="width: 100%;">
                                 @foreach ($peserta as $p)
                             <option value="{{$p->uuid}}">{{$p->no_target.'-'. $p->nama_peserta}}</option>
