@@ -74,7 +74,9 @@ class KompetisiController extends Controller
             );
         }
 
-        $cek_sesinas = Rules::where('sesi', 3)->get();
+        $cek_sesinas = Rules::where('uuid_kategori', $uuid_kat)
+            ->where('kelas.nama_kelas', $kelas)
+            ->where('ronde.jk', $jk)->where('sesi', 3)->get();
 
 
         if ($cek_sesinas->isNotEmpty()) {
