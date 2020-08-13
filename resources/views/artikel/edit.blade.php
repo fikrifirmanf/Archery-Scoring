@@ -50,6 +50,15 @@ foreach($artikel as $k){
                         <input type="text" name="judul" value="{{$judul}}" class="form-control" placeholder="Judul notifikasi ...">
                         </div>
                       </div>
+                      <div class="col">
+                        <div class="form-group">
+                          <label>Judul Notifikasi</label>
+                         <select class="form-control" name="kategori_artikel">
+                            <option value="Petunjuk">Petunjuk</option>
+                            <option value="Umum">Umum</option>
+                         </select>
+                        </div>
+                      </div>
                     <div class="col">
                         <!-- text input -->
                         
