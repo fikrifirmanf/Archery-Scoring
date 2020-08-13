@@ -8,10 +8,14 @@ class DeleteDataController extends Controller
 {
     public function index()
     {
-        return view('delete_data/delete');
+        $title = "Reset Data";
+        $title_page = "Reset Data";
+        return view('delete_data/delete')->with(compact('title', 'title_page'));
     }
-    public function deleteAll($kategori)
+    public function deleteAll(Request $request)
     {
-        # code...
+        if ($request->reset_data == 'pntskor') {
+        } else {
+        }
     }
 }
