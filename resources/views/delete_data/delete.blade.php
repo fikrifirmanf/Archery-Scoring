@@ -64,6 +64,7 @@
                                 
                             </select>
                         </div>
+                        <button class="btn btn-danger" type="submit">Reset</button>
                         <!-- /.card -->
                         <!-- /.row -->
                     </div><!-- /.container-fluid -->
