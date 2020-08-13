@@ -251,6 +251,14 @@
               </p>
             </a>
           </li>
+          <li class="nav-item has-treeview ">
+            <a href="/deletedata" class="nav-link ">
+              <i class="nav-icon fas fa-trash"></i>
+              <p>
+                Reset Data 
+              </p>
+            </a>
+          </li>
           
         </ul>
       </nav>
