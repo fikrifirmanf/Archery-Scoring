@@ -48,7 +48,7 @@
                 </ul>
             </div>
         @endif
-                  <form action="deleteall" method="post">
+                  <form action="deletedata/deleteall" method="post">
                     {{ csrf_field() }}
                     <div class="row">
                         
@@ -64,10 +64,11 @@
                                 
                             </select>
                         </div>
-                        <button class="btn btn-danger" type="submit">Reset</button>
+                        
                         <!-- /.card -->
                         <!-- /.row -->
                     </div><!-- /.container-fluid -->
+                    <button class="btn btn-danger" type="submit"><i class="fas fa-refresh"></i> Reset</button>
                   </form>
                 </div>
             </div>

@@ -123,5 +123,5 @@ $router->group(['prefix' => 'admin', 'middleware' => 'login.auth'], function () 
 // Delete All
 $router->group(['prefix' => 'deletedata', 'middleware' => 'login.auth'], function () use ($router) {
     $router->get('/', 'DeleteDataController@index');
-    // $router->post('edit/proses', 'AdminController@prosesEdit');
+    $router->post('deleteall', 'DeleteDataController@deleteAll');
 });
