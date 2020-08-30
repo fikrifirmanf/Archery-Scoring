@@ -48,6 +48,7 @@
                   <th style="text-align: center">Jarak 40</th>
                   <th style="text-align: center">Jarak 50</th>
                   <th style="text-align: center">Total</th>
+                  <td style="text-align: center">Peringkat</td>
                 
                 </tr>   
                 @else
@@ -58,6 +59,7 @@
                   <th style="text-align: center">Sesi 1</th>
                   <th style="text-align: center">Sesi 2</th>
                   <th style="text-align: center">Total</th>
+                  <td style="text-align: center">Peringkat</td>
                 
                 </tr>    
                 @endif
@@ -65,7 +67,10 @@
                 
                           
                 </thead>
-                <tbody>                
+                <tbody>
+                  @php
+                     $i =1; 
+                  @endphp                
                   
                 @if (isset($totalall))
                 
@@ -79,7 +84,7 @@
                   <td>{{$p['sesi2']}}</td>
                   <td>{{$p['sesi3']}}</td>
                   <td style="text-align: center">{{$p['total_all']}}</td>
-                  
+                  <td style="text-align: center">{{$i++}}</td>
                 </tr>
                 @else
                 <tr>
@@ -89,7 +94,7 @@
                   <td>{{$p['sesi1']}}</td>
                   <td>{{$p['sesi2']}}</td>
                   <td style="text-align: center">{{$p['total_all']}}</td>
-                  
+                  <td style="text-align: center">{{$i++}}</td>
                 </tr>
                 @endif
                 @endforeach
