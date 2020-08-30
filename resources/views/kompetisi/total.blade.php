@@ -24,7 +24,7 @@
       <div class="row">
         <div class="col-12"> 
         <div class="card">
-          {{$totalall}}
+          {{print_r($totalall)}}
             <div class="card-header">
               
               </div>
