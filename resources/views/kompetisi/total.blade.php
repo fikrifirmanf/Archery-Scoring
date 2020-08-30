@@ -66,12 +66,7 @@
                           
                 </thead>
                 <tbody>                
-                  @php
-                  if (isset($totalall)) {
-                    rsort($totalall);
-                  }
-                   
-                  @endphp
+                  
                 @if (isset($totalall))
                 
                 @foreach ($totalall as $p)         
