@@ -81,48 +81,7 @@ foreach($skor as $r){
                             <input type="text" name="nama_peserta" value="{{$nama_peserta}}" readonly class="form-control"
                                     placeholder="0">
                             </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 1</label>
-                                <input type="number" name="seri_1" value="{{$seri_1}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 2</label>
-                                <input type="number" name="seri_2" value="{{$seri_2}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 3</label>
-                                <input type="number" name="seri_3" value="{{$seri_3}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 4</label>
-                                <input type="number" name="seri_4" value="{{$seri_4}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 5</label>
-                                <input type="number" name="seri_5" value="{{$seri_5}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
-                            <div class="col-md-6">
-                                <div class="form-group">
-                                    <label>Seri 6</label>
-                                <input type="number" name="seri_6" value="{{$seri_6}}" class="form-control"
-                                        placeholder="0">
-                                </div>
-                            </div>
+                            
                             
 
                         </div>
@@ -135,13 +94,58 @@ foreach($skor as $r){
                             </div>
                             
                             
-                            <div class="form-group">
-                                <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
-                                    type="submit" class="btn btn-success float-right">Simpan</button>
-                            </div>
+                            
                         </div>
                         <!-- /.card -->
                         <!-- /.row -->
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 1</label>
+                            <input type="number" name="seri_1" value="{{$seri_1}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 2</label>
+                            <input type="number" name="seri_2" value="{{$seri_2}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 3</label>
+                            <input type="number" name="seri_3" value="{{$seri_3}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 4</label>
+                            <input type="number" name="seri_4" value="{{$seri_4}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 5</label>
+                            <input type="number" name="seri_5" value="{{$seri_5}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>
+                        <div class="col-md-6">
+                            <div class="form-group">
+                                <label>Seri 6</label>
+                            <input type="number" name="seri_6" value="{{$seri_6}}" class="form-control"
+                                    placeholder="0">
+                            </div>
+                        </div>   
+                        <div class="form-group">
+                            <button type="reset" class="btn btn-danger ml-2 float-lg-right">Reset</button><button
+                                type="submit" class="btn btn-success float-right">Simpan</button>
+                        </div> 
                     </div><!-- /.container-fluid -->
                   </form>
                 </div>
