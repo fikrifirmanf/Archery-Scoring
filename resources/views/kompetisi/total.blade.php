@@ -118,7 +118,7 @@
 }, 4000);
 $(document).ready(function() {
     $('#example').DataTable( {
-        "order": [[ 3, "desc" ]]
+        "order": [[ 6, "desc" ]]
     } );
 } );
 </script>
