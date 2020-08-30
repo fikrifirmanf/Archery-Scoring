@@ -34,25 +34,55 @@
       @if (strpos($nama_babak,'Total'))
       <thead>
                 
-        <tr>
-          <th style="text-align: center">No Target</th>
-          <th style="text-align: center">Nama Peserta</th>
-          <th style="text-align: center">Team</th>
-          <th style="text-align: center">Total</th>
-          
-        </tr>              
+        @if ($totalall[0]['nama_kategori'] == 'Nasional')
+                <tr>
+                  <th style="text-align: center">No Target</th>
+                  <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Team</th>
+                  <th style="text-align: center">Jarak 30</th>
+                  <th style="text-align: center">Jarak 40</th>
+                  <th style="text-align: center">Jarak 50</th>
+                  <th style="text-align: center">Total</th>
+                
+                </tr>   
+                @else
+                <tr>
+                  <th style="text-align: center">No Target</th>
+                  <th style="text-align: center">Nama Peserta</th>
+                  <th style="text-align: center">Team</th>
+                  <th style="text-align: center">Sesi 1</th>
+                  <th style="text-align: center">Sesi 2</th>
+                  <th style="text-align: center">Total</th>
+                
+                </tr>    
+                @endif         
         </thead>
         <tbody>                
           
         @if (isset($totalall))
         @foreach ($totalall as $p)              
-        <tr>
-          <td style="text-align: center">{{$p['no_target']}}</td>
-          <td>{{$p['nama_peserta']}}</td>
-          <td>{{$p['team']}}</td>
-          <td style="text-align: center">{{$p['total_all']}}</td>
-          
-        </tr>
+        @if ($p['nama_kategori'] == 'Nasional')     
+                <tr>
+                  <td style="text-align: center">{{$p['no_target']}}</td>
+                  <td>{{$p['nama_peserta']}}</td>
+                  <td>{{$p['team']}}</td>
+                  <td>{{$p['sesi1']}}</td>
+                  <td>{{$p['sesi2']}}</td>
+                  <td>{{$p['sesi3']}}</td>
+                  <td style="text-align: center">{{$p['total_all']}}</td>
+                  
+                </tr>
+                @else
+                <tr>
+                  <td style="text-align: center">{{$p['no_target']}}</td>
+                  <td>{{$p['nama_peserta']}}</td>
+                  <td>{{$p['team']}}</td>
+                  <td>{{$p['sesi1']}}</td>
+                  <td>{{$p['sesi2']}}</td>
+                  <td style="text-align: center">{{$p['total_all']}}</td>
+                  
+                </tr>
+                @endif
         @endforeach
         @endif
         
