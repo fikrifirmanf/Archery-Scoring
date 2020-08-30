@@ -51,6 +51,7 @@
                   <th style="text-align: center">Seri 6</th>
                   <th style="text-align: center">Total</th>
                   <th style="text-align: center">Peringkat</th>
+                  <th style="text-align: center">Aksi</th>
                 </tr>
                 @else
                 <tr>
@@ -64,6 +65,7 @@
                   <th style="text-align: center">Seri 5</th>
                   <th style="text-align: center">Seri 6</th>
                   <th style="text-align: center">Total</th>
+                  <th style="text-align: center">Aksi</th>
                 </tr>
                 @endif
                 </thead>
@@ -86,6 +88,7 @@
                   <td style="text-align: center">{{$p->seri_6}}</td>
                   <td style="text-align: center">{{$p->total}}</td>
                   <td style="text-align: center">{{$i++}}</td>
+                  <td style="text-align: center"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></td>
       
                 </tr>
                 @else
@@ -100,6 +103,7 @@
                   <td style="text-align: center">{{$p->seri_5}}</td>
                   <td style="text-align: center">{{$p->seri_6}}</td>
                   <td style="text-align: center">{{$p->total}}</td>
+                  <td style="text-align: center"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></td>
                 </tr>
                   @if ($key % 2 != 0)
                   
