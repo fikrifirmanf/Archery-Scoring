@@ -445,4 +445,39 @@ class KompetisiController extends Controller
         $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'totalall', 'nama_babak'))->setPaper('a4', 'landscape');
         return $pdf->stream('laporan-skor');
     }
+
+    // edit skor
+
+    public function update($uuid)
+    {
+
+        $title = 'Archery Scoring';
+        $title_page = 'Edit Skor';
+        $skor = Skor::where('uuid', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->select('skor.*', 'peserta.nama_peserta', 'peserta.no_target', 'peserta.team')->get();
+        return view('kompetisi/edit')->with(compact('title', 'title_page', 'skor'));
+    }
+
+    public function prosesEdit(Request $request)
+    {
+        try {
+            Skor::where('uuid', $request->uuid)->update([
+                'seri_1' => $request->seri_1,
+                'seri_2' => $request->seri_2,
+                'seri_3' => $request->seri_3,
+                'seri_4' => $request->seri_4,
+                'seri_5' => $request->seri_5,
+                'seri_6' => $request->seri_6,
+                'total' => $$request->seri_1 + $request->seri_2 + $request->seri_3 + $request->seri_4 + $request->seri_5 + $request->seri_6,
+                'updated_at' => DB::raw('now()')
+            ]);
+            // alihkan halaman ke halaman ronde
+            Session::flash('alert-class', 'alert-success');
+            Session::flash('alert-slogan', 'Sukses!');
+            return redirect('kompetisi')->with(
+                Session::flash('message', 'Skor berhasil diubah')
+            );
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+    }
 }
