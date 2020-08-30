@@ -82,7 +82,7 @@
                   <td>{{$p['sesi1']}}</td>
                   <td>{{$p['sesi2']}}</td>
                   <td>{{$p['sesi3']}}</td>
-                  <td style="text-align: center">{{$p['total_all']}}</td>
+                  <td style="text-align: center">{{rsort($p['total_all'])}}</td>
                   
                 </tr>
                 @else
