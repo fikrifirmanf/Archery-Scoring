@@ -121,10 +121,10 @@
         $(this).remove(); 
     });
 }, 4000);
-$(document).ready(function() {
-    $('#example').DataTable( {
-        "order": [[ 6, "desc" ],[7,"asc"]]
-    } );
-} );
+// $(document).ready(function() {
+//     $('#example').DataTable( {
+//         "order": [[ 6, "desc" ],[7,"asc"]]
+//     } );
+// } );
 </script>
 @endsection
