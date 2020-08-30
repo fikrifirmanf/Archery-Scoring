@@ -43,7 +43,7 @@
                   <th style="text-align: center">Jarak 40</th>
                   <th style="text-align: center">Jarak 50</th>
                   <th style="text-align: center">Total</th>
-                  <td style="text-align: center">Peringkat</td>
+                  <td style="text-align: center"><b>Peringkat</b></td>
                 
                 </tr>   
                 @else
@@ -54,7 +54,7 @@
                   <th style="text-align: center">Sesi 1</th>
                   <th style="text-align: center">Sesi 2</th>
                   <th style="text-align: center">Total</th>
-                  <td style="text-align: center">Peringkat</td>
+                  <td style="text-align: center"><b>Peringkat</b></td>
                 
                 </tr>    
                 @endif         
