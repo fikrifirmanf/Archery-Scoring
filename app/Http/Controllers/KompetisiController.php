@@ -424,9 +424,7 @@ class KompetisiController extends Controller
 
                 $totalall[] = $item;
             }
-            usort($totalall, function ($item1, $item2) {
-                return $item2['total_all'] <=> $item1['total_all'];
-            });
+
             // if (isset($skor) && isset($skor2)) {
             //     Session::flash('alert-class', 'alert-danger');
             //     Session::flash('alert-slogan', 'Gagal!');
@@ -437,6 +435,9 @@ class KompetisiController extends Controller
 
 
         }
+        usort($totalall, function ($item1, $item2) {
+            return $item2['total_all'] <=> $item1['total_all'];
+        });
         if (empty($totalall)) {
             Session::flash('alert-class', 'alert-info');
             Session::flash('alert-slogan', 'Info!');
