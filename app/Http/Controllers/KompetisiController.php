@@ -453,7 +453,7 @@ class KompetisiController extends Controller
 
         $title = 'Archery Scoring';
         $title_page = 'Edit Skor';
-        $skor = Skor::where('skor.uuid', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->select('skor.*', 'peserta.nama_peserta', 'peserta.no_target', 'peserta.team')->get();
+        $skor = Skor::where('uuid', $uuid)->join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->select('skor.*', 'peserta.nama_peserta', 'peserta.no_target', 'peserta.team', 'peserta.uuid as pesertaUuid')->get();
         return view('kompetisi/edit')->with(compact('title', 'title_page', 'skor'));
     }
 
