@@ -68,7 +68,7 @@
                 <tbody>                
                   @php
                   if (isset($totalall)) {
-                    rsort($totalall["total"]);
+                    rsort($totalall);
                   }
                    
                   @endphp
