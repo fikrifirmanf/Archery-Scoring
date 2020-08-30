@@ -38,8 +38,8 @@
                   </div> --}}
               <table id="example"  class="table table-bordered">
                 <thead>
-                @foreach ($totalall as $p)
-                @if ($p['nama_kategori'] == 'Nasional')
+                
+                @if ($totalall[0]['nama_kategori'] == 'Nasional')
                 <tr>
                   <th style="text-align: center">No Target</th>
                   <th style="text-align: center">Nama Peserta</th>
@@ -62,7 +62,7 @@
                 </tr>    
                 @endif
                 
-                @endforeach
+                
                           
                 </thead>
                 <tbody>                
