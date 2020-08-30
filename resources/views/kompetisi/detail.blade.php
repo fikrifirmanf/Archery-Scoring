@@ -88,7 +88,7 @@
                   <td style="text-align: center">{{$p->seri_6}}</td>
                   <td style="text-align: center">{{$p->total}}</td>
                   <td style="text-align: center">{{$i++}}</td>
-                <td style="text-align: center"><a href="/kompetisi/update/{{$p->uuid}}"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></a></td>
+                <td style="text-align: center"><a href="/kompetisi/edit/{{$p->uuid}}"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></a></td>
       
                 </tr>
                 @else
@@ -103,7 +103,7 @@
                   <td style="text-align: center">{{$p->seri_5}}</td>
                   <td style="text-align: center">{{$p->seri_6}}</td>
                   <td style="text-align: center">{{$p->total}}</td>
-                  <td style="text-align: center"><a href="/kompetisi/update/{{$p->uuid}}"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></a></td>
+                  <td style="text-align: center"><a href="/kompetisi/edit/{{$p->uuid}}"><button class="btn btn-warning"><i class="fa fa-edit"></i></button></a></td>
                 </tr>
                   @if ($key % 2 != 0)
                   
