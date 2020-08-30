@@ -50,7 +50,7 @@ class KompetisiController extends Controller
     {
         $title = 'Skor ' . $nama_babak;
         $title_page = 'Archery Scoring';
-        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
+        $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->select('skor.*', 'peserta.nama_peserta', 'peserta.no_target', 'peserta.team', 'peserta.uuid as pesertaUuid')->orderBy('total', 'DESC')->get();
         return view('kompetisi/detail')->with(compact('title', 'title_page', 'skor'));
     }
     public function skorDetailTotal($nama_babak, $kelas, $jk, $uuid_kat)
