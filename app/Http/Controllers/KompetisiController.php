@@ -473,7 +473,7 @@ class KompetisiController extends Controller
             // alihkan halaman ke halaman ronde
             Session::flash('alert-class', 'alert-success');
             Session::flash('alert-slogan', 'Sukses!');
-            return redirect()->back()->with(
+            return redirect()->previous()->with(
                 Session::flash('message', 'Skor berhasil diubah')
             );
         } catch (\Throwable $th) {
