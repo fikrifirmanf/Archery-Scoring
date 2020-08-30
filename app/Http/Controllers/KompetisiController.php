@@ -467,7 +467,7 @@ class KompetisiController extends Controller
                 'seri_4' => $request->seri_4,
                 'seri_5' => $request->seri_5,
                 'seri_6' => $request->seri_6,
-                'total' => $$request->seri_1 + $request->seri_2 + $request->seri_3 + $request->seri_4 + $request->seri_5 + $request->seri_6,
+                'total' => $request->seri_1 + $request->seri_2 + $request->seri_3 + $request->seri_4 + $request->seri_5 + $request->seri_6,
                 'updated_at' => DB::raw('now()')
             ]);
             // alihkan halaman ke halaman ronde
