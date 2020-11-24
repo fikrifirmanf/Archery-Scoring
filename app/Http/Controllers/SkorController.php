@@ -58,7 +58,7 @@ class SkorController extends Controller
         return response()->json(['skor' => $skor], 200);
     }
 
-    public function prosesUpdateApi(Request $request, $sesi, $seri, $uuidr, $uuidp, $totalX)
+    public function prosesUpdateApi(Request $request, $sesi, $seri, $uuidr, $uuidp)
     {
 
         $id = Auth::id();
