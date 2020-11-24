@@ -11,9 +11,9 @@
   integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
   crossorigin="anonymous"></script>
   <style>
-    html {
+    /* html {
       margin: 1cm
-    }
+    } */
     th,td {
       font-size: 11px
     }
@@ -51,7 +51,7 @@
                   <th style="text-align: center">Jarak 40</th>
                   <th style="text-align: center">Jarak 50</th>
                   <th style="text-align: center">Total</th>
-                  <td style="text-align: center"><b>Peringkat</b></td>
+                  <td style="text-align: center"><b>Rank</b></td>
                 
                 </tr>   
                 @else
@@ -62,7 +62,7 @@
                   <th style="text-align: center">Sesi 1</th>
                   <th style="text-align: center">Sesi 2</th>
                   <th style="text-align: center">Total</th>
-                  <td style="text-align: center"><b>Peringkat</b></td>
+                  <td style="text-align: center"><b>Rank</b></td>
                 
                 </tr>    
                 @endif         
@@ -110,10 +110,10 @@
         <th style="text-align: center">Seri 4</th>
         <th style="text-align: center">Seri 5</th>
         <th style="text-align: center">Seri 6</th>
-        <th style="text-align: center">Total X</th>
-        <th style="text-align: center">Total 10</th>
+        <th style="text-align: center">X</th>
+        <th style="text-align: center">10</th>
         <th style="text-align: center">Total</th>
-        <th style="text-align: center">Peringkat</th>
+        <th style="text-align: center">Rank</th>
           {{-- <th>Aksi</th> --}}
         </tr>
 </thead>
