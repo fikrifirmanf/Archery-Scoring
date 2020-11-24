@@ -50,6 +50,8 @@
                   <th style="text-align: center">Jarak 30</th>
                   <th style="text-align: center">Jarak 40</th>
                   <th style="text-align: center">Jarak 50</th>
+                  <th style="text-align: center">X</th>
+                  <th style="text-align: center">10</th>
                   <th style="text-align: center">Total</th>
                   <td style="text-align: center"><b>Rank</b></td>
                 
@@ -61,6 +63,8 @@
                   <th style="text-align: center">Team</th>
                   <th style="text-align: center">Sesi 1</th>
                   <th style="text-align: center">Sesi 2</th>
+                  <th style="text-align: center">X</th>
+                  <th style="text-align: center">10</th>
                   <th style="text-align: center">Total</th>
                   <td style="text-align: center"><b>Rank</b></td>
                 
@@ -81,6 +85,8 @@
                   <td>{{$p['sesi1']}}</td>
                   <td>{{$p['sesi2']}}</td>
                   <td>{{$p['sesi3']}}</td>
+                  <td>{{$p['total_x_all']}}</td>
+                  <td>{{$p['total_10_all']}}</td>
                   <td style="text-align: center">{{$p['total_all']}}</td>
                   <td style="text-align: center">{{$i++}}</td>
                 </tr>
@@ -91,6 +97,8 @@
                   <td>{{$p['team']}}</td>
                   <td>{{$p['sesi1']}}</td>
                   <td>{{$p['sesi2']}}</td>
+                  <td>{{$p['total_x_all']}}</td>
+                  <td>{{$p['total_10_all']}}</td>
                   <td style="text-align: center">{{$p['total_all']}}</td>
                   <td style="text-align: center">{{$i++}}</td>
                 </tr>

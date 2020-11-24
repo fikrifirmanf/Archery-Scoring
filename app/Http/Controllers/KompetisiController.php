@@ -119,6 +119,8 @@ class KompetisiController extends Controller
                 $item['sesi1'] = $skor[$i]['total'];
                 $item['sesi2'] = $skor2[$i]['total'];
                 $item['sesi3'] = $skor3[$i]['total'];
+                $item['total_x_all'] =  $skor[$i]['total_x'] + $skor2[$i]['total_x'] + $skor3[$i]['total_x'];
+                $item['total_10_all'] =  $skor[$i]['total_10'] + $skor2[$i]['total_10'] + $skor3[$i]['total_10'];
                 $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'] + $skor3[$i]['total'];
 
                 $totalall[] = $item;
@@ -149,6 +151,8 @@ class KompetisiController extends Controller
                 $item['nama_kategori'] = $skor[$i]['nama_kategori'];
                 $item['sesi1'] = $skor[$i]['total'];
                 $item['sesi2'] = $skor2[$i]['total'];
+                $item['total_x_all'] =  $skor[$i]['total_x'] + $skor2[$i]['total_x'];
+                $item['total_10_all'] =  $skor[$i]['total_10'] + $skor2[$i]['total_10'];
                 $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
 
                 $totalall[] = $item;
@@ -362,7 +366,7 @@ class KompetisiController extends Controller
                 ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
                 ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
                 ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total')
+                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total_x', 'total_10', 'total')
                 ->orderBy('nama_peserta')
                 ->get();
             $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
@@ -371,7 +375,7 @@ class KompetisiController extends Controller
                 ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
                 ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
                 ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total')
+                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total_x', 'total_10', 'total')
                 ->orderBy('nama_peserta')
                 ->get();
             $skor3 = Skor::whereIn('uuid_rules', $uuidRules)
@@ -380,7 +384,7 @@ class KompetisiController extends Controller
                 ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
                 ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
                 ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total')
+                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total_x', 'total_10', 'total')
                 ->orderBy('nama_peserta')
                 ->get();
 
@@ -392,6 +396,8 @@ class KompetisiController extends Controller
                 $item['sesi1'] = $skor[$i]['total'];
                 $item['sesi2'] = $skor2[$i]['total'];
                 $item['sesi3'] = $skor3[$i]['total'];
+                $item['total_x_all'] =  $skor[$i]['total_x'] + $skor2[$i]['total_x'] + $skor3[$i]['total_x'];
+                $item['total_10_all'] =  $skor[$i]['total_10'] + $skor2[$i]['total_10'] + $skor3[$i]['total_10'];
                 $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'] + $skor3[$i]['total'];
 
                 $totalall[] = $item;
@@ -403,7 +409,7 @@ class KompetisiController extends Controller
                 ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
                 ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
                 ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total')
+                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total_x', 'total_10', 'total')
                 ->orderBy('nama_peserta')
                 ->get();
             $skor2 = Skor::whereIn('uuid_rules', $uuidRules)
@@ -412,7 +418,7 @@ class KompetisiController extends Controller
                 ->join('rules', 'skor.uuid_rules', '=', 'rules.uuid')
                 ->join('ronde', 'rules.uuid_ronde', '=', 'ronde.uuid')
                 ->join('kategori', 'rules.uuid_kategori', '=', 'kategori.uuid')
-                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total')
+                ->select('no_target', 'team', 'nama_peserta', 'nama_kategori', 'total_x', 'total_10', 'total')
                 ->orderBy('nama_peserta')
                 ->get();
             for ($i = 0; $i < ($skor->count() + $skor2->count()) / 2; $i++) {
@@ -422,7 +428,8 @@ class KompetisiController extends Controller
                 $item['nama_kategori'] = $skor[$i]['nama_kategori'];
                 $item['sesi1'] = $skor[$i]['total'];
                 $item['sesi2'] = $skor2[$i]['total'];
-
+                $item['total_x_all'] =  $skor[$i]['total_x'] + $skor2[$i]['total_x'];
+                $item['total_10_all'] =  $skor[$i]['total_10'] + $skor2[$i]['total_10'];
                 $item['total_all'] =  $skor[$i]['total'] + $skor2[$i]['total'];
 
                 $totalall[] = $item;
