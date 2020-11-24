@@ -50,7 +50,7 @@
                   <th style="text-align: center">Total</th>
                   <th style="text-align: center">X</th>
                   <th style="text-align: center">10</th>
-                  <td style="text-align: center"><b>Peringkat</b></td>
+                  <td style="text-align: center"><b>Rank</b></td>
                 
                 </tr>   
                 @else
@@ -63,7 +63,7 @@
                   <th style="text-align: center">Total</th>
                   <th style="text-align: center">X</th>
                   <th style="text-align: center">10</th>
-                  <td style="text-align: center"><b>Peringkat</b></td>
+                  <td style="text-align: center"><b>Rank</b></td>
                 
                 </tr>    
                 @endif

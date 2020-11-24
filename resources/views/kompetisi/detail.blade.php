@@ -52,7 +52,7 @@
                   <th style="text-align: center">Total X</th>
                   <th style="text-align: center">Total 10</th>
                   <th style="text-align: center">Total</th>
-                  <th style="text-align: center">Peringkat</th>
+                  <th style="text-align: center">Rank</th>
                   <th style="text-align: center">Aksi</th>
                 </tr>
                 @else
