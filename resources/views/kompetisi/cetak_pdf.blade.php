@@ -107,6 +107,8 @@
         <th style="text-align: center">Seri 4</th>
         <th style="text-align: center">Seri 5</th>
         <th style="text-align: center">Seri 6</th>
+        <th style="text-align: center">Total X</th>
+        <th style="text-align: center">Total 10</th>
         <th style="text-align: center">Total</th>
         <th style="text-align: center">Peringkat</th>
           {{-- <th>Aksi</th> --}}
@@ -129,6 +131,8 @@
         <td style="text-align: center">{{$p->seri_4}}</td>
         <td style="text-align: center">{{$p->seri_5}}</td>
         <td style="text-align: center">{{$p->seri_6}}</td>
+        <td style="text-align: center">{{$p->total_x}}</td>
+        <td style="text-align: center">{{$p->total_10}}</td>
         <td style="text-align: center">{{$p->total}}</td>
         <td style="text-align: center">{{$i++}}</td>
    
