@@ -333,7 +333,7 @@ class KompetisiController extends Controller
     {
         $title = $nama_babak;
         $skor = Skor::join('peserta', 'skor.uuid_peserta', '=', 'peserta.uuid')->where('uuid_rules', $uuid_rules)->orderBy('total', 'DESC')->get();
-        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'skor', 'nama_babak'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'skor', 'nama_babak'))->setPaper('a4', 'potrait');
         return $pdf->stream('laporan-skor');
     }
     public function cetakTotalPdf($nama_babak, $kelas, $jk, $uuid_kat)
@@ -449,7 +449,7 @@ class KompetisiController extends Controller
             );
         }
 
-        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'totalall', 'nama_babak'))->setPaper('a4', 'landscape');
+        $pdf = PDF::loadview('kompetisi/cetak_pdf', compact('title', 'totalall', 'nama_babak'))->setPaper('a4', 'potrait');
         return $pdf->stream('laporan-skor');
     }
 

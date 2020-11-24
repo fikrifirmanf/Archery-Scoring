@@ -58,7 +58,7 @@ class SkorController extends Controller
         return response()->json(['skor' => $skor], 200);
     }
 
-    public function prosesUpdateApi(Request $request, $sesi, $seri, $uuidr, $uuidp)
+    public function prosesUpdateApi(Request $request, $sesi, $seri, $uuidr, $uuidp, $totalX)
     {
 
         $id = Auth::id();
@@ -74,8 +74,9 @@ class SkorController extends Controller
             } else {
                 Skor::where('uuid_rules', $uuidr)->where('uuid_peserta', $uuidp)->update([
                     $seri => $request->seri,
+                    $totalX => $request->totalX
 
-                ]);;
+                ]);
 
 
                 return response()->json([
