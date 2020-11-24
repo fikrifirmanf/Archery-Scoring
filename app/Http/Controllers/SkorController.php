@@ -74,7 +74,8 @@ class SkorController extends Controller
             } else {
                 Skor::where('uuid_rules', $uuidr)->where('uuid_peserta', $uuidp)->update([
                     $seri => $request->seri,
-                    'total_x' => $request->total_x
+                    'total_x' => $request->total_x,
+                    'total_10' => $request->total_10
                 ]);
 
 
