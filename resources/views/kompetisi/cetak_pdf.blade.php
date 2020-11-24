@@ -12,7 +12,7 @@
   crossorigin="anonymous"></script>
   <style>
     th,td {
-      font-size: 12px
+      font-size: 11px
     }
   </style>
 </head>
